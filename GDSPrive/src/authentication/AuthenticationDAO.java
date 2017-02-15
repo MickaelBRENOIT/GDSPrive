@@ -31,15 +31,15 @@ public class AuthenticationDAO {
         
         try{
             connection = singleton.Singleton.getConnection();
-            statement = connection.prepareStatement("SELECT id_utilisateur, prenom_utilisateur, nom_utilisateur, ce_role FROM utilisateur WHERE prenom_utilisateur = ? AND nom_utilisateur = ?");
+            statement = connection.prepareStatement("SELECT id_utilisateur, email_utilisateur, password_utilisateur, ce_role FROM utilisateur WHERE email_utilisateur = ? AND password_utilisateur = ?");
             statement.setString(1, auth.getLogin());
             statement.setString(2, auth.getPassword());
             rs = statement.executeQuery();
             
-            System.out.println("RS >>> "+rs.toString());
+            System.out.println(">>> login : "+ auth.getLogin()+ " >>> mdp : "+auth.getPassword());
             
             if(rs.next()){
-                authentication = new Authentication(rs.getString("prenom_utilisateur"), rs.getString("nom_utilisateur"), rs.getInt("ce_role"));
+                authentication = new Authentication(rs.getString("email_utilisateur"), rs.getString("password_utilisateur"), rs.getInt("ce_role"));
             }
             
         }catch(Exception e){
