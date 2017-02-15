@@ -16,7 +16,7 @@ public class UserMenu extends JFrame implements ActionListener{
     private JPanel main;
 
     public UserMenu(Authentication auth) {
-        this.setTitle("Utilisateur | "+auth.getLogin()+" - "+auth.getPassword());
+        this.setTitle("Utilisateur | "+auth.getLogin());
         this.setSize(400, 150);
         
         main = new JPanel();
