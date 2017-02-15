@@ -1,0 +1,21 @@
+DROP TABLE IF EXISTS utilisateur;
+DROP TABLE IF EXISTS role;
+
+CREATE TABLE role (
+    id_role INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    nom_role varchar(20) NOT NULL
+) ENGINE=InnoDB; 
+
+CREATE TABLE utilisateur (
+    id_utilisateur INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    nom_utilisateur varchar(50) NOT NULL,
+    prenom_utilisateur varchar(50) NOT NULL,
+    email_utilisateur varchar(50) NOT NULL,
+    password_utilisateur varchar(50) NOT NULL,
+    date_naissance datetime NOT NULL,
+    date_embauche datetime NOT NULL,
+    adresse_utilisateur varchar(100) NOT NULL,
+    ce_role INT(11) UNSIGNED NOT NULL,
+    numero_utilisateur INT(10) UNSIGNED NOT NULL,
+    FOREIGN KEY (ce_role) REFERENCES role(id_role)
+) ENGINE=InnoDB;
