@@ -39,12 +39,11 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
 
         initialize();
         disposition();
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
+        
         setResizable(true);
         setLocationRelativeTo(null);
-
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     private void initialize() {
