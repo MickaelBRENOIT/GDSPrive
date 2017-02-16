@@ -12,12 +12,13 @@ public class UserMenu extends JFrame implements ActionListener{
     private JButton suppliers;
     private JButton costumers;
     private JButton exit;
+    private JButton signOut;
     
     private JPanel main;
 
     public UserMenu(Authentication auth) {
         this.setTitle("Utilisateur | "+auth.getLogin());
-        this.setSize(400, 150);
+        this.setSize(400, 200);
         
         main = new JPanel();
         add(main);
@@ -25,7 +26,7 @@ public class UserMenu extends JFrame implements ActionListener{
         initialize();
         disposition();
         
-        setResizable(true);
+        setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -33,15 +34,19 @@ public class UserMenu extends JFrame implements ActionListener{
 
     private void initialize() {
         suppliers = new JButton("Gestion des fournisseurs");
-        suppliers.setBounds(10, 10, 220, 25);
+        suppliers.setBounds(90, 10, 220, 25);
         suppliers.addActionListener(this);
         
         costumers = new JButton("Gestion des clients");
-        costumers.setBounds(10, 40, 220, 25);
+        costumers.setBounds(90, 40, 220, 25);
         costumers.addActionListener(this);
         
+        signOut = new JButton("Se déconnecter");
+        signOut.setBounds(90, 70, 220, 25);
+        signOut.addActionListener(this);
+        
         exit = new JButton("Quitter");
-        exit.setBounds(10, 70, 220, 25);
+        exit.setBounds(90, 100, 220, 25);
         exit.addActionListener(this);
     }
 
@@ -50,7 +55,9 @@ public class UserMenu extends JFrame implements ActionListener{
         
         main.add(suppliers);
         main.add(costumers);
+        main.add(signOut);
         main.add(exit);
+        
     }
 
     @Override
@@ -60,8 +67,10 @@ public class UserMenu extends JFrame implements ActionListener{
                 System.out.println("Cliqué pour les fournisseurs");
             }else if (ae.getSource() == costumers){
                 System.out.println("Cliqué pour les clients");
-            }else if (ae.getSource() == exit){
+            }else if (ae.getSource() == signOut){
                 AuthenticationFrame af = new AuthenticationFrame();
+                this.dispose();
+            }else if (ae.getSource() == exit){
                 this.dispose();
             }
         } catch (Exception e) {
