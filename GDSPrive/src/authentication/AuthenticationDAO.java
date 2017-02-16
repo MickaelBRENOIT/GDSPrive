@@ -18,16 +18,18 @@ import java.sql.ResultSet;
 public class AuthenticationDAO {
     private Connection connection;
     private PreparedStatement statement;
+    private Authentication authentication;
+    private ResultSet rs;
 
     public AuthenticationDAO() {
+        connection = null;
+        statement = null;
     }
     
     public Authentication signIn(Authentication auth){
         
-        connection = null;
-        statement = null;
-        Authentication authentication = null;
-        ResultSet rs = null;
+        authentication = null;
+        rs = null;
         
         try{
             connection = singleton.Singleton.getConnection();
