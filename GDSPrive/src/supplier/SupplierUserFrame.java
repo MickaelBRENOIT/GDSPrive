@@ -46,7 +46,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
 
         main = new JPanel();
         add(main);
-        
+
         initialize();
         disposition();
 
@@ -89,7 +89,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
 
     private void disposition() {
         main.setLayout(null);
-        
+
         main.add(searchButton);
         main.add(list);
         main.add(returnToPreviousFrame);
@@ -101,13 +101,23 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == searchButton) {
-            System.out.println("Cliqué sur le bouton rechercher");
+            listSuppliers.setText(null);
+            String domain = searchField.getText().toString();
+            List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);
+            if (!listOfSuppliers.isEmpty()) {
+                for (Supplier s : listOfSuppliers) {
+                    listSuppliers.append(s.toString());
+                    listSuppliers.append("\n");
+                }
+            }else{
+                System.out.println("PAS DE DOMAINE POSSIBLE");
+            }
         } else if (ae.getSource() == list) {
             listSuppliers.setText(null);
-            List<Supplier> listOfSuppliers = supplier.getListSuppliers();
+            List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
             for (Supplier s : listOfSuppliers) {
                 listSuppliers.append(s.toString());
-                listSuppliers.append("\n");	
+                listSuppliers.append("\n");
             }
         } else if (ae.getSource() == returnToPreviousFrame) {
             this.dispose();
