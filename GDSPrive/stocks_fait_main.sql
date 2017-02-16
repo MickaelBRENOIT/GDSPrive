@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS fournisseur;
 DROP TABLE IF EXISTS utilisateur;
 DROP TABLE IF EXISTS role;
 
@@ -35,3 +36,8 @@ CREATE TABLE fournisseur (
     domaine_fournisseur varchar(50) NOT NULL,
     numero_fournisseur varchar(10) NOT NULL
 ) ENGINE=InnoDB;
+
+INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fournisseur`, `domaine_fournisseur`, `numero_fournisseur`) VALUES
+(1, 'Carrefour', '12 rue des champs', 'supermarché', '0102030405'),
+(2, 'Cora', '62 rue des portes', 'hypermarché', '0605020301'),
+(3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203');
