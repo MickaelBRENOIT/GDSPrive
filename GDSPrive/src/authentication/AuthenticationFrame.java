@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import menu.IdIncorrect;
 import menu.UserMenu;
 
 // http://www.edu4java.com/en/swing/swing4.html
@@ -95,7 +94,7 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
                     }
                 } else {
                     //System.out.println("Mauvais mot de passe ou login");
-                    IdIncorrect ii = new IdIncorrect();
+                    AuthenticationIncorrectDialog ii = new AuthenticationIncorrectDialog();
                 }
             }
         } catch (Exception e) {

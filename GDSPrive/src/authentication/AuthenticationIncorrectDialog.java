@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package menu;
+package authentication;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -26,7 +26,7 @@ import javax.swing.JPanel;
  *
  * @author e1500727
  */
-public class IdIncorrect extends JDialog implements ActionListener {
+public class AuthenticationIncorrectDialog extends JDialog implements ActionListener {
 
     private JPanel main;
     private JButton buttonOk;
@@ -34,7 +34,7 @@ public class IdIncorrect extends JDialog implements ActionListener {
     private ImageIcon warningImg;
     private JLabel warningLabel;
 
-    public IdIncorrect() {
+    public AuthenticationIncorrectDialog() {
         this.setTitle("Mauvais identifiants");
         this.setSize(300, 125);
 
