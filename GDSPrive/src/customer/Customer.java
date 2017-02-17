@@ -65,8 +65,11 @@ public class Customer {
     }
 
     @Override
-    public String toString() { //TODO if company == ""
-        return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber;
+    public String toString() {
+        if(!company.isEmpty())
+            return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber;
+        else
+            return reference + " - " + address + " - " + field + " - " + phoneNumber;
     }
     
     
