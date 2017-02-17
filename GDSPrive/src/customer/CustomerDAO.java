@@ -74,5 +74,45 @@ public class CustomerDAO {
         return customers;
     }
     
+    public int addCustomer(Customer customer) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("INSERT INTO client (societe_client,adresse_client,domaine_client,numero_client,email_client) VALUES ( ?, ?, ?, ?,?)");
+
+            statement.setString(1, customer.getCompany());
+            statement.setString(2, customer.getAddress());
+            statement.setString(3, customer.getField());
+            statement.setString(4, customer.getPhoneNumber());
+            statement.setString(5, customer.getMail());
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
+        return returnCode;
+    }
+    
     
 }

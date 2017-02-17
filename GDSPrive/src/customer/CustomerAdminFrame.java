@@ -118,7 +118,7 @@ public class CustomerAdminFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         try {
             if (ae.getSource() == create) {
-                //CustomerAddFrame saf = new CustomerAddFrame(authentication);
+                CustomerAddFrame saf = new CustomerAddFrame(authentication);
             } else if (ae.getSource() == list) {
                 listCustomers.setText(null);
                 List<Customer> listOfCustomers = customer.getListOfAllCustomers();
