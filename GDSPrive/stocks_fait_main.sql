@@ -41,3 +41,11 @@ INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fou
 (1, 'Carrefour', '12 rue des champs', 'supermarché', '0102030405'),
 (2, 'Cora', '62 rue des portes', 'hypermarché', '0605020301'),
 (3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203');
+
+CREATE TABLE client (
+    id_client INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    societe_client varchar(50),
+    adresse_client varchar(50) NOT NULL,
+    domaine_client varchar(50) NOT NULL,
+    numero_client varchar(10) NOT NULL
+) ENGINE=InnoDB;
