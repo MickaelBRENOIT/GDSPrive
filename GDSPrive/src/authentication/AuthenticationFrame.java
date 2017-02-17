@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import menu.AdminMenu;
 import menu.UserMenu;
 
 // http://www.edu4java.com/en/swing/swing4.html
@@ -86,7 +87,9 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
                 if (authentication != null) {
                     System.out.println("L'utilisateur est connecté");
                     if (authentication.getRole() == 1) {
-                        System.out.println("\tJe suis un administrateur !");
+                        //System.out.println("\tJe suis un administrateur !");
+                        this.dispose();
+                        AdminMenu am = new AdminMenu(a);
                     } else {
                         //System.out.println("\tJe suis un utilisateur lambda !");
                         this.dispose();
