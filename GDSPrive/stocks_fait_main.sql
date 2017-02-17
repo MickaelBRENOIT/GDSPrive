@@ -35,24 +35,26 @@ CREATE TABLE fournisseur (
     societe_fournisseur varchar(50),
     adresse_fournisseur varchar(50) NOT NULL,
     domaine_fournisseur varchar(50) NOT NULL,
-    numero_fournisseur varchar(10) NOT NULL
+    numero_fournisseur varchar(10) NOT NULL,
+    email_fournisseur varchar(50) NOT NULL
 ) ENGINE=InnoDB;
 
-INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fournisseur`, `domaine_fournisseur`, `numero_fournisseur`) VALUES
-(1, 'Carrefour', '12 rue des champs', 'supermarché', '0102030405'),
-(2, 'Cora', '62 rue des portes', 'hypermarché', '0605020301'),
-(3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203');
+INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fournisseur`, `domaine_fournisseur`, `numero_fournisseur`, `email_fournisseur`) VALUES
+(1, 'Carrefour', '12 rue des champs', 'supermarché', '0102030405', 'carrefour@gmail.com'),
+(2, 'Cora', '62 rue des portes', 'hypermarché', '0605020301', 'cora@gmail.com'),
+(3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203', 'eureka@gmail.com');
 
 CREATE TABLE client (
     id_client INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     societe_client varchar(50),
     adresse_client varchar(50) NOT NULL,
     domaine_client varchar(50) NOT NULL,
-    numero_client varchar(10) NOT NULL
+    numero_client varchar(10) NOT NULL,
+    email_client varchar(50) NOT NULL
 ) ENGINE=InnoDB;
 
-INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_client`, `numero_client`) VALUES
-(1, '', '12 rue des glands, 68200 Mulhouse', 'Particulier', '0308090603'),
-(2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421'),
-(3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712'),
-(4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641');
+INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_client`, `numero_client`, `email_client`) VALUES
+(1, '', '12 rue des glands, 68200 Mulhouse', 'Particulier', '0308090603', 'exemple01@gmail.com'),
+(2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421', 'exemple02@yahoo.fr'),
+(3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
+(4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');
