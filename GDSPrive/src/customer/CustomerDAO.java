@@ -34,7 +34,7 @@ public class CustomerDAO {
             rs = statement.executeQuery();
                         
             while(rs.next()){
-                customers.add(new Customer(rs.getInt("id_client"), rs.getString("societe_client"), rs.getString("adresse_client"), rs.getString("domaine_client"), rs.getString("numero_client")));
+                customers.add(new Customer(rs.getInt("id_client"), rs.getString("societe_client"), rs.getString("adresse_client"), rs.getString("domaine_client"), rs.getString("numero_client"), rs.getString("email_client")));
             }
             
         }catch(Exception e){
@@ -60,7 +60,7 @@ public class CustomerDAO {
             rs = statement.executeQuery();
                         
             while(rs.next()){
-                customers.add(new Customer(rs.getInt("id_client"), rs.getString("societe_client"), rs.getString("adresse_client"), rs.getString("domaine_client"), rs.getString("numero_client")));
+                customers.add(new Customer(rs.getInt("id_client"), rs.getString("societe_client"), rs.getString("adresse_client"), rs.getString("domaine_client"), rs.getString("numero_client"), rs.getString("email_client")));
             }
             
         }catch(Exception e){
