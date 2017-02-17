@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
+import supplier.SupplierAdminFrame;
 
 
 public class AdminMenu extends JFrame implements ActionListener{
@@ -18,12 +19,14 @@ public class AdminMenu extends JFrame implements ActionListener{
     private JButton orders;
     private JButton signOut;
     private JButton exit;
-  
+
+    private Authentication authentication;
     
     private JPanel main;
 
     public AdminMenu(Authentication auth) {
-        this.setTitle("Utilisateur | "+auth.getLogin());
+        authentication = auth;
+        this.setTitle("Administrateur | "+auth.getLogin());
         this.setSize(400, 230);
         main = new JPanel();
         add(main);
@@ -76,12 +79,12 @@ public class AdminMenu extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Authentication authentication = null;
 
         try {
             if (ae.getSource() == suppliers) {
                 System.out.println("Cliqué pour les fournisseurs");
-                //new SuppliersMenu();
+                this.dispose();
+                SupplierAdminFrame saf = new SupplierAdminFrame(authentication);
             }else if (ae.getSource() == costumers){
                 System.out.println("Cliqué pour les clients");
             }else if (ae.getSource() == products){
