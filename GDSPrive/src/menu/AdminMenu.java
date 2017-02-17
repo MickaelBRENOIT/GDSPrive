@@ -2,6 +2,7 @@ package menu;
 
 import authentication.Authentication;
 import authentication.AuthenticationFrame;
+import customer.CustomerAdminFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -87,6 +88,8 @@ public class AdminMenu extends JFrame implements ActionListener{
                 SupplierAdminFrame saf = new SupplierAdminFrame(authentication);
             }else if (ae.getSource() == costumers){
                 System.out.println("Cliqué pour les clients");
+                this.dispose();
+                CustomerAdminFrame caf = new CustomerAdminFrame(authentication);
             }else if (ae.getSource() == products){
                 System.out.println("Cliqué pour les produits");
             }else if (ae.getSource() == orders){
