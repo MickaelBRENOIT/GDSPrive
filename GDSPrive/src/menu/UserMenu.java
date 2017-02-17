@@ -2,6 +2,7 @@ package menu;
 
 import authentication.Authentication;
 import authentication.AuthenticationFrame;
+import customer.CustomerUserFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -71,7 +72,8 @@ public class UserMenu extends JFrame implements ActionListener{
                 this.dispose();
                 SupplierUserFrame suf = new SupplierUserFrame(authentication);
             }else if (ae.getSource() == costumers){
-                System.out.println("Cliqué pour les clients");
+                this.dispose();
+                CustomerUserFrame suf = new CustomerUserFrame(authentication);
             }else if (ae.getSource() == signOut){
                 this.dispose();
                 AuthenticationFrame af = new AuthenticationFrame();
