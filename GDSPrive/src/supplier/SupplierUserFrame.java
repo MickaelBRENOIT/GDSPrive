@@ -83,6 +83,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
         scrollSuppliers = new JScrollPane(listSuppliers);
         scrollSuppliers.setBounds(50, 75, 400, 155);
         scrollSuppliers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollSuppliers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         listSuppliers.setEditable(false);
 
     }

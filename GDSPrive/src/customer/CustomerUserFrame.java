@@ -84,6 +84,7 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
         scrollCustomers = new JScrollPane(listCustomers);
         scrollCustomers.setBounds(50, 75, 400, 155);
         scrollCustomers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollCustomers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         listCustomers.setEditable(false);
 
     }
