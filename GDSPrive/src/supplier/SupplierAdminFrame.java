@@ -56,6 +56,9 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
     }
 
     private void initialize() {
+        
+        this.supplier = new SupplierDAO();
+        
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
         create.addActionListener(this);
@@ -112,14 +115,10 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Authentication authentication = null;
-
         try {
             if (ae.getSource() == create) {
-
-                //new SuppliersFrame();
+                SupplierAddFrame saf = new SupplierAddFrame(authentication);
             } else if (ae.getSource() == list) {
-
                 listSuppliers.setText(null);
                 List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
                 for (Supplier s : listOfSuppliers) {

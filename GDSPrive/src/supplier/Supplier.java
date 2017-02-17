@@ -25,6 +25,10 @@ public class Supplier {
         this.phoneNumber = phoneNumber;
         this.mail = mail;
     }
+    
+    public Supplier(String company, String address, String field, String phoneNumber, String mail){
+        this(0, company, address, field, phoneNumber, mail);
+    }
 
     public int getReference() {
         return reference;
