@@ -34,7 +34,7 @@ public class SupplierDAO {
             rs = statement.executeQuery();
                         
             while(rs.next()){
-                suppliers.add(new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur")));
+                suppliers.add(new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur"), rs.getString("email_fournisseur")));
             }
             
         }catch(Exception e){
@@ -60,7 +60,7 @@ public class SupplierDAO {
             rs = statement.executeQuery();
                         
             while(rs.next()){
-                suppliers.add(new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur")));
+                suppliers.add(new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur"), rs.getString("email_fournisseur")));
             }
             
         }catch(Exception e){

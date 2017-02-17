@@ -15,13 +15,15 @@ public class Supplier {
     private String address;
     private String field;
     private String phoneNumber;
+    private String mail;
 
-    public Supplier(int reference, String company, String address, String field, String phoneNumber) {
+    public Supplier(int reference, String company, String address, String field, String phoneNumber, String mail) {
         this.reference = reference;
         this.company = company;
         this.address = address;
         this.field = field;
         this.phoneNumber = phoneNumber;
+        this.mail = mail;
     }
 
     public int getReference() {
@@ -64,12 +66,20 @@ public class Supplier {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     @Override
     public String toString() {
         if(!company.isEmpty())
-            return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber;
+            return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
         else
-            return reference + " - " + address + " - " + field + " - " + phoneNumber;
+            return reference + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
     }
     
     
