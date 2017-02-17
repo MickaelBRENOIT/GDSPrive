@@ -51,6 +51,8 @@ CREATE TABLE client (
     numero_client varchar(10) NOT NULL
 ) ENGINE=InnoDB;
 
-INSERT INTO `utilisateur` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `email_utilisateur`, `password_utilisateur`, `date_naissance`, `date_embauche`, `adresse_utilisateur`, `ce_role`, `numero_utilisateur`) VALUES
-(1, 'BRENOIT', 'Mickael', 'mickael.brenoit@uha.fr', '0000', '1994-05-30 00:00:00', '2016-10-10 00:00:00', '6 rue de Sochaux, 68200 Mulhouse', 1, '0389010203'),
-(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10 00:00:00', '2016-04-19 00:00:00', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
+INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_client`, `numero_client`) VALUES
+(1, '', '12 rue des glands, 68200 Mulhouse', 'Particulier', '0308090603'),
+(2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421'),
+(3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712'),
+(4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641');
