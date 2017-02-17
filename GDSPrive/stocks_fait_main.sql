@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS fournisseur;
 DROP TABLE IF EXISTS utilisateur;
 DROP TABLE IF EXISTS role;
@@ -49,3 +50,7 @@ CREATE TABLE client (
     domaine_client varchar(50) NOT NULL,
     numero_client varchar(10) NOT NULL
 ) ENGINE=InnoDB;
+
+INSERT INTO `utilisateur` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `email_utilisateur`, `password_utilisateur`, `date_naissance`, `date_embauche`, `adresse_utilisateur`, `ce_role`, `numero_utilisateur`) VALUES
+(1, 'BRENOIT', 'Mickael', 'mickael.brenoit@uha.fr', '0000', '1994-05-30 00:00:00', '2016-10-10 00:00:00', '6 rue de Sochaux, 68200 Mulhouse', 1, '0389010203'),
+(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10 00:00:00', '2016-04-19 00:00:00', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
