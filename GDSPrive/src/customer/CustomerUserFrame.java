@@ -6,14 +6,14 @@
 package customer;
 
 import authentication.Authentication;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,13 +32,16 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
     private JButton exit;
 
     private JTextField searchField;
-    private JTextArea listCustomers;
     private JScrollPane scrollCustomers;
 
     private JPanel main;
+    private JPanel panelList;
 
     private Authentication authentication;
     private CustomerDAO customer;
+    
+    private JList<String> customersList;
+    private DefaultListModel<String> listModel;
 
     public CustomerUserFrame(Authentication auth) {
         authentication = auth;
@@ -79,13 +82,15 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
 
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(50, 50, 400, 25);
-
-        listCustomers = new JTextArea();
-        scrollCustomers = new JScrollPane(listCustomers);
+        
+        panelList = new JPanel();
+        listModel = new DefaultListModel<>();
+        customersList = new JList<>(listModel);
+        panelList.add(customersList);
+        scrollCustomers = new JScrollPane(panelList);
         scrollCustomers.setBounds(50, 75, 400, 155);
         scrollCustomers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollCustomers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listCustomers.setEditable(false);
 
     }
 
@@ -103,23 +108,21 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == searchButton) {
-            listCustomers.setText(null);
             String domain = searchField.getText().toString();
             List<Customer> listOfCustomers = customer.getListCustomersByADomain(domain);
             if (!listOfCustomers.isEmpty()) {
-                for (Customer c : listOfCustomers) {
-                    listCustomers.append(c.toString());
-                    listCustomers.append("\n");
+                listModel.removeAllElements();
+                for (Customer s : listOfCustomers) {
+                    listModel.addElement(s.toString());
                 }
-            }else{
+            } else {
                 System.out.println("PAS DE DOMAINE POSSIBLE");
             }
         } else if (ae.getSource() == list) {
-            listCustomers.setText(null);
             List<Customer> listOfCustomers = customer.getListOfAllCustomers();
-            for (Customer c : listOfCustomers) {
-                listCustomers.append(c.toString());
-                listCustomers.append("\n");
+            listModel.removeAllElements();
+            for (Customer s : listOfCustomers) {
+                listModel.addElement(s.toString());
             }
         } else if (ae.getSource() == returnToPreviousFrame) {
             this.dispose();
