@@ -4,9 +4,11 @@ import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,10 +34,13 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
 
     private JTextField searchField;
 
-    private JTextArea listSuppliers;
     private JScrollPane scrollSuppliers;
 
     private JPanel main;
+    private JPanel panelList;
+
+    private JList<String> suppliersList;
+    private DefaultListModel<String> listModel;
 
     public SupplierAdminFrame(Authentication auth) {
         authentication = auth;
@@ -56,9 +61,9 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
     }
 
     private void initialize() {
-        
+
         this.supplier = new SupplierDAO();
-        
+
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
         create.addActionListener(this);
@@ -90,12 +95,14 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(275, 50, 500, 30);
 
-        listSuppliers = new JTextArea();
-        scrollSuppliers = new JScrollPane(listSuppliers);
+        panelList = new JPanel();
+        listModel = new DefaultListModel<>();
+        suppliersList = new JList<>(listModel);
+        panelList.add(suppliersList);
+        scrollSuppliers = new JScrollPane(panelList);
         scrollSuppliers.setBounds(275, 80, 500, 150);
         scrollSuppliers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollSuppliers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listSuppliers.setEditable(false);
 
     }
 
@@ -119,28 +126,26 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
             if (ae.getSource() == create) {
                 SupplierAddFrame saf = new SupplierAddFrame(authentication);
             } else if (ae.getSource() == list) {
-                listSuppliers.setText(null);
                 List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
+                listModel.removeAllElements();
                 for (Supplier s : listOfSuppliers) {
-                    listSuppliers.append(s.toString());
-                    listSuppliers.append("\n");
+                    listModel.addElement(s.toString());
                 }
 
             } else if (ae.getSource() == search) {
 
-                listSuppliers.setText(null);
                 String domain = searchField.getText().toString();
                 List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);
                 if (!listOfSuppliers.isEmpty()) {
+                    listModel.removeAllElements();
                     for (Supplier s : listOfSuppliers) {
-                        listSuppliers.append(s.toString());
-                        listSuppliers.append("\n");
+                        listModel.addElement(s.toString());
                     }
                 } else {
                     System.out.println("PAS DE DOMAINE POSSIBLE");
                 }
             } else if (ae.getSource() == modify) {
-                
+
             } else if (ae.getSource() == delete) {
 
             } else if (ae.getSource() == returnToPreviousFrame) {
