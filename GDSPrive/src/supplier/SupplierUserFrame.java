@@ -6,16 +6,15 @@
 package supplier;
 
 import authentication.Authentication;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import menu.UserMenu;
 
@@ -31,13 +30,16 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
     private JButton exit;
 
     private JTextField searchField;
-    private JTextArea listSuppliers;
     private JScrollPane scrollSuppliers;
 
     private JPanel main;
+    private JPanel panelList;
 
     private Authentication authentication;
     private SupplierDAO supplier;
+    
+    private JList<String> suppliersList;
+    private DefaultListModel<String> listModel;
 
     public SupplierUserFrame(Authentication auth) {
         authentication = auth;
@@ -79,12 +81,14 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(50, 50, 400, 25);
 
-        listSuppliers = new JTextArea();
-        scrollSuppliers = new JScrollPane(listSuppliers);
+        panelList = new JPanel();
+        listModel = new DefaultListModel<>();
+        suppliersList = new JList<>(listModel);
+        panelList.add(suppliersList);
+        scrollSuppliers = new JScrollPane(panelList);
         scrollSuppliers.setBounds(50, 75, 400, 155);
         scrollSuppliers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollSuppliers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listSuppliers.setEditable(false);
 
     }
 
@@ -102,24 +106,25 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == searchButton) {
-            listSuppliers.setText(null);
             String domain = searchField.getText().toString();
             List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);
             if (!listOfSuppliers.isEmpty()) {
+                listModel.removeAllElements();
                 for (Supplier s : listOfSuppliers) {
-                    listSuppliers.append(s.toString());
-                    listSuppliers.append("\n");
+                    listModel.addElement(s.toString());
                 }
-            }else{
+            } else {
                 System.out.println("PAS DE DOMAINE POSSIBLE");
             }
+            
         } else if (ae.getSource() == list) {
-            listSuppliers.setText(null);
+            // http://www.codejava.net/java-se/swing/jlist-basic-tutorial-and-examples
             List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
+            listModel.removeAllElements();
             for (Supplier s : listOfSuppliers) {
-                listSuppliers.append(s.toString());
-                listSuppliers.append("\n");
+                listModel.addElement(s.toString());
             }
+            
         } else if (ae.getSource() == returnToPreviousFrame) {
             this.dispose();
             UserMenu um = new UserMenu(authentication);
