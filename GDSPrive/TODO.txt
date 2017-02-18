@@ -2,4 +2,5 @@ Gérer le hashage des mots de passe.
 Lors de l'ajout du mail de l'utilisateur, le mettre en minuscule.
 Lors de l'ajout du domaine client/fournisseur, mettre en minuscule.
 Afficher une fenêtre d'erreur si le domaine n'exsite pas.
+Afficher la liste après un ajout.
 
