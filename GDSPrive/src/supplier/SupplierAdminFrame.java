@@ -146,6 +146,15 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
                     System.out.println("PAS DE DOMAINE POSSIBLE");
                 }
             } else if (ae.getSource() == modify) {
+                //TODO - Database 1 : search id and send to DAO in order to return the supplier
+                DefaultListModel<String> model = (DefaultListModel<String>) suppliersList.getModel();
+                String[] splitString = suppliersList.getSelectedValue().toString().split(" ");
+                String id = splitString[0];
+                Supplier supplierToModify = null;
+                supplierToModify = supplier.getASupplier(id);
+                //TODO - Display the SupplierModifyFrame.java
+                SupplierModifyFrame smf = new SupplierModifyFrame(authentication, supplierToModify);
+                //TODO - Database 2 : Modify the supplier by passing him in the parameter of the constructor.
 
             } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) suppliersList.getModel();

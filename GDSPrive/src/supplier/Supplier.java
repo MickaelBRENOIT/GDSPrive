@@ -16,6 +16,10 @@ public class Supplier {
     private String field;
     private String phoneNumber;
     private String mail;
+    
+    public Supplier(){
+        
+    }
 
     public Supplier(int reference, String company, String address, String field, String phoneNumber, String mail) {
         this.reference = reference;
