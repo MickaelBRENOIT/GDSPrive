@@ -122,6 +122,7 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        int returnCode = 0;
         try {
             if (ae.getSource() == create) {
                 SupplierAddFrame saf = new SupplierAddFrame(authentication);
@@ -147,7 +148,13 @@ public class SupplierAdminFrame extends JFrame implements ActionListener {
             } else if (ae.getSource() == modify) {
 
             } else if (ae.getSource() == delete) {
-
+                DefaultListModel<String> model = (DefaultListModel<String>) suppliersList.getModel();
+                String[] splitString = suppliersList.getSelectedValue().toString().split(" ");
+                String id = splitString[0];
+                System.out.println("Split : " + id);
+                // TODO - Delete in the database
+                returnCode = supplier.deleteSupplier(id);
+                model.remove(suppliersList.getSelectedIndex());
             } else if (ae.getSource() == returnToPreviousFrame) {
                 this.dispose();
                 AdminMenu am = new AdminMenu(authentication);

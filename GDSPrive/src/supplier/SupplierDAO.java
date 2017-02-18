@@ -144,4 +144,39 @@ public class SupplierDAO {
         
         return returnCode;
     }
+    
+    public int deleteSupplier(String reference){
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("DELETE FROM fournisseur WHERE id_fournisseur = ? ");
+
+            statement.setString(1, reference);
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        return returnCode;
+    }
 }
