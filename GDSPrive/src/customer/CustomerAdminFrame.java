@@ -5,12 +5,13 @@ import customer.CustomerDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import menu.AdminMenu;
 
@@ -33,10 +34,13 @@ public class CustomerAdminFrame extends JFrame implements ActionListener {
 
     private JTextField searchField;
 
-    private JTextArea listCustomers;
     private JScrollPane scrollCustomers;
 
     private JPanel main;
+    private JPanel panelList;
+
+    private JList<String> customersList;
+    private DefaultListModel<String> listModel;
 
     public CustomerAdminFrame(Authentication auth) {
         authentication = auth;
@@ -57,9 +61,9 @@ public class CustomerAdminFrame extends JFrame implements ActionListener {
     }
 
     private void initialize() {
-        
+
         this.customer = new CustomerDAO();
-        
+
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
         create.addActionListener(this);
@@ -91,12 +95,14 @@ public class CustomerAdminFrame extends JFrame implements ActionListener {
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(275, 50, 500, 30);
 
-        listCustomers = new JTextArea();
-        scrollCustomers = new JScrollPane(listCustomers);
+        panelList = new JPanel();
+        listModel = new DefaultListModel<>();
+        customersList = new JList<>(listModel);
+        panelList.add(customersList);
+        scrollCustomers = new JScrollPane(panelList);
         scrollCustomers.setBounds(275, 80, 500, 150);
         scrollCustomers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollCustomers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listCustomers.setEditable(false);
 
     }
 
@@ -120,28 +126,26 @@ public class CustomerAdminFrame extends JFrame implements ActionListener {
             if (ae.getSource() == create) {
                 CustomerAddFrame saf = new CustomerAddFrame(authentication);
             } else if (ae.getSource() == list) {
-                listCustomers.setText(null);
                 List<Customer> listOfCustomers = customer.getListOfAllCustomers();
+                listModel.removeAllElements();
                 for (Customer s : listOfCustomers) {
-                    listCustomers.append(s.toString());
-                    listCustomers.append("\n");
+                    listModel.addElement(s.toString());
                 }
 
             } else if (ae.getSource() == search) {
 
-                listCustomers.setText(null);
                 String domain = searchField.getText().toString();
                 List<Customer> listOfCustomers = customer.getListCustomersByADomain(domain);
                 if (!listOfCustomers.isEmpty()) {
+                    listModel.removeAllElements();
                     for (Customer s : listOfCustomers) {
-                        listCustomers.append(s.toString());
-                        listCustomers.append("\n");
+                        listModel.addElement(s.toString());
                     }
                 } else {
                     System.out.println("PAS DE DOMAINE POSSIBLE");
                 }
             } else if (ae.getSource() == modify) {
-                
+
             } else if (ae.getSource() == delete) {
 
             } else if (ae.getSource() == returnToPreviousFrame) {
