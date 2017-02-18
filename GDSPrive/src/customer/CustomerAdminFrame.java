@@ -146,7 +146,12 @@ public class CustomerAdminFrame extends JFrame implements ActionListener {
                     System.out.println("PAS DE DOMAINE POSSIBLE");
                 }
             } else if (ae.getSource() == modify) {
-
+                DefaultListModel<String> model = (DefaultListModel<String>) customersList.getModel();
+                String[] splitString = customersList.getSelectedValue().toString().split(" ");
+                String id = splitString[0];
+                Customer customerToModify = null;
+                customerToModify = customer.getACustomer(id);
+                CustomerModifyFrame smf = new CustomerModifyFrame(authentication, customerToModify);
             } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) customersList.getModel();
                 String[] splitString = customersList.getSelectedValue().toString().split(" ");
