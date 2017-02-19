@@ -79,7 +79,7 @@ public class AuthenticationIncorrectDialog extends JDialog implements ActionList
     private void playSound() {
         try {
             // Open an audio input stream.
-            String songName = "windowsLoud.wav";
+            String songName = "error.wav";
             String pathToWav = System.getProperty("user.dir") +"\\sounds\\"+ songName;
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(pathToWav).getAbsoluteFile());
             // Get a sound clip resource.
