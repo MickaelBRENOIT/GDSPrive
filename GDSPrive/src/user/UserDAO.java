@@ -220,5 +220,90 @@ public class UserDAO {
         }
         return returnCode;
     }
+
+    User getAUser(String id) {
+        User user = null;
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM utilisateur WHERE id_utilisateur = ?");
+            statement.setString(1, id);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                user = new User(rs.getInt("id_utilisateur"), rs.getString("nom_utilisateur"), rs.getString("prenom_utilisateur"), rs.getString("email_utilisateur"), rs.getString("password_utilisateur"), rs.getDate("date_naissance"), rs.getDate("date_embauche"), rs.getString("adresse_utilisateur"), rs.getInt("ce_role"), rs.getString("numero_utilisateur"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return user;
+    }
+
+    int modifyUser(User user) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("UPDATE utilisateur SET nom_utilisateur = ?,prenom_utilisateur = ?,email_utilisateur = ?,password_utilisateur = ?,date_naissance = ?,date_embauche = ?,adresse_utilisateur = ?,ce_role = ?,numero_utilisateur = ? WHERE id_utilisateur = ?");
+
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getSurname());
+            statement.setString(3, user.getMail());
+            statement.setString(4, user.getPassword());
+            statement.setDate(5, user.getBirth());
+            statement.setDate(6, user.getHiring());
+            statement.setString(7, user.getAddress());
+            statement.setInt(8, user.getRole());
+            statement.setString(9, user.getNumber());
+            statement.setInt(10, user.getReference_user());
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
+        return returnCode;
+    }
     
 }

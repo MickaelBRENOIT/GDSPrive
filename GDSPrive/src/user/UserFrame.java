@@ -153,18 +153,18 @@ public class UserFrame extends JFrame implements ActionListener {
                     listModel.addElement(u.toString());
                 }
 
-            } /*else if (ae.getSource() == modify) {
+            } else if (ae.getSource() == modify) {
                 //TODO - Database 1 : search id and send to DAO in order to return the supplier
                 DefaultListModel<String> model = (DefaultListModel<String>) UsersList.getModel();
                 String[] splitString = UsersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
-                Supplier supplierToModify = null;
-                supplierToModify = supplier.getASupplier(id);
+                User userToModify = null;
+                userToModify = user.getAUser(id);
                 //TODO - Display the SupplierModifyFrame.java
-                SupplierModifyFrame smf = new SupplierModifyFrame(authentication, supplierToModify);
+                UserModifyFrame umf = new UserModifyFrame(authentication, userToModify);
                 //TODO - Database 2 : Modify the supplier by passing him in the parameter of the constructor.
 
-            } */else if (ae.getSource() == delete) {
+            } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) UsersList.getModel();
                 String[] splitString = UsersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
