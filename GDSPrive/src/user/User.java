@@ -5,7 +5,8 @@
  */
 package user;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  *
@@ -19,20 +20,21 @@ public class User {
     private String mail;
     private Date birth;
     private Date hiring;
+    private String address;
     private int role;
     private String number;
     
     private int reference_role;
     private String designation;
 
-    public User(int reference_user, String name, String surname, String password, String mail, Date birth, Date hiring, int role, String number) {
-        this.reference_user = reference_user;
+    public User(String name, String surname, String password, String mail, Date birth, Date hiring, String address, int role, String number) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.mail = mail;
         this.birth = birth;
         this.hiring = hiring;
+        this.address = address;
         this.role = role;
         this.number = number;
     }
@@ -98,6 +100,14 @@ public class User {
         this.hiring = hiring;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public int getRole() {
         return role;
     }
@@ -129,5 +139,13 @@ public class User {
     public void setDesignation(String designation) {
         this.designation = designation;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "reference_user=" + reference_user + ", name=" + name + ", surname=" + surname + ", password=" + password + ", mail=" + mail + ", birth=" + birth + ", hiring=" + hiring + ", address=" + address + ", role=" + role + ", number=" + number + '}';
+    }
+
+    
+    
     
 }
