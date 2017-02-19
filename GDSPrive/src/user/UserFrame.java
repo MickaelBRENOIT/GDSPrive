@@ -31,7 +31,7 @@ public class UserFrame extends JFrame implements ActionListener {
     private JButton search;
 
     private Authentication authentication;
-    //private UserDAO user;
+    private UserDAO user;
 
     private JTextField searchField;
 
@@ -63,7 +63,7 @@ public class UserFrame extends JFrame implements ActionListener {
 
     private void initialize() {
 
-        //this.user = new UserDAO();
+        this.user = new UserDAO();
 
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
@@ -127,14 +127,14 @@ public class UserFrame extends JFrame implements ActionListener {
         try {
             if (ae.getSource() == create) {
                 UserAddFrame uaf = new UserAddFrame(authentication);
-            } /*else if (ae.getSource() == list) {
-                List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
+            } else if (ae.getSource() == list) {
+                List<User> listOfUsers = user.getListOfAllUsers();
                 listModel.removeAllElements();
-                for (Supplier s : listOfSuppliers) {
-                    listModel.addElement(s.toString());
+                for (User u : listOfUsers) {
+                    listModel.addElement(u.toString());
                 }
 
-            } else if (ae.getSource() == search) {
+            } /*else if (ae.getSource() == search) {
 
                 String domain = searchField.getText().toString();
                 List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);

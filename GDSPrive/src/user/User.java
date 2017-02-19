@@ -27,7 +27,8 @@ public class User {
     private int reference_role;
     private String designation;
 
-    public User(String name, String surname, String password, String mail, Date birth, Date hiring, String address, int role, String number) {
+    public User(int reference_user, String name, String surname, String password, String mail, Date birth, Date hiring, String address, int role, String number) {
+        this.reference_user = reference_user;
         this.name = name;
         this.surname = surname;
         this.password = password;
@@ -37,6 +38,10 @@ public class User {
         this.address = address;
         this.role = role;
         this.number = number;
+    }
+
+    public User(String name, String surname, String password, String mail, Date birth, Date hiring, String address, int role, String number) {
+        this(0, name, surname, password, mail, birth, hiring, address, role, number);
     }
 
     public User(int reference_role, String designation) {
@@ -142,7 +147,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "reference_user=" + reference_user + ", name=" + name + ", surname=" + surname + ", password=" + password + ", mail=" + mail + ", birth=" + birth + ", hiring=" + hiring + ", address=" + address + ", role=" + role + ", number=" + number + '}';
+        if(getRole() == 1){
+            return reference_user + " - " + name + " - " + surname + " - " + password + " - " + mail + " - " + birth + " - " + hiring + " - " + address + " - " + "administrateur" + " - " + number;
+        }else{
+            return reference_user + " - " + name + " - " + surname + " - " + password + " - " + mail + " - " + birth + " - " + hiring + " - " + address + " - " + "utilisateur" + " - " + number;
+        }
     }
 
     

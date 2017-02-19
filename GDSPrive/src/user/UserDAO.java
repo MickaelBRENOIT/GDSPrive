@@ -107,6 +107,45 @@ public class UserDAO {
         
         return returnCode;
     }
-    
+
+    List<User> getListOfAllUsers() {
+        List<User> users = new ArrayList<User>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM utilisateur");
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                users.add(new User(rs.getInt("id_utilisateur"), rs.getString("nom_utilisateur"), rs.getString("prenom_utilisateur"), rs.getString("email_utilisateur"), rs.getString("password_utilisateur"), rs.getDate("date_naissance"), rs.getDate("date_embauche"), rs.getString("adresse_utilisateur"), rs.getInt("ce_role"), rs.getString("numero_utilisateur")));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return users;
+
+    }
     
 }
