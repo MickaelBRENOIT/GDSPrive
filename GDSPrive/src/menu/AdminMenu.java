@@ -11,13 +11,15 @@ import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
 import supplier.SupplierAdminFrame;
+import user.UserFrame;
 
 
 public class AdminMenu extends JFrame implements ActionListener{
     private JButton suppliers;
     private JButton costumers;
-    private JButton  products;
+    private JButton products;
     private JButton orders;
+    private JButton users;
     private JButton signOut;
     private JButton exit;
 
@@ -28,7 +30,7 @@ public class AdminMenu extends JFrame implements ActionListener{
     public AdminMenu(Authentication auth) {
         authentication = auth;
         this.setTitle("Administrateur | "+auth.getLogin());
-        this.setSize(400, 230);
+        this.setSize(400, 300);
         main = new JPanel();
         add(main);
         
@@ -57,13 +59,17 @@ public class AdminMenu extends JFrame implements ActionListener{
         orders = new JButton("Gestion des commandes");
         orders.setBounds(90, 100, 220, 25);
         orders.addActionListener(this);
+        
+        users = new JButton("Gestion des utilisateurs");
+        users.setBounds(90, 130, 220, 25);
+        users.addActionListener(this);
            
         signOut = new JButton("Se déconnecter");
-        signOut.setBounds(90, 130, 220, 25);
+        signOut.setBounds(90, 160, 220, 25);
         signOut.addActionListener(this);
         
         exit = new JButton("Quitter");
-        exit.setBounds(90, 160, 220, 25);
+        exit.setBounds(90, 190, 220, 25);
         exit.addActionListener(this);
     }
 
@@ -74,6 +80,7 @@ public class AdminMenu extends JFrame implements ActionListener{
         main.add(costumers);
         main.add(products);
         main.add(orders);
+        main.add(users);
         main.add(signOut);
         main.add(exit);
     }
@@ -94,6 +101,9 @@ public class AdminMenu extends JFrame implements ActionListener{
                 System.out.println("Cliqué pour les produits");
             }else if (ae.getSource() == orders){
                 System.out.println("Cliqué pour les commandes");
+            }else if (ae.getSource() == users){
+                System.out.println("Cliqué pour les utilisateurs");
+                UserFrame uf = new UserFrame(authentication);
             }else if (ae.getSource() == signOut){
                 this.dispose();
                 AuthenticationFrame af = new AuthenticationFrame();
