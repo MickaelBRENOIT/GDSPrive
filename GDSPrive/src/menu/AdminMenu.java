@@ -103,6 +103,7 @@ public class AdminMenu extends JFrame implements ActionListener{
                 System.out.println("Cliqué pour les commandes");
             }else if (ae.getSource() == users){
                 System.out.println("Cliqué pour les utilisateurs");
+                this.dispose();
                 UserFrame uf = new UserFrame(authentication);
             }else if (ae.getSource() == signOut){
                 this.dispose();
