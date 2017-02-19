@@ -147,5 +147,78 @@ public class UserDAO {
         return users;
 
     }
+
+    List<User> getListUsersByARole(int role) {
+        List<User> users = new ArrayList<User>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM utilisateur WHERE ce_role = ?");
+            statement.setInt(1, role);
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                users.add(new User(rs.getInt("id_utilisateur"), rs.getString("nom_utilisateur"), rs.getString("prenom_utilisateur"), rs.getString("email_utilisateur"), rs.getString("password_utilisateur"), rs.getDate("date_naissance"), rs.getDate("date_embauche"), rs.getString("adresse_utilisateur"), rs.getInt("ce_role"), rs.getString("numero_utilisateur")));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return users;
+    }
+
+    int deleteUser(String id) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("DELETE FROM utilisateur WHERE id_utilisateur = ? ");
+
+            statement.setString(1, id);
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        return returnCode;
+    }
     
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
@@ -33,7 +34,7 @@ public class UserFrame extends JFrame implements ActionListener {
     private Authentication authentication;
     private UserDAO user;
 
-    private JTextField searchField;
+    private JComboBox searchField;
 
     private JScrollPane scrollUsers;
 
@@ -93,8 +94,12 @@ public class UserFrame extends JFrame implements ActionListener {
         quit.setBounds(850, 200, 200, 30);
         quit.addActionListener(this);
 
-        searchField = new JTextField("Champ de recherche");
+        searchField = new JComboBox();
         searchField.setBounds(275, 50, 500, 30);
+        List<User> listOfRoles = user.getListOfAllRoles();
+        for (User u : listOfRoles) {
+            searchField.addItem(u.getDesignation());
+        }
 
         panelList = new JPanel();
         listModel = new DefaultListModel<>();
@@ -134,19 +139,21 @@ public class UserFrame extends JFrame implements ActionListener {
                     listModel.addElement(u.toString());
                 }
 
-            } /*else if (ae.getSource() == search) {
+            } else if (ae.getSource() == search) {
 
-                String domain = searchField.getText().toString();
-                List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);
-                if (!listOfSuppliers.isEmpty()) {
-                    listModel.removeAllElements();
-                    for (Supplier s : listOfSuppliers) {
-                        listModel.addElement(s.toString());
-                    }
+                int role;
+                if (String.valueOf(searchField.getSelectedItem().toString()).equals("administrateur")) {
+                    role = 1;
                 } else {
-                    System.out.println("PAS DE DOMAINE POSSIBLE");
+                    role = 2;
                 }
-            } else if (ae.getSource() == modify) {
+                List<User> listOfUsers = user.getListUsersByARole(role);
+                listModel.removeAllElements();
+                for (User u : listOfUsers) {
+                    listModel.addElement(u.toString());
+                }
+
+            } /*else if (ae.getSource() == modify) {
                 //TODO - Database 1 : search id and send to DAO in order to return the supplier
                 DefaultListModel<String> model = (DefaultListModel<String>) UsersList.getModel();
                 String[] splitString = UsersList.getSelectedValue().toString().split(" ");
@@ -157,15 +164,15 @@ public class UserFrame extends JFrame implements ActionListener {
                 SupplierModifyFrame smf = new SupplierModifyFrame(authentication, supplierToModify);
                 //TODO - Database 2 : Modify the supplier by passing him in the parameter of the constructor.
 
-            } else if (ae.getSource() == delete) {
+            } */else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) UsersList.getModel();
                 String[] splitString = UsersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
                 System.out.println("Split : " + id);
                 // TODO - Delete in the database
-                returnCode = supplier.deleteSupplier(id);
+                returnCode = user.deleteUser(id);
                 model.remove(UsersList.getSelectedIndex());
-            }*/ else if (ae.getSource() == returnToPreviousFrame) {
+            } else if (ae.getSource() == returnToPreviousFrame) {
                 this.dispose();
                 AdminMenu am = new AdminMenu(authentication);
             } else if (ae.getSource() == quit) {
