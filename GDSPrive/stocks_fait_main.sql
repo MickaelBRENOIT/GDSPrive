@@ -18,8 +18,8 @@ CREATE TABLE utilisateur (
     prenom_utilisateur varchar(50) NOT NULL,
     email_utilisateur varchar(50) NOT NULL,
     password_utilisateur varchar(50) NOT NULL,
-    date_naissance datetime NOT NULL,
-    date_embauche datetime NOT NULL,
+    date_naissance date NOT NULL,
+    date_embauche date NOT NULL,
     adresse_utilisateur varchar(100) NOT NULL,
     ce_role INT(11) UNSIGNED NOT NULL,
     numero_utilisateur varchar(10) NOT NULL,
@@ -27,8 +27,8 @@ CREATE TABLE utilisateur (
 ) ENGINE=InnoDB;
 
 INSERT INTO `utilisateur` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `email_utilisateur`, `password_utilisateur`, `date_naissance`, `date_embauche`, `adresse_utilisateur`, `ce_role`, `numero_utilisateur`) VALUES
-(1, 'BRENOIT', 'Mickael', 'mickael.brenoit@uha.fr', '0000', '1994-05-30 00:00:00', '2016-10-10 00:00:00', '6 rue de Sochaux, 68200 Mulhouse', 1, '0389010203'),
-(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10 00:00:00', '2016-04-19 00:00:00', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
+(1, 'BRENOIT', 'Mickael', 'mickael.brenoit@uha.fr', '0000', '1994-05-30', '2016-10-10', '6 rue de Sochaux, 68200 Mulhouse', 1, '0389010203'),
+(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10', '2016-04-19', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
 
 CREATE TABLE fournisseur (
     id_fournisseur INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
