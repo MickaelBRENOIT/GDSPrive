@@ -3,6 +3,8 @@ package user;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -21,7 +23,7 @@ import menu.AdminMenu;
  *
  * @author e1501601
  */
-public class UserFrame extends JFrame implements ActionListener {
+public class UserFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
     private JButton list;
@@ -55,6 +57,7 @@ public class UserFrame extends JFrame implements ActionListener {
         initialize();
         disposition();
 
+        addWindowFocusListener(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(true);
         setLocationRelativeTo(null);
@@ -182,6 +185,19 @@ public class UserFrame extends JFrame implements ActionListener {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent we) {
+        List<User> listOfUsers = user.getListOfAllUsers();
+        listModel.removeAllElements();
+        for (User u : listOfUsers) {
+            listModel.addElement(u.toString());
+        }
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent we) {
     }
 
 }

@@ -8,6 +8,8 @@ package supplier;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -22,7 +24,7 @@ import menu.UserMenu;
  *
  * @author Mikael
  */
-public class SupplierUserFrame extends JFrame implements ActionListener {
+public class SupplierUserFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton list;
     private JButton searchButton;
@@ -37,7 +39,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
 
     private Authentication authentication;
     private SupplierDAO supplier;
-    
+
     private JList<String> suppliersList;
     private DefaultListModel<String> listModel;
 
@@ -52,6 +54,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
         initialize();
         disposition();
 
+        addWindowFocusListener(this);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -116,7 +119,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
             } else {
                 System.out.println("PAS DE DOMAINE POSSIBLE");
             }
-            
+
         } else if (ae.getSource() == list) {
             // http://www.codejava.net/java-se/swing/jlist-basic-tutorial-and-examples
             List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
@@ -124,13 +127,26 @@ public class SupplierUserFrame extends JFrame implements ActionListener {
             for (Supplier s : listOfSuppliers) {
                 listModel.addElement(s.toString());
             }
-            
+
         } else if (ae.getSource() == returnToPreviousFrame) {
             this.dispose();
             UserMenu um = new UserMenu(authentication);
         } else if (ae.getSource() == exit) {
             this.dispose();
         }
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent we) {
+        List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
+        listModel.removeAllElements();
+        for (Supplier s : listOfSuppliers) {
+            listModel.addElement(s.toString());
+        }
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent we) {
     }
 
 }

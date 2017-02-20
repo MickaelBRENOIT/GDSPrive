@@ -8,6 +8,8 @@ package customer;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -24,7 +26,7 @@ import menu.UserMenu;
  *
  * @author Mikael
  */
-public class CustomerUserFrame extends JFrame implements ActionListener {
+public class CustomerUserFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton list;
     private JButton searchButton;
@@ -39,7 +41,7 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
 
     private Authentication authentication;
     private CustomerDAO customer;
-    
+
     private JList<String> customersList;
     private DefaultListModel<String> listModel;
 
@@ -54,6 +56,7 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
         initialize();
         disposition();
 
+        addWindowFocusListener(this);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -82,7 +85,7 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
 
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(50, 50, 400, 25);
-        
+
         panelList = new JPanel();
         listModel = new DefaultListModel<>();
         customersList = new JList<>(listModel);
@@ -130,6 +133,19 @@ public class CustomerUserFrame extends JFrame implements ActionListener {
         } else if (ae.getSource() == exit) {
             this.dispose();
         }
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent we) {
+        List<Customer> listOfCustomers = customer.getListOfAllCustomers();
+        listModel.removeAllElements();
+        for (Customer s : listOfCustomers) {
+            listModel.addElement(s.toString());
+        }
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent we) {
     }
 
 }
