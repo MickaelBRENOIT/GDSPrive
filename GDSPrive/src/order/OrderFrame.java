@@ -159,15 +159,15 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
                 UserModifyFrame umf = new UserModifyFrame(authentication, userToModify);
                 //TODO - Database 2 : Modify the supplier by passing him in the parameter of the constructor.
 
-            } else if (ae.getSource() == delete) {
+            } */ else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) OrdersList.getModel();
                 String[] splitString = OrdersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
                 System.out.println("Split : " + id);
                 // TODO - Delete in the database
-                returnCode = order.deleteUser(id);
+                returnCode = order.deleteOrder(id);
                 model.remove(OrdersList.getSelectedIndex());
-            }*/ else if (ae.getSource() == returnToPreviousFrame) {
+            } else if (ae.getSource() == returnToPreviousFrame) {
                 this.dispose();
                 AdminMenu am = new AdminMenu(authentication);
             } else if (ae.getSource() == quit) {
@@ -181,11 +181,11 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
     @Override
     public void windowGainedFocus(WindowEvent we) {
-        /*List<User> listOfUsers = order.getListOfAllUsers();
+        List<Order> listOfOrders = order.getListOfAllOrders();
         listModel.removeAllElements();
-        for (User u : listOfUsers) {
-            listModel.addElement(u.toString());
-        }*/
+        for (Order o : listOfOrders) {
+            listModel.addElement(o.toString());
+        }
     }
 
     @Override
