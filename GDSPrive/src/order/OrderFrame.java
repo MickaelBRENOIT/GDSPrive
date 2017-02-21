@@ -14,6 +14,7 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import menu.AdminMenu;
 
 /**
  *
@@ -128,10 +129,10 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
-        /*try {
+        try {
             if (ae.getSource() == create) {
-                UserAddFrame uaf = new UserAddFrame(authentication);
-            } else if (ae.getSource() == list) {
+                OrderAddFrame uaf = new OrderAddFrame(authentication);
+            } /*else if (ae.getSource() == list) {
                 List<User> listOfUsers = order.getListOfAllUsers();
                 listModel.removeAllElements();
                 for (User u : listOfUsers) {
@@ -171,7 +172,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
                 // TODO - Delete in the database
                 returnCode = order.deleteUser(id);
                 model.remove(OrdersList.getSelectedIndex());
-            } else if (ae.getSource() == returnToPreviousFrame) {
+            }*/ else if (ae.getSource() == returnToPreviousFrame) {
                 this.dispose();
                 AdminMenu am = new AdminMenu(authentication);
             } else if (ae.getSource() == quit) {
@@ -180,7 +181,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
         } catch (Exception e) {
             System.out.println(e);
-        }*/
+        }
     }
 
     @Override
