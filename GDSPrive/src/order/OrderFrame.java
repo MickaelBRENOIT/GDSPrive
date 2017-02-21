@@ -139,21 +139,16 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
                     listModel.addElement(o.toString());
                 }
 
-            } /*else if (ae.getSource() == search) {
+            } else if (ae.getSource() == search) {
 
-                int role;
-                if (String.valueOf(searchField.getSelectedItem().toString()).equals("administrateur")) {
-                    role = 1;
-                } else {
-                    role = 2;
-                }
-                List<User> listOfUsers = order.getListUsersByARole(role);
+                String compagny = String.valueOf(searchField.getSelectedItem().toString());
+                List<Order> listOfOrders = order.getListOrdersByACompagny(compagny);
                 listModel.removeAllElements();
-                for (User u : listOfUsers) {
-                    listModel.addElement(u.toString());
+                for (Order o : listOfOrders) {
+                    listModel.addElement(o.toString());
                 }
 
-            } else if (ae.getSource() == modify) {
+            } /*else if (ae.getSource() == modify) {
                 //TODO - Database 1 : search id and send to DAO in order to return the supplier
                 DefaultListModel<String> model = (DefaultListModel<String>) OrdersList.getModel();
                 String[] splitString = OrdersList.getSelectedValue().toString().split(" ");

@@ -32,7 +32,7 @@ public class OrderDAO {
         try {
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("SELECT *, societe_client FROM commande"
-                                                    + " INNER JOIN client ON commande.id_commande = client.id_client");
+                                                    + " INNER JOIN client ON commande.ce_client = client.id_client");
             rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -72,8 +72,8 @@ public class OrderDAO {
 
         try {
             connection = singleton.Singleton.getConnection();
-            statement = connection.prepareStatement("SELECT societe_client FROM commande"
-                                                    + " INNER JOIN client ON commande.id_commande = client.id_client");
+            statement = connection.prepareStatement("SELECT DISTINCT societe_client FROM commande"
+                                                    + " INNER JOIN client ON commande.ce_client = client.id_client");
             rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -105,6 +105,47 @@ public class OrderDAO {
 
         return companies;
 
+    }
+
+    List<Order> getListOrdersByACompagny(String compagny) {
+        List<Order> orders = new ArrayList<Order>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT *, societe_client FROM commande"
+                                                    + " INNER JOIN client ON commande.ce_client = client.id_client"
+                                                    + " WHERE client.societe_client = "+"\""+compagny+"\"");
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                orders.add(new Order(rs.getInt("id_commande"), rs.getString("societe_client"), rs.getDate("date_commande"), rs.getDate("date_limite_livraison"), rs.getDate("date_livraison")));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return orders;
     }
 
 }
