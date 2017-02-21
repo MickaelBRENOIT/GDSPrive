@@ -10,6 +10,7 @@ package customer;
  * @author Mikael
  */
 public class Customer {
+
     private int reference;
     private String company;
     private String address;
@@ -25,8 +26,8 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.mail = mail;
     }
-    
-    public Customer(String company, String address, String field, String phoneNumber, String mail){
+
+    public Customer(String company, String address, String field, String phoneNumber, String mail) {
         this(0, company, address, field, phoneNumber, mail);
     }
 
@@ -80,13 +81,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        if(!company.isEmpty())
-            return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
-        else
-            return reference + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
+        return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
     }
-    
-    
-    
-    
+
 }

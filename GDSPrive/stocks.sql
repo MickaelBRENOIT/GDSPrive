@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 20 Février 2017 à 08:37
+-- Généré le :  Mar 21 Février 2017 à 11:49
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `client` (
   `id_client` int(11) UNSIGNED NOT NULL,
-  `societe_client` varchar(50) DEFAULT NULL,
+  `societe_client` varchar(50) NOT NULL,
   `adresse_client` varchar(50) NOT NULL,
   `domaine_client` varchar(50) NOT NULL,
   `numero_client` varchar(10) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_client`, `numero_client`, `email_client`) VALUES
-(1, '', '12 rue des glands, 68200 Mulhouse', 'Particulier', '0308090603', 'exemple01@gmail.com'),
+(1, 'Chaiseland', '12 rue des glands, 68200 Mulhouse', 'Ebenisterie', '0308090603', 'exemple01@gmail.com'),
 (2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421', 'exemple02@yahoo.fr'),
 (3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
 (4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');
@@ -53,7 +53,7 @@ INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_
 
 CREATE TABLE `fournisseur` (
   `id_fournisseur` int(11) UNSIGNED NOT NULL,
-  `societe_fournisseur` varchar(50) DEFAULT NULL,
+  `societe_fournisseur` varchar(50) NOT NULL,
   `adresse_fournisseur` varchar(50) NOT NULL,
   `domaine_fournisseur` varchar(50) NOT NULL,
   `numero_fournisseur` varchar(10) NOT NULL,
@@ -66,9 +66,8 @@ CREATE TABLE `fournisseur` (
 
 INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fournisseur`, `domaine_fournisseur`, `numero_fournisseur`, `email_fournisseur`) VALUES
 (1, 'Carrefour', '12 rue des champs', 'supermarché', '0102030405', 'carrefour@gmail.com'),
-(3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203', 'eureka@gmail.com'),
-(4, 'test', 'test', 'test', 'test', 'test'),
-(5, 'azerty', 'azerty', 'azerty', 'azerty', 'azerty01');
+(2, 'Cora', '62 rue des portes', 'hypermarché', '0605020301', 'cora@gmail.com'),
+(3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203', 'eureka@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -114,8 +113,7 @@ CREATE TABLE `utilisateur` (
 
 INSERT INTO `utilisateur` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `email_utilisateur`, `password_utilisateur`, `date_naissance`, `date_embauche`, `adresse_utilisateur`, `ce_role`, `numero_utilisateur`) VALUES
 (1, 'BRENOIT', 'Mickael', 'mickael.brenoit@uha.fr', '0000', '1994-05-30', '2016-10-10', '6 rue de Sochaux, 68200 Mulhouse', 1, '0389010203'),
-(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10', '2016-04-19', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809'),
-(4, 'AZERTY', 'PrenomAzerty', 'admin123', 'admin123', '2006-02-09', '2006-02-17', '25 rue des tests', 1, '0123456789');
+(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10', '2016-04-19', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
 
 --
 -- Index pour les tables exportées
@@ -159,7 +157,7 @@ ALTER TABLE `client`
 -- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `id_fournisseur` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_fournisseur` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `role`
 --
@@ -169,7 +167,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id_utilisateur` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_utilisateur` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Contraintes pour les tables exportées
 --

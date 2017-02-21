@@ -32,7 +32,7 @@ INSERT INTO `utilisateur` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisat
 
 CREATE TABLE fournisseur (
     id_fournisseur INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    societe_fournisseur varchar(50),
+    societe_fournisseur varchar(50) NOT NULL,
     adresse_fournisseur varchar(50) NOT NULL,
     domaine_fournisseur varchar(50) NOT NULL,
     numero_fournisseur varchar(10) NOT NULL,
@@ -46,7 +46,7 @@ INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fou
 
 CREATE TABLE client (
     id_client INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    societe_client varchar(50),
+    societe_client varchar(50) NOT NULL,
     adresse_client varchar(50) NOT NULL,
     domaine_client varchar(50) NOT NULL,
     numero_client varchar(10) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE client (
 ) ENGINE=InnoDB;
 
 INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_client`, `numero_client`, `email_client`) VALUES
-(1, '', '12 rue des glands, 68200 Mulhouse', 'Particulier', '0308090603', 'exemple01@gmail.com'),
+(1, 'Chaiseland', '12 rue des glands, 68200 Mulhouse', 'Ebenisterie', '0308090603', 'exemple01@gmail.com'),
 (2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421', 'exemple02@yahoo.fr'),
 (3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
 (4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');

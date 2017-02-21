@@ -10,15 +10,16 @@ package supplier;
  * @author Mikael
  */
 public class Supplier {
+
     private int reference;
     private String company;
     private String address;
     private String field;
     private String phoneNumber;
     private String mail;
-    
-    public Supplier(){
-        
+
+    public Supplier() {
+
     }
 
     public Supplier(int reference, String company, String address, String field, String phoneNumber, String mail) {
@@ -29,8 +30,8 @@ public class Supplier {
         this.phoneNumber = phoneNumber;
         this.mail = mail;
     }
-    
-    public Supplier(String company, String address, String field, String phoneNumber, String mail){
+
+    public Supplier(String company, String address, String field, String phoneNumber, String mail) {
         this(0, company, address, field, phoneNumber, mail);
     }
 
@@ -84,13 +85,7 @@ public class Supplier {
 
     @Override
     public String toString() {
-        if(!company.isEmpty())
-            return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
-        else
-            return reference + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
+        return reference + " - " + company + " - " + address + " - " + field + " - " + phoneNumber + " - " + mail;
     }
-    
-    
-    
-    
+
 }
