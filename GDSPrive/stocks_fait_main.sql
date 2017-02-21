@@ -68,3 +68,8 @@ CREATE TABLE commande (
     date_livraison date NOT NULL,
     FOREIGN KEY (ce_client) REFERENCES client(id_client)
 ) ENGINE=InnoDB;
+
+INSERT INTO `commande` (`id_commande`, `ce_client`, `date_commande`, `date_limite_livraison`, `date_livraison`) VALUES
+(1, 1, '2017-02-01', '2017-02-02', '2017-02-03'),
+(2, 2, '2017-02-05', '2017-02-06', '2017-02-07'),
+(4, 1, '2017-01-01', '2017-01-02', '2017-01-03');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 21 Février 2017 à 11:49
+-- Généré le :  Mar 21 Février 2017 à 22:45
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -44,6 +44,29 @@ INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_
 (2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421', 'exemple02@yahoo.fr'),
 (3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
 (4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commande`
+--
+
+CREATE TABLE `commande` (
+  `id_commande` int(11) UNSIGNED NOT NULL,
+  `ce_client` int(11) UNSIGNED NOT NULL,
+  `date_commande` date NOT NULL,
+  `date_limite_livraison` date NOT NULL,
+  `date_livraison` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `commande`
+--
+
+INSERT INTO `commande` (`id_commande`, `ce_client`, `date_commande`, `date_limite_livraison`, `date_livraison`) VALUES
+(1, 1, '2017-02-01', '2017-02-02', '2017-02-03'),
+(2, 2, '2017-02-05', '2017-02-06', '2017-02-07'),
+(4, 1, '2017-01-01', '2017-01-02', '2017-01-03');
 
 -- --------------------------------------------------------
 
@@ -126,6 +149,13 @@ ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`);
 
 --
+-- Index pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD PRIMARY KEY (`id_commande`),
+  ADD KEY `ce_client` (`ce_client`);
+
+--
 -- Index pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
@@ -154,6 +184,11 @@ ALTER TABLE `utilisateur`
 ALTER TABLE `client`
   MODIFY `id_client` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
+-- AUTO_INCREMENT pour la table `commande`
+--
+ALTER TABLE `commande`
+  MODIFY `id_commande` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
@@ -171,6 +206,12 @@ ALTER TABLE `utilisateur`
 --
 -- Contraintes pour les tables exportées
 --
+
+--
+-- Contraintes pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`ce_client`) REFERENCES `client` (`id_client`);
 
 --
 -- Contraintes pour la table `utilisateur`
