@@ -19,14 +19,6 @@ public class Order {
     private Date delivery_deadline;
     private Date delivery_date;
 
-    public Order(int reference, int fk_customer, Date order_date, Date delivery_deadline, Date delivery_date) {
-        this.reference = reference;
-        this.fk_customer = fk_customer;
-        this.order_date = order_date;
-        this.delivery_deadline = delivery_deadline;
-        this.delivery_date = delivery_date;
-    }
-
     public Order(int reference, String customer_name, Date order_date, Date delivery_deadline, Date delivery_date) {
         this.reference = reference;
         this.customer_name = customer_name;

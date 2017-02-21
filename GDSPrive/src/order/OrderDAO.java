@@ -65,5 +65,46 @@ public class OrderDAO {
         return orders;
 
     }
+    
+    public List<String> getListOfAllCompagny() {
+        List<String> companies = new ArrayList<String>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT societe_client FROM commande"
+                                                    + " INNER JOIN client ON commande.id_commande = client.id_client");
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                companies.add(rs.getString("societe_client"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return companies;
+
+    }
 
 }
