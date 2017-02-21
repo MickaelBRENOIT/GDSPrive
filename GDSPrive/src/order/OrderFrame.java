@@ -31,7 +31,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
     private JButton search;
 
     private Authentication authentication;
-    //private OrderDAO order;
+    private OrderDAO order;
 
     private JComboBox searchField;
 
@@ -64,7 +64,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
     private void initialize() {
 
-        //this.order = new OrderDAO();
+        this.order = new OrderDAO();
 
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
@@ -96,9 +96,9 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
         searchField = new JComboBox();
         searchField.setBounds(275, 50, 500, 30);
-        /*List<User> listOfRoles = order.getListOfAllRoles();
-        for (User u : listOfRoles) {
-            searchField.addItem(u.getDesignation());
+        /*List<Order> listOfOrders = order.getListOfAllCompagny();
+        for (Order o : listOfOrders) {
+            searchField.addItem(o.getCustomer_name());
         }*/
 
         panelList = new JPanel();
@@ -132,14 +132,14 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
         try {
             if (ae.getSource() == create) {
                 OrderAddFrame uaf = new OrderAddFrame(authentication);
-            } /*else if (ae.getSource() == list) {
-                List<User> listOfUsers = order.getListOfAllUsers();
+            } else if (ae.getSource() == list) {
+                List<Order> listOfOrders = order.getListOfAllOrders();
                 listModel.removeAllElements();
-                for (User u : listOfUsers) {
-                    listModel.addElement(u.toString());
+                for (Order o : listOfOrders) {
+                    listModel.addElement(o.toString());
                 }
 
-            } else if (ae.getSource() == search) {
+            } /*else if (ae.getSource() == search) {
 
                 int role;
                 if (String.valueOf(searchField.getSelectedItem().toString()).equals("administrateur")) {

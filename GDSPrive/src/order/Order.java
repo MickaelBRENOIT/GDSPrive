@@ -13,14 +13,23 @@ import java.sql.Date;
  */
 public class Order {
     private int reference;
-    private int ce_cient;
+    private int fk_customer;
+    private String customer_name;
     private Date order_date;
     private Date delivery_deadline;
     private Date delivery_date;
 
-    public Order(int reference, int ce_cient, Date order_date, Date delivery_deadline, Date delivery_date) {
+    public Order(int reference, int fk_customer, Date order_date, Date delivery_deadline, Date delivery_date) {
         this.reference = reference;
-        this.ce_cient = ce_cient;
+        this.fk_customer = fk_customer;
+        this.order_date = order_date;
+        this.delivery_deadline = delivery_deadline;
+        this.delivery_date = delivery_date;
+    }
+
+    public Order(int reference, String customer_name, Date order_date, Date delivery_deadline, Date delivery_date) {
+        this.reference = reference;
+        this.customer_name = customer_name;
         this.order_date = order_date;
         this.delivery_deadline = delivery_deadline;
         this.delivery_date = delivery_date;
@@ -34,12 +43,20 @@ public class Order {
         this.reference = reference;
     }
 
-    public int getCe_cient() {
-        return ce_cient;
+    public int getFk_customer() {
+        return fk_customer;
     }
 
-    public void setCe_cient(int ce_cient) {
-        this.ce_cient = ce_cient;
+    public void setFk_customer(int fk_customer) {
+        this.fk_customer = fk_customer;
+    }
+
+    public String getCustomer_name() {
+        return customer_name;
+    }
+
+    public void setCustomer_name(String customer_name) {
+        this.customer_name = customer_name;
     }
 
     public Date getOrder_date() {
@@ -68,9 +85,8 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" + "reference=" + reference + ", ce_cient=" + ce_cient + ", order_date=" + order_date + ", delivery_deadline=" + delivery_deadline + ", delivery_date=" + delivery_date + '}';
-    }
-    
+        return reference + " - " + customer_name + " - date de commande (" + order_date + ") - date limite de livraison (" + delivery_deadline + ") - date de livraison (" + delivery_date + ')';
+    }    
     
 }
 
