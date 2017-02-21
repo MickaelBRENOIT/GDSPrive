@@ -115,7 +115,8 @@ public class OrderDAO {
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("SELECT *, societe_client FROM commande"
                                                     + " INNER JOIN client ON commande.ce_client = client.id_client"
-                                                    + " WHERE client.societe_client = "+"\""+compagny+"\"");
+                                                    + " WHERE client.societe_client = ? ");
+            statement.setString(1, compagny);
             rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -178,6 +179,46 @@ public class OrderDAO {
             } catch (Exception t) {
             }
         }
+        return returnCode;
+    }
+
+    int addOrder(Order order) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("INSERT INTO commande (ce_client,date_commande,date_limite_livraison,date_livraison) VALUES ( ?, ?, ?, ?)");
+
+            statement.setInt(1, order.getFk_customer());
+            statement.setDate(2, order.getOrder_date());
+            statement.setDate(3, order.getDelivery_deadline());
+            statement.setDate(4, order.getDelivery_date());
+            
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
         return returnCode;
     }
 

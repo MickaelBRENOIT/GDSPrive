@@ -269,5 +269,45 @@ public class CustomerDAO {
         return companies;
     }
     
+    public int getReferenceCompanyByName(String compagny) {
+        int id = 0;
+        ResultSet rs = null;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT id_client FROM client "
+                                                    + "WHERE societe_client = ?");
+
+            statement.setString(1, compagny);
+
+            //Ex�cution de la requ�te
+            rs = statement.executeQuery();
+            
+            if(rs.next()){
+                id = rs.getInt("id_client");
+            }
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        return id;
+        
+    }
+    
     
 }

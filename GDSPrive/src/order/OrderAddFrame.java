@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.DefaultListModel;
@@ -32,41 +35,41 @@ import util.DateFormat;
  * @author Mikael
  */
 public class OrderAddFrame extends JDialog implements ActionListener, WindowFocusListener {
-    
+
     private JLabel jlCompagny;
     private JLabel jlOrderDate;
     private JLabel jlDeliveryDeadline;
     private JLabel jlDeliveryDate;
-    
+
     private JButton addOrder;
     private JButton cancel;
     private JButton addProduct;
     private JButton modifyProduct;
     private JButton deleteProduct;
-    
+
     private JComboBox jcbCompagny;
-    
+
     private Properties properties;
-    
-    private UtilDateModel OrderDateModel;
-    private JDatePanelImpl OrderDatePanel;
-    private JDatePickerImpl OrderDatePicker;
-    
+
+    private UtilDateModel orderDateModel;
+    private JDatePanelImpl orderDatePanel;
+    private JDatePickerImpl orderDatePicker;
+
     private UtilDateModel deliveryDeadlineModel;
     private JDatePanelImpl deliveryDeadlinePanel;
     private JDatePickerImpl deliveryDeadlinePicker;
-    
-    private UtilDateModel DeliveryDateModel;
-    private JDatePanelImpl DeliveryDatePanel;
-    private JDatePickerImpl DeliveryDatePicker;
-    
+
+    private UtilDateModel deliveryDateModel;
+    private JDatePanelImpl deliveryDatePanel;
+    private JDatePickerImpl deliveryDatePicker;
+
     private JPanel panel;
     private JPanel panelList;
 
-    private JList<String> ProductsList;
+    private JList<String> productsList;
     private DefaultListModel<String> listModel;
     private JScrollPane scrollProducts;
-    
+
     private Authentication authentication;
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
@@ -88,7 +91,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         setModal(true);
         setVisible(true);
     }
-    
+
     private void initialize() {
         this.orderDAO = new OrderDAO();
         this.customerDAO = new CustomerDAO();
@@ -104,81 +107,82 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
         jlDeliveryDate = new JLabel("Date livraison :");
         jlDeliveryDate.setBounds(10, 130, 150, 25);
-        
+
         jcbCompagny = new JComboBox();
         jcbCompagny.setBounds(150, 10, 200, 25);
         List<String> listOfCompanies = customerDAO.getListOfAllCompanies();
         for (String s : listOfCompanies) {
             jcbCompagny.addItem(s);
         }
-        
+
         properties = new Properties();
         properties.put("text.year", "Year");
         properties.put("text.month", "Month");
         properties.put("text.day", "Day");
-        
-        OrderDateModel = new UtilDateModel();
-        OrderDatePanel = new JDatePanelImpl(OrderDateModel, properties);
-        OrderDatePicker = new JDatePickerImpl(OrderDatePanel, new DateFormat());
-        OrderDatePicker.setBounds(150, 50, 200, 25);
-        
+
+        orderDateModel = new UtilDateModel();
+        orderDatePanel = new JDatePanelImpl(orderDateModel, properties);
+        orderDatePicker = new JDatePickerImpl(orderDatePanel, new DateFormat());
+        orderDatePicker.setBounds(150, 50, 200, 25);
+
         deliveryDeadlineModel = new UtilDateModel();
         deliveryDeadlinePanel = new JDatePanelImpl(deliveryDeadlineModel, properties);
         deliveryDeadlinePicker = new JDatePickerImpl(deliveryDeadlinePanel, new DateFormat());
         deliveryDeadlinePicker.setBounds(150, 90, 200, 25);
-        
-        DeliveryDateModel = new UtilDateModel();
-        DeliveryDatePanel = new JDatePanelImpl(DeliveryDateModel, properties);
-        DeliveryDatePicker = new JDatePickerImpl(DeliveryDatePanel, new DateFormat());
-        DeliveryDatePicker.setBounds(150, 130, 200, 25);
-        
+
+        deliveryDateModel = new UtilDateModel();
+        deliveryDatePanel = new JDatePanelImpl(deliveryDateModel, properties);
+        deliveryDatePicker = new JDatePickerImpl(deliveryDatePanel, new DateFormat());
+        deliveryDatePicker.setBounds(150, 130, 200, 25);
+
         panelList = new JPanel();
         listModel = new DefaultListModel<>();
-        ProductsList = new JList<>(listModel);
-        panelList.add(ProductsList);
+        productsList = new JList<>(listModel);
+        panelList.add(productsList);
         scrollProducts = new JScrollPane(panelList);
         scrollProducts.setBounds(400, 50, 550, 150);
         scrollProducts.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollProducts.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        
+        listModel.addElement("test");
+
         addProduct = new JButton("Ajouter produit");
         addProduct.setBounds(400, 10, 150, 25);
         addProduct.addActionListener(this);
-        
+
         modifyProduct = new JButton("Modifier produit");
         modifyProduct.setBounds(600, 10, 150, 25);
         modifyProduct.addActionListener(this);
-        
+
         deleteProduct = new JButton("Supprimer produit");
         deleteProduct.setBounds(800, 10, 150, 25);
         deleteProduct.addActionListener(this);
-        
+
         addOrder = new JButton("Ajouter commande");
         addOrder.setBounds(10, 170, 150, 25);
         addOrder.addActionListener(this);
-        
+
         cancel = new JButton("Annuler");
         cancel.setBounds(200, 170, 150, 25);
         cancel.addActionListener(this);
-        
+
     }
-    
+
     private void disposition() {
         panel.setLayout(null);
-        
+
         panel.add(jlCompagny);
         panel.add(jlDeliveryDate);
         panel.add(jlDeliveryDeadline);
         panel.add(jlOrderDate);
-        
+
         panel.add(jcbCompagny);
-        
-        panel.add(OrderDatePicker);
-        panel.add(DeliveryDatePicker);
+
+        panel.add(orderDatePicker);
+        panel.add(deliveryDatePicker);
         panel.add(deliveryDeadlinePicker);
-        
+
         panel.add(scrollProducts);
-        
+
         panel.add(addProduct);
         panel.add(modifyProduct);
         panel.add(deleteProduct);
@@ -188,6 +192,45 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        int returnCode = 0;
+        try {
+            if (ae.getSource() == cancel) {
+                this.dispose();
+            } else if (ae.getSource() == addOrder) {
+                DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
+                if (model.isEmpty()) {
+                    System.out.println("La liste est vide. Veuillez ajouter au moins un produit pour passer commande.");
+                } else {
+                    System.out.println("ok");
+                    String compagny = String.valueOf(jcbCompagny.getSelectedItem().toString());
+                    int id = customerDAO.getReferenceCompanyByName(compagny);
+                    String orderDate = orderDatePicker.getJFormattedTextField().getText();
+                    String DeliveryDeadline = deliveryDeadlinePicker.getJFormattedTextField().getText();
+                    String DeliveryDate = deliveryDatePicker.getJFormattedTextField().getText();
+                    String pattern = "yyyy-MM-dd";
+                    SimpleDateFormat format = new SimpleDateFormat(pattern);
+                    java.sql.Date sqlOrderDate = null, sqlDeliveryDeadline = null, sqlDeliveryDate = null;
+
+                    try {
+                        java.util.Date order = format.parse(orderDate);
+                        sqlOrderDate = new java.sql.Date(order.getTime());
+                        java.util.Date deadline = format.parse(DeliveryDeadline);
+                        sqlDeliveryDeadline = new java.sql.Date(deadline.getTime());
+                        java.util.Date date = format.parse(DeliveryDate);
+                        sqlDeliveryDate = new java.sql.Date(date.getTime());
+                    } catch (ParseException ex) {
+                        System.out.println(ex);
+                    }
+                    
+                    Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate);
+                    returnCode = orderDAO.addOrder(order);
+                    System.out.println("Code : " + returnCode);
+                    this.dispose();
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -197,5 +240,5 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     @Override
     public void windowLostFocus(WindowEvent we) {
     }
-    
+
 }
