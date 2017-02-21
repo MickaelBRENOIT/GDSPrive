@@ -6,10 +6,12 @@
 package order;
 
 import authentication.Authentication;
+import customer.CustomerDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -66,7 +68,8 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private JScrollPane scrollProducts;
     
     private Authentication authentication;
-    //private OrderDAO orderDAO;
+    private OrderDAO orderDAO;
+    private CustomerDAO customerDAO;
 
     public OrderAddFrame(Authentication auth) {
         authentication = auth;
@@ -87,7 +90,8 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     }
     
     private void initialize() {
-        //this.userDAO = new UserDAO();
+        this.orderDAO = new OrderDAO();
+        this.customerDAO = new CustomerDAO();
 
         jlCompagny = new JLabel("Société : ");
         jlCompagny.setBounds(10, 10, 150, 25);
@@ -103,10 +107,10 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         
         jcbCompagny = new JComboBox();
         jcbCompagny.setBounds(150, 10, 200, 25);
-        /*List<User> listOfRoles = userDAO.getListOfAllRoles();
-        for (User u : listOfRoles) {
-            jcbRole.addItem(u.getDesignation());
-        }*/
+        List<String> listOfCompanies = customerDAO.getListOfAllCompanies();
+        for (String s : listOfCompanies) {
+            jcbCompagny.addItem(s);
+        }
         
         properties = new Properties();
         properties.put("text.year", "Year");

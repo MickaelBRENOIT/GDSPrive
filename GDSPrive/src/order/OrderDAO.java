@@ -66,7 +66,7 @@ public class OrderDAO {
 
     }
     
-    public List<String> getListOfAllCompagny() {
+    public List<String> getListOfAllCompanies() {
         List<String> companies = new ArrayList<String>();
         ResultSet rs = null;
 
