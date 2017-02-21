@@ -2,5 +2,12 @@ Gérer le hashage des mots de passe.
 Lors de l'ajout du mail de l'utilisateur, le mettre en minuscule.
 Lors de l'ajout du domaine client/fournisseur, mettre en minuscule.
 Afficher une fenêtre d'erreur si le domaine n'exsite pas.
-Afficher la liste après un ajout.
-
+Faire en sorte que l'email utilisateur soit unique ainsi que la société d'un client/fournisseur.
+Bouton ajouter disable tant que tous les champs ne sont pas remplis.
+Création de commande :
+	- création de commande + ajout de produits sur la même fenêtre
+	- appui sur le bouton ajouter
+		- ajout de la commande
+		- on retourne l'id de la commande
+		- et on utilise cet id pour ajouter les produits à la commande
+http://stackoverflow.com/questions/17711324/database-structure-for-customer-table-having-many-orders-per-customer-and-many
