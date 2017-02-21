@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS commande;
 DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS fournisseur;
 DROP TABLE IF EXISTS utilisateur;
@@ -58,3 +59,12 @@ INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_
 (2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421', 'exemple02@yahoo.fr'),
 (3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
 (4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');
+
+CREATE TABLE commande (
+    id_commande INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    ce_client INT(11) UNSIGNED NOT NULL,
+    date_commande date NOT NULL,
+    date_limite_livraison date NOT NULL,
+    date_livraison date NOT NULL,
+    FOREIGN KEY (ce_client) REFERENCES client(id_client)
+) ENGINE=InnoDB;

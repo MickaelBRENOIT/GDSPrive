@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
+import order.OrderFrame;
 import supplier.SupplierAdminFrame;
 import user.UserFrame;
 
@@ -101,6 +102,8 @@ public class AdminMenu extends JFrame implements ActionListener{
                 System.out.println("Cliqué pour les produits");
             }else if (ae.getSource() == orders){
                 System.out.println("Cliqué pour les commandes");
+                this.dispose();
+                OrderFrame of = new OrderFrame(authentication);
             }else if (ae.getSource() == users){
                 System.out.println("Cliqué pour les utilisateurs");
                 this.dispose();
