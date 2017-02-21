@@ -5,6 +5,7 @@
  */
 package user;
 
+import util.DateFormat;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

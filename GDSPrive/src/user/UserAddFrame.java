@@ -5,6 +5,7 @@
  */
 package user;
 
+import util.DateFormat;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,7 +71,7 @@ public class UserAddFrame extends JDialog implements ActionListener {
 
     public UserAddFrame(Authentication auth) {
         authentication = auth;
-        this.setTitle("Créer des utilisateur | " + auth.getLogin());
+        this.setTitle("Créer des utilisateurs | " + auth.getLogin());
         this.setSize(400, 500);
 
         panel = new JPanel();
