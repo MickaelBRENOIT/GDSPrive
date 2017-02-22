@@ -10,4 +10,6 @@ Création de commande :
 		- ajout de la commande
 		- on retourne l'id de la commande
 		- et on utilise cet id pour ajouter les produits à la commande
-http://stackoverflow.com/questions/17711324/database-structure-for-customer-table-having-many-orders-per-customer-and-many
+Bdd - http://stackoverflow.com/questions/17711324/database-structure-for-customer-table-having-many-orders-per-customer-and-many
+Nombres - JSpinner
+Last insert id - http://stackoverflow.com/questions/5513180/java-preparedstatement-retrieving-last-inserted-id
