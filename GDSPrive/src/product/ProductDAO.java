@@ -1,9 +1,11 @@
+package product;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package product;
+
 
 
 import java.sql.Connection;
@@ -35,7 +37,7 @@ public class ProductDAO {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                products.add(new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getString("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur")));
+              products.add(new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getString("stock_minimal")));
             }
 
         } catch (Exception e) {
@@ -76,7 +78,7 @@ public class ProductDAO {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                products.add( new Product(rs.getString("nom_produit"), rs.getString("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur")));
+               products.add( new Product(rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getString("stock_minimal")));
             }
 
         } catch (Exception e) {
@@ -113,14 +115,15 @@ public class ProductDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("INSERT INTO produit (nom_produit,prix_unitaire,quantite,date_expiration,societe_fournisseur,ce_fournisseur) VALUES ( ?, ?, ?, ?,?,?)");
+            statement = connection.prepareStatement("INSERT INTO produit (nom_produit,prix_unitaire,quantite,date_expiration,societe_fournisseur,ce_fournisseur,stock_minimal) VALUES ( ?, ?, ?, ?,?,?,?)");
 
             statement.setString(1, product.getNomProduit());
-            statement.setString(2, product.getPrixUnitaire());
+            statement.setDouble(2, product.getPrixUnitaire());
             statement.setString(3, product.getQuantite());
             statement.setDate(4, (Date) product.getDateExpiration());
             statement.setString(5, product.getNomFournisseur());
             statement.setInt(6, product.getCeFournisseur());
+            statement.setString(7,product.getStockMin());
             
 
             //Ex�cution de la requ�te
@@ -194,7 +197,7 @@ public class ProductDAO {
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                product = new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getString("prix_unitaire"),  rs.getString("prix_unitaire"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"));
+                product = new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getString("stock_minimal"));
             }
 
         } catch (Exception e) {
@@ -231,15 +234,16 @@ public class ProductDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("UPDATE produit SET nom_produit = ?,prix_unitaire = ?,quantite = ?,date_expiration = ?,societe_fournisseur = ?,ce_fournisseur = ? WHERE id_produit = ?");
+            statement = connection.prepareStatement("UPDATE produit SET nom_produit = ?,prix_unitaire = ?,quantite = ?,date_expiration = ?,societe_fournisseur = ?,ce_fournisseur = ?,stock_minimal=? WHERE id_produit = ?");
 
             statement.setString(1, product.getNomProduit());
-            statement.setString(2, product.getPrixUnitaire());
+            statement.setDouble(2, product.getPrixUnitaire());
             statement.setString(3, product.getQuantite());
             statement.setDate(4,product.getDateExpiration());
             statement.setString(5, product.getNomFournisseur());
             statement.setInt(6, product.getCeFournisseur());
-            statement.setInt(7, product.getReference());
+            statement.setString(7, product.getStockMin());
+            statement.setInt(8, product.getReference());
             
             
             System.out.println(product.getNomProduit());
@@ -248,6 +252,7 @@ public class ProductDAO {
                System.out.println(product.getNomFournisseur());
                 System.out.println(product.getCeFournisseur());
                  System.out.println(product.getReference());
+                 System.out.println(product.getStockMin());
             
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();

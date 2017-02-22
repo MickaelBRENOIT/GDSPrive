@@ -82,11 +82,16 @@ CREATE TABLE produit (
   prix_unitaire decimal(11,2) NOT NULL,
   quantite int(11) NOT NULL,
   date_expiration date NOT NULL,
-  stock_minimal int(11) UNSIGNED,
   societe_fournisseur varchar(50) NOT NULL,
   ce_fournisseur int(11) UNSIGNED NOT NULL,
+  stock_minimal int(11) UNSIGNED NOT NULL,
   FOREIGN KEY (ce_fournisseur) REFERENCES fournisseur(id_fournisseur)
 ) ENGINE=InnoDB;
+
+INSERT INTO `produit` (`id_produit`, `nom_produit`, `prix_unitaire`, `quantite`, `date_expiration`, `societe_fournisseur`, `ce_fournisseur`, `stock_minimal`) VALUES
+(13, 'orange', '1.20', 15, '2017-02-02', 'Eureka', 3, 6),
+(15, 'er422', '1.20', 5, '2017-02-01', 'Carrefour', 1, 2),
+(16, 'robot', '52.00', 20, '2017-02-01', 'Eureka', 3, 6);
 
 CREATE TABLE commande_article (
   id_commande_article INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,

@@ -34,12 +34,14 @@ public class ProductAddFrame extends JDialog implements ActionListener {
     private JTextField nomProduit;
     private JTextField prixUnitaire;
     private JTextField quantite;
+    private JTextField stockMin;
 
     private JLabel jlnomProduit;
     private JLabel jlPrixUnitaire;
     private JLabel jlquantite;
     private JLabel jldateExpiration;
     private JLabel jlnomFournisseur;
+    private JLabel jstockMin;
 
     private UtilDateModel dateExpirationModel;
     private JDatePanelImpl dateExpirationPanel;
@@ -94,6 +96,9 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
         jlnomFournisseur = new JLabel("Nom Fournisseur :");
         jlnomFournisseur.setBounds(10, 170, 150, 25);
+        
+        jstockMin = new JLabel("Stock minimal :");
+        jstockMin.setBounds(10, 210, 150, 25);
 
         nomProduit = new JTextField(20);
         nomProduit.setBounds(140, 10, 200, 25);
@@ -124,13 +129,16 @@ public class ProductAddFrame extends JDialog implements ActionListener {
             jFournisseur.addItem(p.getNomFournisseur());
 
         }
-
+        
+        stockMin=new JTextField();
+        stockMin.setBounds(140,210,200,25);
+                
         add = new JButton("Ajouter");
-        add.setBounds(40, 220, 100, 25);
+        add.setBounds(40, 240, 100, 25);
         add.addActionListener(this);
 
         cancel = new JButton("Annuler");
-        cancel.setBounds(240, 220, 100, 25);
+        cancel.setBounds(240, 240, 100, 25);
         cancel.addActionListener(this);
 
     }
@@ -143,11 +151,12 @@ public class ProductAddFrame extends JDialog implements ActionListener {
         panel.add(jldateExpiration);
         panel.add(jlPrixUnitaire);
         panel.add(jlquantite);
+        panel.add(jstockMin);
 
         panel.add(nomProduit);
-
         panel.add(prixUnitaire);
         panel.add(quantite);
+        panel.add(stockMin);
 
         panel.add(dateExpirationPicker);
         panel.add(jFournisseur);
@@ -178,7 +187,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
                 String nom = (String) jFournisseur.getSelectedItem();
                 int ceFournisseur = supplierDAO.idSupplier(nom);
 
-                Product product = new Product(this.nomProduit.getText(), this.prixUnitaire.getText(), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur);
+                Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, this.stockMin.getText());
                 returnCode = productDAO.addProduct(product);
                 System.out.println("code de retour : " + returnCode);
                 this.dispose();

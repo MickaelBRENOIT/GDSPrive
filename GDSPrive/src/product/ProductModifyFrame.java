@@ -36,12 +36,14 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
     private JTextField prixUnitaire;
     private JTextField quantite;
     private JTextField dateExpiration;
+    private JTextField stockMin;
 
     private JLabel jlnomProduit;
     private JLabel jlPrixUnitaire;
     private JLabel jlquantite;
     private JLabel jldateExpiration;
     private JLabel jlnomFournisseur;
+    private JLabel jstockMin;
 
     private UtilDateModel dateExpirationModel;
     private JDatePanelImpl dateExpirationPanel;
@@ -103,13 +105,16 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
         jlnomFournisseur = new JLabel("Nom Fournisseur :");
         jlnomFournisseur.setBounds(10, 170, 150, 25);
 
+        jstockMin = new JLabel("Stock minimal :");
+        jstockMin.setBounds(10, 210, 150, 25);
+
         nomProduit = new JTextField(20);
         nomProduit.setBounds(140, 10, 200, 25);
         nomProduit.setText(products.getNomProduit());
 
         prixUnitaire = new JTextField(20);
         prixUnitaire.setBounds(140, 50, 200, 25);
-        prixUnitaire.setText(products.getPrixUnitaire());
+        prixUnitaire.setText(Double.toString(products.getPrixUnitaire()));
 
         quantite = new JTextField(20);
         quantite.setBounds(140, 90, 200, 25);
@@ -134,15 +139,17 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
 
         if (products.getCeFournisseur() == suppliersDAO.idSupplier(nomSociete));
         jFournisseur.addItem(products.getNomFournisseur());
-        System.out.println(products.getNomFournisseur());
-        System.out.println("la clef etrangere est " + products.getCeFournisseur());
+
+        stockMin = new JTextField();
+        stockMin.setBounds(140, 210, 200, 25);
+        stockMin.setText(products.getStockMin());
 
         add = new JButton("Ajouter");
-        add.setBounds(40, 220, 100, 25);
+        add.setBounds(40, 240, 100, 25);
         add.addActionListener(this);
 
         cancel = new JButton("Annuler");
-        cancel.setBounds(240, 220, 100, 25);
+        cancel.setBounds(240, 240, 100, 25);
         cancel.addActionListener(this);
 
     }
@@ -155,13 +162,13 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
         panel.add(jldateExpiration);
         panel.add(jlPrixUnitaire);
         panel.add(jlquantite);
+        panel.add(jstockMin);
 
         panel.add(nomProduit);
-
         panel.add(prixUnitaire);
         panel.add(quantite);
-
         panel.add(dateExpirationPicker);
+        panel.add(stockMin);
         panel.add(jFournisseur);
         panel.add(add);
         panel.add(cancel);
@@ -187,14 +194,9 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
                 Logger.getLogger(ProductModifyFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            int ceFournisseur;
-            if (String.valueOf(jFournisseur.getSelectedItem().toString()).equals("Carrefour")) {
-                ceFournisseur = 1;
-            } else {
-                ceFournisseur = 2;
-            }
-
-            Product products = new Product(this.products.getReference(), nomProduit.getText(), prixUnitaire.getText(), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur);
+            String nomSociete = jFournisseur.getSelectedItem().toString();
+            int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
+            Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, this.stockMin.getText());
 
             System.out.println("code:" + this.products.getReference());
 

@@ -11,14 +11,15 @@ public class Product {
 
     private int reference;
     private String nomProduit;
-    private String prixUnitaire;
+    private double prixUnitaire;
     private String quantite;
     private Date dateExpiration;
     private int ceFournisseur;
     private String nomFournisseur;
     private int referenceProduit;
+    private String stockMin;
 
-    public Product(int reference, String nomProduit, String prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur) {
+    public Product(int reference, String nomProduit, double prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur,String stockMin) {
         this.reference = reference;
         this.nomProduit = nomProduit;
         this.prixUnitaire = prixUnitaire;
@@ -26,20 +27,25 @@ public class Product {
         this.dateExpiration = dateExpiration;
         this.ceFournisseur = ceFournisseur;
         this.nomFournisseur = nomFournisseur;
+        this.stockMin=stockMin;
+        
     }
 
-    public Product(String nomProduit, String prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur) {
+    public Product(String nomProduit, double prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur,String stockMin) {
         this.nomProduit = nomProduit;
         this.prixUnitaire = prixUnitaire;
         this.quantite = quantite;
         this.dateExpiration = dateExpiration;
         this.nomFournisseur = nomFournisseur;
         this.ceFournisseur = ceFournisseur;
+        this.stockMin=stockMin;
     }
 
     public Product(String nomFournisseur) {
         this.nomFournisseur = nomFournisseur;
     }
+
+    
 
     public int getReference() {
         return reference;
@@ -57,11 +63,11 @@ public class Product {
         this.nomProduit = nomProduit;
     }
 
-    public String getPrixUnitaire() {
+    public double getPrixUnitaire() {
         return prixUnitaire;
     }
 
-    public void setPrixUnitaire(String prixUnitaire) {
+    public void setPrixUnitaire(double prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
     }
 
@@ -100,6 +106,16 @@ public class Product {
     public int getReferenceProduit() {
         return referenceProduit;
     }
+
+    public String getStockMin() {
+        return stockMin;
+    }
+
+    public void setStockMin(String stockMin) {
+        this.stockMin = stockMin;
+    }
+
+  
 
     @Override
     public String toString() {
