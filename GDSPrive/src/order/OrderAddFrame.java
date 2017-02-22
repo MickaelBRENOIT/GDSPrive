@@ -25,6 +25,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import order.orderItem.OrderItemAddFrame;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -227,6 +228,8 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                     System.out.println("Code : " + returnCode);
                     this.dispose();
                 }
+            } else if (ae.getSource() == addProduct){
+                OrderItemAddFrame oiaf = new OrderItemAddFrame(authentication);
             }
         } catch (Exception e) {
 
