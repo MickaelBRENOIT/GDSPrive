@@ -13,3 +13,6 @@ Création de commande :
 Bdd - http://stackoverflow.com/questions/17711324/database-structure-for-customer-table-having-many-orders-per-customer-and-many
 Nombres - JSpinner
 Last insert id - http://stackoverflow.com/questions/5513180/java-preparedstatement-retrieving-last-inserted-id
+Faire le solde client
+Faire en sorte d'avoir le fournisseur le moins cher pour un produit donné.
+Voir image pour les spécificités de la commande
