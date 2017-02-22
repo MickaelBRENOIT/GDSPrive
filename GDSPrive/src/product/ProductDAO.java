@@ -245,15 +245,6 @@ public class ProductDAO {
             statement.setString(7, product.getStockMin());
             statement.setInt(8, product.getReference());
             
-            
-            System.out.println(product.getNomProduit());
-             System.out.println(product.getPrixUnitaire());
-              System.out.println(product.getDateExpiration());
-               System.out.println(product.getNomFournisseur());
-                System.out.println(product.getCeFournisseur());
-                 System.out.println(product.getReference());
-                 System.out.println(product.getStockMin());
-            
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
@@ -318,6 +309,143 @@ public class ProductDAO {
 
         return products;
 
+    }
+
+    public List<String> getListOfAlluppliersAndProducts() {
+        List<String> suppliersAndProducts = new ArrayList<String>();
+        ResultSet rs = null;
+        
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT fournisseur.societe_fournisseur, nom_produit FROM produit "
+                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur");
+            
+            rs = statement.executeQuery();
+
+        
+            while (rs.next()) {
+                suppliersAndProducts.add(rs.getString("societe_fournisseur")+" - "+rs.getString("nom_produit"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return suppliersAndProducts;
+    }
+
+    public double getUnitPriceByCompanyAndProduct(String company, String product) {
+        double unitPrice = 0;
+        ResultSet rs = null;
+        
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT prix_unitaire FROM produit "
+                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur "
+                                                    + "WHERE produit.nom_produit = ? AND fournisseur.societe_fournisseur = ?");
+            
+            statement.setString(1, product);
+            statement.setString(2, company);
+            
+            rs = statement.executeQuery();
+
+        
+            if (rs.next()) {
+                unitPrice = rs.getDouble("prix_unitaire");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return unitPrice;
+    }
+
+    public int getQuantityOfAProduct(String company, String product) {
+        int quantity = 0;
+        ResultSet rs = null;
+        
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT quantite FROM produit "
+                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur "
+                                                    + "WHERE produit.nom_produit = ? AND fournisseur.societe_fournisseur = ?");
+            
+            statement.setString(1, product);
+            statement.setString(2, company);
+            
+            rs = statement.executeQuery();
+
+        
+            if (rs.next()) {
+                quantity = rs.getInt("quantite");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return quantity;
     }
    
 }

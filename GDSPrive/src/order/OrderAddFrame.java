@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -86,6 +85,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         initialize();
         disposition();
 
+        addWindowFocusListener(this);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -222,13 +222,13 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                     } catch (ParseException ex) {
                         System.out.println(ex);
                     }
-                    
+
                     Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate);
                     returnCode = orderDAO.addOrder(order);
                     System.out.println("Code : " + returnCode);
                     this.dispose();
                 }
-            } else if (ae.getSource() == addProduct){
+            } else if (ae.getSource() == addProduct) {
                 OrderItemAddFrame oiaf = new OrderItemAddFrame(authentication);
             }
         } catch (Exception e) {
