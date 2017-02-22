@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS produit;
 DROP TABLE IF EXISTS commande;
 DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS fournisseur;
@@ -73,3 +74,15 @@ INSERT INTO `commande` (`id_commande`, `ce_client`, `date_commande`, `date_limit
 (1, 1, '2017-02-01', '2017-02-02', '2017-02-03'),
 (2, 2, '2017-02-05', '2017-02-06', '2017-02-07'),
 (4, 1, '2017-01-01', '2017-01-02', '2017-01-03');
+
+CREATE TABLE produit (
+  id_produit int(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  nom_produit varchar(50) NOT NULL,
+  prix_unitaire decimal(11,2) NOT NULL,
+  quantite int(11) NOT NULL,
+  date_expiration date NOT NULL,
+  stock_minimal int(11) UNSIGNED,
+  societe_fournisseur varchar(50) NOT NULL,
+  ce_fournisseur int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (ce_fournisseur) REFERENCES fournisseur(id_fournisseur)
+) ENGINE=InnoDB;

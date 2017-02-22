@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
 import order.OrderFrame;
+import product.ProductAdminFrame;
 import supplier.SupplierAdminFrame;
 import user.UserFrame;
 
@@ -91,21 +92,18 @@ public class AdminMenu extends JFrame implements ActionListener{
 
         try {
             if (ae.getSource() == suppliers) {
-                System.out.println("Cliqué pour les fournisseurs");
                 this.dispose();
                 SupplierAdminFrame saf = new SupplierAdminFrame(authentication);
             }else if (ae.getSource() == costumers){
-                System.out.println("Cliqué pour les clients");
                 this.dispose();
                 CustomerAdminFrame caf = new CustomerAdminFrame(authentication);
             }else if (ae.getSource() == products){
-                System.out.println("Cliqué pour les produits");
+                this.dispose();
+                ProductAdminFrame paf = new ProductAdminFrame(authentication);
             }else if (ae.getSource() == orders){
-                System.out.println("Cliqué pour les commandes");
                 this.dispose();
                 OrderFrame of = new OrderFrame(authentication);
             }else if (ae.getSource() == users){
-                System.out.println("Cliqué pour les utilisateurs");
                 this.dispose();
                 UserFrame uf = new UserFrame(authentication);
             }else if (ae.getSource() == signOut){

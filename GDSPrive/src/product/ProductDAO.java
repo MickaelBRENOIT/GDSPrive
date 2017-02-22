@@ -3,39 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package supplier;
+package product;
+
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Mikael
- */
-public class SupplierDAO {
+
+public class ProductDAO {
 
     private Connection connection;
     private PreparedStatement statement;
 
-    public SupplierDAO() {
+    public ProductDAO() {
         connection = null;
         statement = null;
     }
 
-    public List<Supplier> getListOfAllSuppliers() {
-        List<Supplier> suppliers = new ArrayList<Supplier>();
+    public List<Product> getListOfAllProducts() {
+        List<Product> products = new ArrayList<Product>();
         ResultSet rs = null;
 
         try {
             connection = singleton.Singleton.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM fournisseur");
+            statement = connection.prepareStatement("SELECT * FROM produit");
+             
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                suppliers.add(new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur"), rs.getString("email_fournisseur")));
+                products.add(new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getString("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur")));
             }
 
         } catch (Exception e) {
@@ -61,22 +61,22 @@ public class SupplierDAO {
             }
         }
 
-        return suppliers;
+        return products;
 
     }
 
-    public List<Supplier> getListSuppliersByADomain(String domain) {
-        List<Supplier> suppliers = new ArrayList<Supplier>();
+    public List<Product> getListProductsByNom(String nom) {
+        List<Product> products = new ArrayList<Product>();
         ResultSet rs = null;
 
         try {
             connection = singleton.Singleton.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM fournisseur WHERE domaine_fournisseur = ?");
-            statement.setString(1, domain);
+            statement = connection.prepareStatement("SELECT * FROM produit WHERE nom_produit = ?");
+            statement.setString(1, nom);
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                suppliers.add(new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur"), rs.getString("email_fournisseur")));
+                products.add( new Product(rs.getString("nom_produit"), rs.getString("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur")));
             }
 
         } catch (Exception e) {
@@ -102,10 +102,10 @@ public class SupplierDAO {
             }
         }
 
-        return suppliers;
+        return products;
     }
 
-    public int addSupplier(Supplier supplier) {
+    public int addProduct(Product product) {
         int returnCode = 0;
         try {
 
@@ -113,13 +113,15 @@ public class SupplierDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("INSERT INTO fournisseur (societe_fournisseur,adresse_fournisseur,domaine_fournisseur,numero_fournisseur,email_fournisseur) VALUES ( ?, ?, ?, ?,?)");
+            statement = connection.prepareStatement("INSERT INTO produit (nom_produit,prix_unitaire,quantite,date_expiration,societe_fournisseur,ce_fournisseur) VALUES ( ?, ?, ?, ?,?,?)");
 
-            statement.setString(1, supplier.getCompany());
-            statement.setString(2, supplier.getAddress());
-            statement.setString(3, supplier.getField());
-            statement.setString(4, supplier.getPhoneNumber());
-            statement.setString(5, supplier.getMail());
+            statement.setString(1, product.getNomProduit());
+            statement.setString(2, product.getPrixUnitaire());
+            statement.setString(3, product.getQuantite());
+            statement.setDate(4, (Date) product.getDateExpiration());
+            statement.setString(5, product.getNomFournisseur());
+            statement.setInt(6, product.getCeFournisseur());
+            
 
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
@@ -141,11 +143,11 @@ public class SupplierDAO {
             } catch (Exception t) {
             }
         }
-
+        
         return returnCode;
     }
-
-    public int deleteSupplier(String reference) {
+    
+    public int deleteProducts(String reference){
         int returnCode = 0;
         try {
 
@@ -153,7 +155,7 @@ public class SupplierDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("DELETE FROM fournisseur WHERE id_fournisseur = ? ");
+            statement = connection.prepareStatement("DELETE FROM produit WHERE id_produit = ? ");
 
             statement.setString(1, reference);
 
@@ -179,19 +181,20 @@ public class SupplierDAO {
         }
         return returnCode;
     }
+    
 
-    public Supplier getASupplier(String reference) {
-        Supplier supplier = null;
+    Product getAProduct(String id) {
+        Product product = null;
         ResultSet rs = null;
 
         try {
             connection = singleton.Singleton.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM fournisseur WHERE id_fournisseur = ?");
-            statement.setString(1, reference);
+            statement = connection.prepareStatement("SELECT * FROM produit WHERE id_produit = ?");
+            statement.setString(1, id);
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                supplier = new Supplier(rs.getInt("id_fournisseur"), rs.getString("societe_fournisseur"), rs.getString("adresse_fournisseur"), rs.getString("domaine_fournisseur"), rs.getString("numero_fournisseur"), rs.getString("email_fournisseur"));
+                product = new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getString("prix_unitaire"),  rs.getString("prix_unitaire"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"));
             }
 
         } catch (Exception e) {
@@ -217,10 +220,10 @@ public class SupplierDAO {
             }
         }
 
-        return supplier;
+        return product;
     }
-
-    public int modifySupplier(Supplier supplier) {
+    
+    int modifyProduct(Product product) {
         int returnCode = 0;
         try {
 
@@ -228,15 +231,24 @@ public class SupplierDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("UPDATE fournisseur SET societe_fournisseur = ?, adresse_fournisseur = ?, domaine_fournisseur = ?, numero_fournisseur = ?, email_fournisseur = ? WHERE id_fournisseur = ?");
+            statement = connection.prepareStatement("UPDATE produit SET nom_produit = ?,prix_unitaire = ?,quantite = ?,date_expiration = ?,societe_fournisseur = ?,ce_fournisseur = ? WHERE id_produit = ?");
 
-            statement.setString(1, supplier.getCompany());
-            statement.setString(2, supplier.getAddress());
-            statement.setString(3, supplier.getField());
-            statement.setString(4, supplier.getPhoneNumber());
-            statement.setString(5, supplier.getMail());
-            statement.setInt(6, supplier.getReference());
-
+            statement.setString(1, product.getNomProduit());
+            statement.setString(2, product.getPrixUnitaire());
+            statement.setString(3, product.getQuantite());
+            statement.setDate(4,product.getDateExpiration());
+            statement.setString(5, product.getNomFournisseur());
+            statement.setInt(6, product.getCeFournisseur());
+            statement.setInt(7, product.getReference());
+            
+            
+            System.out.println(product.getNomProduit());
+             System.out.println(product.getPrixUnitaire());
+              System.out.println(product.getDateExpiration());
+               System.out.println(product.getNomFournisseur());
+                System.out.println(product.getCeFournisseur());
+                 System.out.println(product.getReference());
+            
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
@@ -257,37 +269,30 @@ public class SupplierDAO {
             } catch (Exception t) {
             }
         }
-
+        
         return returnCode;
     }
-
-    public int idSupplier(String nomSociete) {
-        int id = 0;
+        public List<Product> getListOfAllFournisseurs() {
+        List<Product> products = new ArrayList<Product>();
         ResultSet rs = null;
+
         try {
-
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
-            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
-            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("SELECT id_fournisseur FROM fournisseur WHERE societe_fournisseur = ? ");
-
-            statement.setString(1, nomSociete);
-
-            //Ex�cution de la requ�te
+            statement = connection.prepareStatement("SELECT societe_fournisseur FROM fournisseur");
+            
             rs = statement.executeQuery();
 
-            if (rs.next()) {
-                id = rs.getInt("id_fournisseur");
+        
+            while (rs.next()) {
+                products.add(new Product(rs.getString("societe_fournisseur")));
             }
 
-        } catch (Exception ee) {
-            ee.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e);
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
-                if (statement != null) {
-                    statement.close();
+                if (rs != null) {
+                    rs.close();
                 }
             } catch (Exception t) {
             }
@@ -297,7 +302,17 @@ public class SupplierDAO {
                 }
             } catch (Exception t) {
             }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
         }
-        return id;
+
+        return products;
+
     }
+   
 }
