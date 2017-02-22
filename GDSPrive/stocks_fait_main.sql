@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS commande_article;
 DROP TABLE IF EXISTS produit;
 DROP TABLE IF EXISTS commande;
 DROP TABLE IF EXISTS client;
@@ -85,4 +86,13 @@ CREATE TABLE produit (
   societe_fournisseur varchar(50) NOT NULL,
   ce_fournisseur int(11) UNSIGNED NOT NULL,
   FOREIGN KEY (ce_fournisseur) REFERENCES fournisseur(id_fournisseur)
+) ENGINE=InnoDB;
+
+CREATE TABLE commande_article (
+  id_commande_article INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  ce_commande INT(11) UNSIGNED NOT NULL,
+  ce_produit INT(11) UNSIGNED NOT NULL,
+  quantite int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (ce_commande) REFERENCES commande(id_commande),
+  FOREIGN KEY (ce_produit) REFERENCES produit(id_produit)
 ) ENGINE=InnoDB;
