@@ -8,14 +8,8 @@ package order.orderItem;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -27,6 +21,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import product.ProductDAO;
+import util.TemporaryOrderItemDAO;
 
 /**
  *
@@ -55,11 +50,13 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
 
     private Authentication authentication;
     private ProductDAO productDAO;
+    private TemporaryOrderItemDAO temporaryOrderItemDAO;
 
     private String valueComboBox;
     private String[] splitString;
     private String company;
     private String product;
+    private String result;
 
     public OrderItemAddFrame(Authentication auth) {
         authentication = auth;
@@ -81,6 +78,7 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
 
     private void initialize() {
         this.productDAO = new ProductDAO();
+        this.temporaryOrderItemDAO = new TemporaryOrderItemDAO();
 
         jlProduct = new JLabel("Produit : ");
         jlProduct.setBounds(10, 10, 150, 25);
@@ -108,7 +106,6 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
         jtPrice.setEnabled(false);
 
         quantityModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-        /* TODO */
         quantityJspinner = new JSpinner(quantityModel);
         quantityJspinner.setBounds(150, 90, 200, 25);
 
@@ -153,7 +150,16 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
             this.dispose();
             
         } else if (ae.getSource() == add) {
-
+            if(jtTotal.getText() != ""){
+                retrieveCompanyAndProduct();
+                int quantityItem = (Integer) quantityJspinner.getValue();
+                Double totalPrice = Double.parseDouble(result);
+                returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(company, product, quantityItem, totalPrice);
+                this.dispose();
+            }else{
+                System.out.println("Champ pas rempli !");
+            }
+            
         } else if (ae.getSource() == jcbProduct) {
             retrieveCompanyAndProduct();
             double unitPrice = productDAO.getUnitPriceByCompanyAndProduct(company, product);
@@ -165,7 +171,10 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
                 System.out.println("Pas assez de stock");
             }else{
                 if (jtPrice.getText() != "") {
-                    jtTotal.setText(String.valueOf(Double.parseDouble(jtPrice.getText()) * (Integer) quantityJspinner.getValue()));
+                    Double res = Double.parseDouble(jtPrice.getText()) * (Integer) quantityJspinner.getValue();
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    result = df.format(res).replace(',', '.');
+                    jtTotal.setText(result);
                 }
             }
         }
