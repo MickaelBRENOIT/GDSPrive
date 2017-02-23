@@ -138,6 +138,46 @@ public class TemporaryOrderItemDAO {
         }
         return returnCode;
     }
+
+    public TemporaryOrderItem selectTemporaryOrderItemById(String id) {
+        TemporaryOrderItem temporaryOrderItem = null;
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM commande_temporaire WHERE id_commande_temporaire = ?");
+            statement.setString(1, id);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                temporaryOrderItem = new TemporaryOrderItem(rs.getInt("id_commande_temporaire"), rs.getString("nom_societe"), rs.getString("nom_produit"), rs.getDouble("prix_unitaire"), rs.getInt("quantite"), rs.getDouble("total"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return temporaryOrderItem;
+    }
     
     
     

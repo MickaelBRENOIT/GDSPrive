@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import order.orderItem.OrderItemAddFrame;
+import order.orderItem.OrderItemModifyFrame;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -155,6 +156,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         modifyProduct = new JButton("Modifier produit");
         modifyProduct.setBounds(600, 10, 150, 25);
         modifyProduct.addActionListener(this);
+        modifyProduct.setEnabled(false);
 
         deleteProduct = new JButton("Supprimer produit");
         deleteProduct.setBounds(800, 10, 150, 25);
@@ -240,6 +242,14 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 // TODO - Delete in the database
                 returnCode = temporaryOrderItemDAO.deleteTemporaryOrderItem(id);
                 model.remove(productsList.getSelectedIndex());
+            } else if (ae.getSource() == modifyProduct){
+                DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
+                String[] splitString = productsList.getSelectedValue().toString().split(" ");
+                String id = splitString[2];
+                System.out.println("Split : " + id);
+                // TODO - Delete in the database
+                TemporaryOrderItem temporaryOrderItem = temporaryOrderItemDAO.selectTemporaryOrderItemById(id);
+                OrderItemModifyFrame oimf = new OrderItemModifyFrame(authentication, temporaryOrderItem);
             }
         } catch (Exception e) {
 
