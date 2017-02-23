@@ -156,7 +156,7 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
                 Double unitPrice = Double.parseDouble(jtPrice.getText());
                 int quantityItem = (Integer) quantityJspinner.getValue();
                 Double totalPrice = Double.parseDouble(result);
-                TemporaryOrderItem toi = new TemporaryOrderItem(company, product, unitPrice, quantityItem, totalPrice);
+                TemporaryOrderItem toi = new TemporaryOrderItem(0, company, product, unitPrice, quantityItem, totalPrice);
                 returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(toi);
                 this.dispose();
             }else{

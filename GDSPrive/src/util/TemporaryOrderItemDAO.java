@@ -77,7 +77,7 @@ public class TemporaryOrderItemDAO {
             rs = statement.executeQuery();
             
             while (rs.next()) {
-                temporaryOrderItems.add(new TemporaryOrderItem(rs.getString("nom_societe"), rs.getString("nom_produit"), rs.getDouble("prix_unitaire"), rs.getInt("quantite"), rs.getDouble("total")));
+                temporaryOrderItems.add(new TemporaryOrderItem(rs.getInt("id_commande_temporaire"), rs.getString("nom_societe"), rs.getString("nom_produit"), rs.getDouble("prix_unitaire"), rs.getInt("quantite"), rs.getDouble("total")));
             }
 
         } catch (Exception e) {

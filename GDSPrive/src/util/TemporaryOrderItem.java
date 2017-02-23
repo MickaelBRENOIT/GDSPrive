@@ -10,18 +10,28 @@ package util;
  * @author Mikael
  */
 public class TemporaryOrderItem {
+    private int reference;
     private String company_name;
     private String product_name;
     private double unit_price;
     private int quantity;
     private double total_price;
 
-    public TemporaryOrderItem(String company_name, String product_name, double unit_price, int quantity, double total_price) {
+    public TemporaryOrderItem(int reference, String company_name, String product_name, double unit_price, int quantity, double total_price) {
+        this.reference = reference;
         this.company_name = company_name;
         this.product_name = product_name;
         this.unit_price = unit_price;
         this.quantity = quantity;
         this.total_price = total_price;
+    }
+
+    public int getReference() {
+        return reference;
+    }
+
+    public void setReference(int reference) {
+        this.reference = reference;
     }
 
     public String getCompany_name() {
@@ -66,7 +76,7 @@ public class TemporaryOrderItem {
 
     @Override
     public String toString() {
-        return "Nom société : " + company_name + " - Nom du produit : " + product_name + " - Prix unitaire : " + unit_price + "€ - Quantité : " + quantity + " - Total TTC  : " + total_price + "€";
+        return "Id : " + reference + " - Nom société : " + company_name + " - Nom du produit : " + product_name + " - Prix unitaire : " + unit_price + "€ - Quantité : " + quantity + " - Total TTC  : " + total_price + "€";
     }
     
     
