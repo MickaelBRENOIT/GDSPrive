@@ -156,7 +156,6 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         modifyProduct = new JButton("Modifier produit");
         modifyProduct.setBounds(600, 10, 150, 25);
         modifyProduct.addActionListener(this);
-        modifyProduct.setEnabled(false);
 
         deleteProduct = new JButton("Supprimer produit");
         deleteProduct.setBounds(800, 10, 150, 25);

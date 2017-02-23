@@ -102,8 +102,9 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
         for (String s : listOfSuppliersAndProducts) {
             jcbProduct.addItem(s);
         }
+        jcbProduct.setSelectedItem(temporaryOrderItem.getCompany_name()+" - "+temporaryOrderItem.getProduct_name());
         jcbProduct.addActionListener(this);
-        //jcbProduct.setSelectedItem(temporaryOrderItem.getCompany_name()+" - "+temporaryOrderItem.getProduct_name());
+        
 
         jtPrice = new JTextField();
         jtPrice.setBounds(150, 50, 200, 25);
@@ -162,8 +163,8 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
                 Double unitPrice = Double.parseDouble(jtPrice.getText());
                 int quantityItem = (Integer) quantityJspinner.getValue();
                 Double totalPrice = Double.parseDouble(result);
-                TemporaryOrderItem toi = new TemporaryOrderItem(0, company, product, unitPrice, quantityItem, totalPrice);
-                returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(toi);
+                TemporaryOrderItem toi = new TemporaryOrderItem(temporaryOrderItem.getReference(), company, product, unitPrice, quantityItem, totalPrice);
+                returnCode = temporaryOrderItemDAO.modifyTemporaryOrderItem(toi);
                 this.dispose();
             }else{
                 System.out.println("Champ pas rempli !");
@@ -175,6 +176,7 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
             jtPrice.setText(String.valueOf(unitPrice));
             
         } else if (ae.getSource() == total) {
+            retrieveCompanyAndProduct();
             int quantity = productDAO.getQuantityOfAProduct(company, product);
             if((Integer) quantityJspinner.getValue() > quantity){
                 System.out.println("Pas assez de stock");

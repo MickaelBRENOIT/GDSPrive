@@ -169,6 +169,7 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
             jtPrice.setText(String.valueOf(unitPrice));
             
         } else if (ae.getSource() == total) {
+            retrieveCompanyAndProduct();
             int quantity = productDAO.getQuantityOfAProduct(company, product);
             if((Integer) quantityJspinner.getValue() > quantity){
                 System.out.println("Pas assez de stock");

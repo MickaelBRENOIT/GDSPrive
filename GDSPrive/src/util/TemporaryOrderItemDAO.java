@@ -178,6 +178,47 @@ public class TemporaryOrderItemDAO {
 
         return temporaryOrderItem;
     }
+
+    public int modifyTemporaryOrderItem(TemporaryOrderItem toi) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("UPDATE commande_temporaire SET nom_societe = ?, nom_produit = ?, prix_unitaire = ?, quantite = ?, total = ? WHERE id_commande_temporaire = ?");
+
+            statement.setString(1, toi.getCompany_name());
+            statement.setString(2, toi.getProduct_name());
+            statement.setDouble(3, toi.getUnit_price());
+            statement.setInt(4, toi.getQuantity());
+            statement.setDouble(5, toi.getTotal_price());
+            statement.setInt(6, toi.getReference());
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
+        return returnCode;
+    }
     
     
     
