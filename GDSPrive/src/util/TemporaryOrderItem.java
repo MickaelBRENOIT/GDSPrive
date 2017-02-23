@@ -66,7 +66,7 @@ public class TemporaryOrderItem {
 
     @Override
     public String toString() {
-        return "Nom société : " + company_name + " - Nom du produit : " + product_name + " - Prix unitaire : " + unit_price + " - Quantité : " + quantity + " - Total TTC " + total_price;
+        return "Nom société : " + company_name + " - Nom du produit : " + product_name + " - Prix unitaire : " + unit_price + "€ - Quantité : " + quantity + " - Total TTC  : " + total_price + "€";
     }
     
     

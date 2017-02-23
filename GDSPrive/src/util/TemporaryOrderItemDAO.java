@@ -7,6 +7,9 @@ package util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -61,6 +64,46 @@ public class TemporaryOrderItemDAO {
         }
         
         return returnCode;
+    }
+
+    public List<TemporaryOrderItem> getListOfAllTemporaryOrderItems() {
+        
+        List<TemporaryOrderItem> temporaryOrderItems = new ArrayList<TemporaryOrderItem>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM commande_temporaire");
+            rs = statement.executeQuery();
+            
+            while (rs.next()) {
+                temporaryOrderItems.add(new TemporaryOrderItem(rs.getString("nom_societe"), rs.getString("nom_produit"), rs.getDouble("prix_unitaire"), rs.getInt("quantite"), rs.getDouble("total")));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return temporaryOrderItems;
     }
     
     

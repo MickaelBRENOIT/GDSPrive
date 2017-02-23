@@ -29,6 +29,8 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import util.DateFormat;
+import util.TemporaryOrderItem;
+import util.TemporaryOrderItemDAO;
 
 /**
  *
@@ -73,6 +75,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private Authentication authentication;
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
+    private TemporaryOrderItemDAO temporaryOrderItemDAO; 
 
     public OrderAddFrame(Authentication auth) {
         authentication = auth;
@@ -96,6 +99,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private void initialize() {
         this.orderDAO = new OrderDAO();
         this.customerDAO = new CustomerDAO();
+        this.temporaryOrderItemDAO = new TemporaryOrderItemDAO();
 
         jlCompagny = new JLabel("Société : ");
         jlCompagny.setBounds(10, 10, 150, 25);
@@ -144,8 +148,6 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         scrollProducts.setBounds(400, 50, 550, 150);
         scrollProducts.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollProducts.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listModel.addElement("test");
-
         addProduct = new JButton("Ajouter produit");
         addProduct.setBounds(400, 10, 150, 25);
         addProduct.addActionListener(this);
@@ -238,6 +240,11 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
     @Override
     public void windowGainedFocus(WindowEvent we) {
+        List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
+        listModel.removeAllElements();
+        for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
+            listModel.addElement(toi.toString());
+        }
     }
 
     @Override
