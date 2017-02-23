@@ -22,7 +22,7 @@ public class TemporaryOrderItemDAO {
         statement = null;
     }
 
-    public int addTemporaryOrderItem(String company, String product, int quantityItem, Double totalPrice) {
+    public int addTemporaryOrderItem(TemporaryOrderItem temporaryOrderItem) {
         int returnCode = 0;
         try {
 
@@ -30,12 +30,13 @@ public class TemporaryOrderItemDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("INSERT INTO commande_temporaire (nom_societe, nom_produit, quantite, total) VALUES ( ?, ?, ?, ?)");
+            statement = connection.prepareStatement("INSERT INTO commande_temporaire (nom_societe, nom_produit, prix_unitaire, quantite, total) VALUES ( ?, ?, ?, ?, ?)");
 
-            statement.setString(1, company);
-            statement.setString(2, product);
-            statement.setInt(3, quantityItem);
-            statement.setDouble(4, totalPrice);
+            statement.setString(1, temporaryOrderItem.getCompany_name());
+            statement.setString(2, temporaryOrderItem.getProduct_name());
+            statement.setDouble(3, temporaryOrderItem.getUnit_price());
+            statement.setInt(4, temporaryOrderItem.getQuantity());
+            statement.setDouble(5, temporaryOrderItem.getTotal_price());
             
 
             //Ex�cution de la requ�te

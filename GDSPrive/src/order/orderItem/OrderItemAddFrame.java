@@ -21,6 +21,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import product.ProductDAO;
+import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
 
 /**
@@ -152,9 +153,11 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
         } else if (ae.getSource() == add) {
             if(jtTotal.getText() != ""){
                 retrieveCompanyAndProduct();
+                Double unitPrice = Double.parseDouble(jtPrice.getText());
                 int quantityItem = (Integer) quantityJspinner.getValue();
                 Double totalPrice = Double.parseDouble(result);
-                returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(company, product, quantityItem, totalPrice);
+                TemporaryOrderItem toi = new TemporaryOrderItem(company, product, unitPrice, quantityItem, totalPrice);
+                returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(toi);
                 this.dispose();
             }else{
                 System.out.println("Champ pas rempli !");
