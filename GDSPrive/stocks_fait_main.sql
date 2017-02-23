@@ -1,6 +1,7 @@
+DROP TABLE IF EXISTS commande_temporaire;
 DROP TABLE IF EXISTS commande_article;
-DROP TABLE IF EXISTS produit;
 DROP TABLE IF EXISTS commande;
+DROP TABLE IF EXISTS produit;
 DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS fournisseur;
 DROP TABLE IF EXISTS utilisateur;
@@ -62,20 +63,6 @@ INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_
 (3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
 (4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');
 
-CREATE TABLE commande (
-    id_commande INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    ce_client INT(11) UNSIGNED NOT NULL,
-    date_commande date NOT NULL,
-    date_limite_livraison date NOT NULL,
-    date_livraison date NOT NULL,
-    FOREIGN KEY (ce_client) REFERENCES client(id_client)
-) ENGINE=InnoDB;
-
-INSERT INTO `commande` (`id_commande`, `ce_client`, `date_commande`, `date_limite_livraison`, `date_livraison`) VALUES
-(1, 1, '2017-02-01', '2017-02-02', '2017-02-03'),
-(2, 2, '2017-02-05', '2017-02-06', '2017-02-07'),
-(4, 1, '2017-01-01', '2017-01-02', '2017-01-03');
-
 CREATE TABLE produit (
   id_produit int(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   nom_produit varchar(50) NOT NULL,
@@ -93,6 +80,16 @@ INSERT INTO `produit` (`id_produit`, `nom_produit`, `prix_unitaire`, `quantite`,
 (15, 'er422', '1.20', 5, '2017-02-01', 'Carrefour', 1, 2),
 (16, 'robot', '52.00', 20, '2017-02-01', 'Eureka', 3, 6);
 
+CREATE TABLE commande (
+    id_commande INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    ce_client INT(11) UNSIGNED NOT NULL,
+    date_commande date NOT NULL,
+    date_limite_livraison date NOT NULL,
+    date_livraison date NOT NULL,
+    prix_total decimal(11,2) NOT NULL,
+    FOREIGN KEY (ce_client) REFERENCES client(id_client)
+) ENGINE=InnoDB;
+
 CREATE TABLE commande_article (
   id_commande_article INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   ce_commande INT(11) UNSIGNED NOT NULL,
@@ -100,4 +97,13 @@ CREATE TABLE commande_article (
   quantite int(11) UNSIGNED NOT NULL,
   FOREIGN KEY (ce_commande) REFERENCES commande(id_commande),
   FOREIGN KEY (ce_produit) REFERENCES produit(id_produit)
+) ENGINE=InnoDB;
+
+CREATE TABLE commande_temporaire (
+  id_commande_temporaire INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  nom_societe varchar(50) NOT NULL,
+  nom_produit varchar(50) NOT NULL,
+  prix_unitaire decimal(11,2) NOT NULL,
+  quantite INT(11) UNSIGNED NOT NULL,
+  total decimal(11,2) NOT NULL
 ) ENGINE=InnoDB;
