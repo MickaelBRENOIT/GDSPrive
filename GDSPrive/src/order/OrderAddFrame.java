@@ -23,12 +23,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import order.orderItem.OrderItem;
 import order.orderItem.OrderItemAddFrame;
+import order.orderItem.OrderItemDAO;
 import order.orderItem.OrderItemModifyFrame;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import product.ProductDAO;
 import util.DateFormat;
 import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
@@ -43,6 +47,9 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private JLabel jlOrderDate;
     private JLabel jlDeliveryDeadline;
     private JLabel jlDeliveryDate;
+    private JLabel jlPriceOrder;
+    
+    private JTextField jtPriceOrder;
 
     private JButton addOrder;
     private JButton cancel;
@@ -74,14 +81,19 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private JScrollPane scrollProducts;
 
     private Authentication authentication;
+    
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
-    private TemporaryOrderItemDAO temporaryOrderItemDAO; 
+    private TemporaryOrderItemDAO temporaryOrderItemDAO;
+    private ProductDAO productDAO;
+    private OrderItemDAO orderItemDAO;
+    
+    private double totalPriceOrder = 0.0;
 
     public OrderAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Créer des commandes | " + auth.getLogin());
-        this.setSize(1000, 250);
+        this.setSize(1000, 280);
 
         panel = new JPanel();
         add(panel);
@@ -101,6 +113,8 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         this.orderDAO = new OrderDAO();
         this.customerDAO = new CustomerDAO();
         this.temporaryOrderItemDAO = new TemporaryOrderItemDAO();
+        this.productDAO = new ProductDAO();
+        this.orderItemDAO = new OrderItemDAO();
 
         jlCompagny = new JLabel("Société : ");
         jlCompagny.setBounds(10, 10, 150, 25);
@@ -113,6 +127,13 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
         jlDeliveryDate = new JLabel("Date livraison :");
         jlDeliveryDate.setBounds(10, 130, 150, 25);
+        
+        jlPriceOrder = new JLabel("Prix de la commande - Total TTC : ");
+        jlPriceOrder.setBounds(400, 210, 250, 25);
+        
+        jtPriceOrder = new JTextField();
+        jtPriceOrder.setBounds(600, 210, 100, 25);
+        jtPriceOrder.setEditable(false);
 
         jcbCompagny = new JComboBox();
         jcbCompagny.setBounds(150, 10, 200, 25);
@@ -178,6 +199,9 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         panel.add(jlDeliveryDate);
         panel.add(jlDeliveryDeadline);
         panel.add(jlOrderDate);
+        panel.add(jlPriceOrder);
+        
+        panel.add(jtPriceOrder);
 
         panel.add(jcbCompagny);
 
@@ -197,6 +221,9 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
+        int last_insert_id = 0;
+        int quantity = 0;
+        int productId = 0;
         try {
             if (ae.getSource() == cancel) {
                 this.dispose();
@@ -226,14 +253,23 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                         System.out.println(ex);
                     }
 
-                    Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate);
-                    returnCode = orderDAO.addOrder(order);
-                    System.out.println("Key : " + returnCode);
+                    Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate, totalPriceOrder);
+                    last_insert_id = orderDAO.addOrder(order);
+                    System.out.println("Key : " + last_insert_id);
+
+                    /* Add order items */
+                    List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
+                    for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
+                        productId = productDAO.getProductIdByCompanyAndProductNames(toi.getCompany_name(), toi.getProduct_name());
+                        quantity = toi.getQuantity();
+                        returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
+                    }
+
                     this.dispose();
                 }
             } else if (ae.getSource() == addProduct) {
                 OrderItemAddFrame oiaf = new OrderItemAddFrame(authentication);
-            } else if (ae.getSource() == deleteProduct){
+            } else if (ae.getSource() == deleteProduct) {
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
                 String[] splitString = productsList.getSelectedValue().toString().split(" ");
                 String id = splitString[2];
@@ -241,7 +277,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 // TODO - Delete in the database
                 returnCode = temporaryOrderItemDAO.deleteTemporaryOrderItem(id);
                 model.remove(productsList.getSelectedIndex());
-            } else if (ae.getSource() == modifyProduct){
+            } else if (ae.getSource() == modifyProduct) {
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
                 String[] splitString = productsList.getSelectedValue().toString().split(" ");
                 String id = splitString[2];
@@ -257,11 +293,14 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
     @Override
     public void windowGainedFocus(WindowEvent we) {
+        totalPriceOrder = 0.0;
         List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
         listModel.removeAllElements();
         for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
             listModel.addElement(toi.toString());
+            totalPriceOrder += toi.getTotal_price();
         }
+        jtPriceOrder.setText(String.valueOf(totalPriceOrder));
     }
 
     @Override

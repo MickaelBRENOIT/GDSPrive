@@ -18,20 +18,23 @@ public class Order {
     private Date order_date;
     private Date delivery_deadline;
     private Date delivery_date;
+    private double totalPriceOrder;
 
-    public Order(int fk_customer, Date order_date, Date delivery_deadline, Date delivery_date) {
+    public Order(int fk_customer, Date order_date, Date delivery_deadline, Date delivery_date, double totalPriceOrder) {
         this.fk_customer = fk_customer;
         this.order_date = order_date;
         this.delivery_deadline = delivery_deadline;
         this.delivery_date = delivery_date;
+        this.totalPriceOrder = totalPriceOrder;
     }
 
-    public Order(int reference, String customer_name, Date order_date, Date delivery_deadline, Date delivery_date) {
+    public Order(int reference, String customer_name, Date order_date, Date delivery_deadline, Date delivery_date, double totalPriceOrder) {
         this.reference = reference;
         this.customer_name = customer_name;
         this.order_date = order_date;
         this.delivery_deadline = delivery_deadline;
         this.delivery_date = delivery_date;
+        this.totalPriceOrder = totalPriceOrder;
     }
 
     public int getReference() {
@@ -82,9 +85,17 @@ public class Order {
         this.delivery_date = delivery_date;
     }
 
+    public double getTotalPriceOrder() {
+        return totalPriceOrder;
+    }
+
+    public void setTotalPriceOrder(double totalPriceOrder) {
+        this.totalPriceOrder = totalPriceOrder;
+    }
+
     @Override
     public String toString() {
-        return reference + " - " + customer_name + " - date de commande (" + order_date + ") - date limite de livraison (" + delivery_deadline + ") - date de livraison (" + delivery_date + ')';
+        return reference + " - " + customer_name + " - date de commande (" + order_date + ") - date limite de livraison (" + delivery_deadline + ") - date de livraison (" + delivery_date + ')' + " - Prix TTC : " + totalPriceOrder;
     }    
     
 }

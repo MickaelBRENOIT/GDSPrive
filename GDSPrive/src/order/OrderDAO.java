@@ -37,7 +37,7 @@ public class OrderDAO {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                orders.add(new Order(rs.getInt("id_commande"), rs.getString("societe_client"), rs.getDate("date_commande"), rs.getDate("date_limite_livraison"), rs.getDate("date_livraison")));
+                orders.add(new Order(rs.getInt("id_commande"), rs.getString("societe_client"), rs.getDate("date_commande"), rs.getDate("date_limite_livraison"), rs.getDate("date_livraison"), rs.getDouble("prix_total")));
             }
 
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class OrderDAO {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                orders.add(new Order(rs.getInt("id_commande"), rs.getString("societe_client"), rs.getDate("date_commande"), rs.getDate("date_limite_livraison"), rs.getDate("date_livraison")));
+                orders.add(new Order(rs.getInt("id_commande"), rs.getString("societe_client"), rs.getDate("date_commande"), rs.getDate("date_limite_livraison"), rs.getDate("date_livraison"), rs.getDouble("prix_total")));
             }
 
         } catch (Exception e) {
@@ -192,12 +192,13 @@ public class OrderDAO {
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("INSERT INTO commande (ce_client,date_commande,date_limite_livraison,date_livraison) VALUES ( ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement = connection.prepareStatement("INSERT INTO commande (ce_client,date_commande,date_limite_livraison,date_livraison,prix_total) VALUES ( ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, order.getFk_customer());
             statement.setDate(2, order.getOrder_date());
             statement.setDate(3, order.getDelivery_deadline());
             statement.setDate(4, order.getDelivery_date());
+            statement.setDouble(5, order.getTotalPriceOrder());
             
 
             //Ex�cution de la requ�te

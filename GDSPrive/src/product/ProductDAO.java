@@ -447,5 +447,52 @@ public class ProductDAO {
 
         return quantity;
     }
+
+    public int getProductIdByCompanyAndProductNames(String company, String product) {
+        int id = 0;
+        ResultSet rs = null;
+        
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT id_produit FROM produit "
+                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur "
+                                                    + "WHERE produit.nom_produit = ? AND fournisseur.societe_fournisseur = ?");
+            
+            statement.setString(1, product);
+            statement.setString(2, company);
+            
+            rs = statement.executeQuery();
+
+        
+            if (rs.next()) {
+                id = rs.getInt("id_produit");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return id;
+    }
    
 }
