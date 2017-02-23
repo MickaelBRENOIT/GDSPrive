@@ -232,6 +232,14 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 }
             } else if (ae.getSource() == addProduct) {
                 OrderItemAddFrame oiaf = new OrderItemAddFrame(authentication);
+            } else if (ae.getSource() == deleteProduct){
+                DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
+                String[] splitString = productsList.getSelectedValue().toString().split(" ");
+                String id = splitString[2];
+                System.out.println("Split : " + id);
+                // TODO - Delete in the database
+                returnCode = temporaryOrderItemDAO.deleteTemporaryOrderItem(id);
+                model.remove(productsList.getSelectedIndex());
             }
         } catch (Exception e) {
 
