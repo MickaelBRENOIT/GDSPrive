@@ -8,6 +8,7 @@ package order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,13 +185,14 @@ public class OrderDAO {
 
     int addOrder(Order order) {
         int returnCode = 0;
+        ResultSet rs = null;
         try {
 
             //tentative de connexion
             connection = singleton.Singleton.getConnection();
             //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
             //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
-            statement = connection.prepareStatement("INSERT INTO commande (ce_client,date_commande,date_limite_livraison,date_livraison) VALUES ( ?, ?, ?, ?)");
+            statement = connection.prepareStatement("INSERT INTO commande (ce_client,date_commande,date_limite_livraison,date_livraison) VALUES ( ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, order.getFk_customer());
             statement.setDate(2, order.getOrder_date());
@@ -200,6 +202,11 @@ public class OrderDAO {
 
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
+            rs = statement.getGeneratedKeys();
+            
+            if(rs.next()){
+                returnCode = rs.getInt(1);
+            }
 
         } catch (Exception ee) {
             ee.printStackTrace();

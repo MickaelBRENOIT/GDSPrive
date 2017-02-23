@@ -228,7 +228,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
                     Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate);
                     returnCode = orderDAO.addOrder(order);
-                    System.out.println("Code : " + returnCode);
+                    System.out.println("Key : " + returnCode);
                     this.dispose();
                 }
             } else if (ae.getSource() == addProduct) {
