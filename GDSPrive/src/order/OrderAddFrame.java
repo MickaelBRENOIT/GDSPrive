@@ -274,6 +274,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                         quantity = toi.getQuantity();
                         returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
                     }
+                    returnCode = productDAO.updateProductQuantity(last_insert_id);
                     clearTemporaryDatabase();
                     this.dispose();
                 }
