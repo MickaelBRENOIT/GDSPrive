@@ -219,6 +219,35 @@ public class TemporaryOrderItemDAO {
         
         return returnCode;
     }
+
+    public void clearTemporaryDatabase() {
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("TRUNCATE commande_temporaire");
+
+            //Ex�cution de la requ�te
+            statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+    }
     
     
     

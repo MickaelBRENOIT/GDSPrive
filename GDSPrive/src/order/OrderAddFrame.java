@@ -9,6 +9,7 @@ import authentication.Authentication;
 import customer.CustomerDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.text.ParseException;
@@ -101,6 +102,14 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         initialize();
         disposition();
 
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                clearTemporaryDatabase();
+                we.getWindow().dispose();
+            }
+            
+        });
         addWindowFocusListener(this);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -226,6 +235,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         int productId = 0;
         try {
             if (ae.getSource() == cancel) {
+                clearTemporaryDatabase();
                 this.dispose();
             } else if (ae.getSource() == addOrder) {
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
@@ -264,7 +274,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                         quantity = toi.getQuantity();
                         returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
                     }
-
+                    clearTemporaryDatabase();
                     this.dispose();
                 }
             } else if (ae.getSource() == addProduct) {
@@ -305,6 +315,10 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
     @Override
     public void windowLostFocus(WindowEvent we) {
+    }
+    
+    private void clearTemporaryDatabase(){
+        temporaryOrderItemDAO.clearTemporaryDatabase();
     }
 
 }
