@@ -15,6 +15,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import menu.AdminMenu;
+import order.orderItem.OrderItemDAO;
 
 /**
  *
@@ -32,6 +33,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
     private Authentication authentication;
     private OrderDAO order;
+    private OrderItemDAO orderItemDAO;
 
     private JComboBox searchField;
 
@@ -65,6 +67,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
     private void initialize() {
 
         this.order = new OrderDAO();
+        this.orderItemDAO = new OrderItemDAO();
 
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
@@ -165,6 +168,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
                 String id = splitString[0];
                 System.out.println("Split : " + id);
                 // TODO - Delete in the database
+                returnCode = orderItemDAO.deleteOrderItem(id);
                 returnCode = order.deleteOrder(id);
                 model.remove(OrdersList.getSelectedIndex());
             } else if (ae.getSource() == returnToPreviousFrame) {

@@ -59,6 +59,39 @@ public class OrderItemDAO {
         
         return returnCode;
     }
+
+    public int deleteOrderItem(String id) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("DELETE FROM commande_article WHERE ce_commande = ? ");
+
+            statement.setString(1, id);
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        return returnCode;
+    }
     
     
 }
