@@ -495,7 +495,7 @@ public class ProductDAO {
         return id;
     }
 
-    public int updateProductQuantity(int last_insert_id) {
+    public int decreaseProductQuantity(int last_insert_id) {
         int returnCode = 0;
         try {
 
@@ -510,6 +510,46 @@ public class ProductDAO {
                                                     "WHERE commande.id_commande = ?");
 
             statement.setInt(1, last_insert_id);
+
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
+        return returnCode;
+    }
+
+    public int increaseProductQuantity(String id) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("UPDATE commande_article " +
+                                                    "INNER JOIN produit ON commande_article.ce_produit = produit.id_produit " +
+                                                    "INNER JOIN commande ON commande_article.ce_commande = commande.id_commande " +
+                                                    "SET produit.quantite = produit.quantite + commande_article.quantite " +
+                                                    "WHERE commande.id_commande = ?");
+
+            statement.setString(1, id);
 
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();

@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import menu.AdminMenu;
 import order.orderItem.OrderItemDAO;
+import product.ProductDAO;
 
 /**
  *
@@ -34,6 +35,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
     private Authentication authentication;
     private OrderDAO order;
     private OrderItemDAO orderItemDAO;
+    private ProductDAO productDAO;
 
     private JComboBox searchField;
 
@@ -68,6 +70,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
         this.order = new OrderDAO();
         this.orderItemDAO = new OrderItemDAO();
+        this.productDAO = new ProductDAO();
 
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
@@ -168,6 +171,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
                 String id = splitString[0];
                 System.out.println("Split : " + id);
                 // TODO - Delete in the database
+                returnCode = productDAO.increaseProductQuantity(id);
                 returnCode = orderItemDAO.deleteOrderItem(id);
                 returnCode = order.deleteOrder(id);
                 model.remove(OrdersList.getSelectedIndex());
