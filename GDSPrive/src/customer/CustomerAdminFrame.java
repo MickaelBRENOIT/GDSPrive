@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import menu.AdminMenu;
+import order.Order;
+import order.OrderDAO;
 
 /**
  *
@@ -25,6 +27,7 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
 
     private JButton create;
     private JButton list;
+    private JButton listOrder;
     private JButton modify;
     private JButton delete;
     private JButton returnToPreviousFrame;
@@ -33,6 +36,8 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
 
     private Authentication authentication;
     private CustomerDAO customer;
+    private OrderDAO orderDAO;
+    private CustomerSeeOrderFrame Seeorder;
 
     private JTextField searchField;
 
@@ -66,6 +71,7 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
     private void initialize() {
 
         this.customer = new CustomerDAO();
+        this.orderDAO = new OrderDAO();
 
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
@@ -86,9 +92,15 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
         list = new JButton("lister");
         list.setBounds(850, 100, 200, 30);
         list.addActionListener(this);
+        
+        listOrder = new JButton("Afficher les commandes");
+        listOrder.setBounds(850, 150, 200, 30);
+        listOrder.addActionListener(this);
 
+        
+        
         returnToPreviousFrame = new JButton("Retour");
-        returnToPreviousFrame.setBounds(850, 150, 200, 30);
+        returnToPreviousFrame.setBounds(850, 200, 200, 30);
         returnToPreviousFrame.addActionListener(this);
 
         quit = new JButton("Quitter");
@@ -121,6 +133,7 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
         main.add(searchField);
         main.add(search);
         main.add(scrollCustomers);
+        main.add(listOrder);
     }
 
     @Override
@@ -136,7 +149,12 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
                     listModel.addElement(s.toString());
                 }
 
-            } else if (ae.getSource() == search) {
+            }
+            else if (ae.getSource() == listOrder) {
+            
+                  CustomerSeeOrderFrame saf = new CustomerSeeOrderFrame(authentication);
+                
+                 }else if (ae.getSource() == search) {
 
                 String domain = searchField.getText().toString();
                 List<Customer> listOfCustomers = customer.getListCustomersByADomain(domain);

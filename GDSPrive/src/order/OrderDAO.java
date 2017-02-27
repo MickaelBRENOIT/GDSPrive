@@ -26,7 +26,7 @@ public class OrderDAO {
         statement = null;
     }
 
-    List<Order> getListOfAllOrders() {
+  public  List<Order> getListOfAllOrders() {
         List<Order> orders = new ArrayList<Order>();
         ResultSet rs = null;
 
@@ -108,7 +108,7 @@ public class OrderDAO {
 
     }
 
-    List<Order> getListOrdersByACompagny(String compagny) {
+   public  List<Order> getListOrdersByACompagny(String compagny) {
         List<Order> orders = new ArrayList<Order>();
         ResultSet rs = null;
 
@@ -229,5 +229,138 @@ public class OrderDAO {
         
         return returnCode;
     }
+    
+    public Order getAOrderDate(String id) {
+        Order order = null;
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT id_commande,date_livraison FROM commande"
+                                                    + " INNER JOIN client ON commande.ce_client = client.id_client "
+                                                    + "WHERE id_commande=?");
+            statement.setString(1, id);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                order = new Order(rs.getInt("id_commande"),rs.getDate("date_livraison"));
+               
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return order;
+    }
+   
+   
+    public Order getAOrder(String id) {
+        Order order = null;
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT id_commande,societe_client FROM commande"
+                                                    + " INNER JOIN client ON commande.ce_client = client.id_client "
+                                                    + "WHERE id_commande=?");
+            statement.setString(1, id);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                order = new Order(rs.getInt("id_commande"),rs.getString("societe_client"));
+                
+               
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return order;
+    }
+    
+   public  int modifyOrder(Order order) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("UPDATE commande "
+                                                    + " INNER JOIN client ON commande.ce_client = client.id_client "
+                                                    +"SET societe_client=?,date_livraison=? WHERE id_commande=?");
+
+            statement.setString(1, order.getCustomer_name());
+            System.out.println(order.getCustomer_name());
+            statement.setString(2, order.getDate_modify());
+            System.out.println(order.getDate_modify());
+            statement.setInt(3, order.getReference());
+            // System.out.println("LA REFERENCE EST:"+order.getReference());
+            
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+           
+
+        }
+        catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
+        return returnCode;
+    }
+   
+   
 
 }

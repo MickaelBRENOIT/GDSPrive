@@ -136,10 +136,13 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
         jFournisseur = new JComboBox();
         jFournisseur.setBounds(140, 170, 200, 25);
 
-        String nomSociete = products.getNomFournisseur();
+        List<Product> getListFournisseurs = productDAO.getListOfAllFournisseurs();
 
-        if (products.getCeFournisseur() == suppliersDAO.idSupplier(nomSociete));
-        jFournisseur.addItem(products.getNomFournisseur());
+        for (Product p : getListFournisseurs) {
+            jFournisseur.addItem(p.getNomFournisseur());
+
+        }
+        jFournisseur.setSelectedItem(products.getNomFournisseur());
 
         stockMin = new JTextField();
         stockMin.setBounds(140, 210, 200, 25);

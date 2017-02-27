@@ -107,3 +107,11 @@ CREATE TABLE commande_temporaire (
   quantite INT(11) UNSIGNED NOT NULL,
   total decimal(11,2) NOT NULL
 ) ENGINE=InnoDB;
+
+CREATE TABLE commande_fournisseur (
+    id_commandeF INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    ce_produit INT(11) UNSIGNED NOT NULL,
+    date_commande date NOT NULL,
+	quantite INT(11) UNSIGNED NOT NULL,
+    FOREIGN KEY (ce_produit) REFERENCES produit(id_produit)
+) ENGINE=InnoDB;

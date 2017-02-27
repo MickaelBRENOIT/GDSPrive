@@ -9,11 +9,11 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import menu.AdminMenu;
 
@@ -30,11 +30,14 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
     private JButton returnToPreviousFrame;
     private JButton quit;
     private JButton search;
+    private JButton fournisseurLess;
 
     private Authentication authentication;
     private SupplierDAO supplier;
 
     private JTextField searchField;
+    private JTextField searchName;
+    private JLabel nomProduit;
 
     private JScrollPane scrollSuppliers;
 
@@ -47,7 +50,7 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
     public SupplierAdminFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des fournisseurs | " + auth.getLogin());
-        this.setSize(1100, 300);
+        this.setSize(1100, 400);
 
         main = new JPanel();
         add(main);
@@ -94,7 +97,17 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
         quit = new JButton("Quitter");
         quit.setBounds(850, 200, 200, 30);
         quit.addActionListener(this);
-
+        
+        fournisseurLess=new JButton("Fournisseur Moins Cher");
+        fournisseurLess.setBounds(600, 300, 180, 30);
+        fournisseurLess.addActionListener(this);
+        
+        searchName=new JTextField();
+        searchName.setBounds(275, 300, 200, 30);
+        
+        nomProduit=new JLabel("tapez le nom du produit :");
+        nomProduit.setBounds(120,300,200,25);
+        
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(275, 50, 500, 30);
 
@@ -118,9 +131,12 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
         main.add(delete);
         main.add(returnToPreviousFrame);
         main.add(quit);
+        main.add(fournisseurLess);
         main.add(searchField);
         main.add(search);
         main.add(scrollSuppliers);
+        main.add(searchName);
+        main.add(nomProduit);
     }
 
     @Override
@@ -136,7 +152,17 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
                     listModel.addElement(s.toString());
                 }
 
-            } else if (ae.getSource() == search) {
+            }
+            else if (ae.getSource() == fournisseurLess) {
+                 String nomProduit = searchName.getText().toString();
+                 System.out.println(nomProduit);
+                List<String> listOfSuppliers = supplier.getListSuppliersOrderByPrice(nomProduit);
+                listModel.removeAllElements();
+                for (String s : listOfSuppliers) {
+                    listModel.addElement(s);
+                }
+            }
+            else if (ae.getSource() == search) {
 
                 String domain = searchField.getText().toString();
                 List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);

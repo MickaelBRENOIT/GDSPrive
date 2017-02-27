@@ -17,8 +17,10 @@ public class Order {
     private String customer_name;
     private Date order_date;
     private Date delivery_deadline;
+    private String date_modify;
     private Date delivery_date;
     private double totalPriceOrder;
+    
 
     public Order(int fk_customer, Date order_date, Date delivery_deadline, Date delivery_date, double totalPriceOrder) {
         this.fk_customer = fk_customer;
@@ -36,10 +38,56 @@ public class Order {
         this.delivery_date = delivery_date;
         this.totalPriceOrder = totalPriceOrder;
     }
+     public Order(int reference, String customer_name, Date delivery_date) {
+        this.reference = reference;
+        this.customer_name = customer_name;
+        this.delivery_date = delivery_date;
+        
+    }
+
+
+    public Order() {
+       
+    }
+
+    Order(int reference,String customer_name) {
+       this.customer_name=customer_name;
+       this.reference=reference;
+    }
+
+    public Order(int reference) {
+        this.reference = reference;
+    }
+
+
+    Order(Date order_date) {
+       this.order_date=order_date;
+    }
+
+    public Order(int reference, Date delivery_date) {
+        this.reference = reference;
+        this.delivery_date = delivery_date;
+    }
+    
+
+    public Order(int reference, String customer_name, String date_modify) {
+        this.reference = reference;
+        this.customer_name = customer_name;
+        this.date_modify = date_modify;
+    }
+
+    public String getDate_modify() {
+        return date_modify;
+    }
+
+    public void setDate_modify(String date_modify) {
+        this.date_modify = date_modify;
+    }
 
     public int getReference() {
         return reference;
     }
+     
 
     public void setReference(int reference) {
         this.reference = reference;
@@ -95,9 +143,21 @@ public class Order {
 
     @Override
     public String toString() {
-        return reference + " - " + customer_name + " - date de commande (" + order_date + ") - date limite de livraison (" + delivery_deadline + ") - date de livraison (" + delivery_date + ')' + " - Prix TTC : " + totalPriceOrder;
-    }    
-    
+        if( order_date==null && delivery_deadline==null && delivery_date==null &&totalPriceOrder==0){
+         return customer_name;
+    } 
+        
+        else if( customer_name==null && delivery_deadline==null && order_date==null &&totalPriceOrder==0)
+        {
+         return ""+delivery_date ;  
+        }
+        else
+        {
+    return reference + " - " + customer_name + " - date de commande (" + order_date + ") - date limite de livraison (" + delivery_deadline + ") - date de livraison (" + delivery_date + ')' + " - Prix TTC : " + totalPriceOrder; 
 }
+
+}
+}
+
 
 

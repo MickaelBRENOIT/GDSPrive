@@ -300,4 +300,52 @@ public class SupplierDAO {
         }
         return id;
     }
+     public List<String> getListSuppliersOrderByPrice(String nomProduit) {
+        List<String> suppliersOrderPrice = new ArrayList<String>();
+        ResultSet rs = null;
+        
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT fournisseur.societe_fournisseur,nom_produit,prix_unitaire FROM produit "
+                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur"
+                                                    + " WHERE nom_produit=? "
+                                                    + " ORDER BY prix_unitaire ASC"
+                                                    
+                                                );
+              statement.setString(1, nomProduit);
+            
+            rs = statement.executeQuery();
+
+        
+            while (rs.next()) {
+                suppliersOrderPrice.add("Fournisseur: "+rs.getString("societe_fournisseur")+" Produit : "+rs.getString("nom_produit")+" Prix: "+rs.getDouble("prix_unitaire"));
+              
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return suppliersOrderPrice;
+    }   
 }
