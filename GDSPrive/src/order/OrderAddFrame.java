@@ -35,6 +35,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import product.ProductDAO;
 import util.DateFormat;
+import util.ErrorEmptyFrame;
 import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
 
@@ -49,7 +50,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private JLabel jlDeliveryDeadline;
     private JLabel jlDeliveryDate;
     private JLabel jlPriceOrder;
-    
+
     private JTextField jtPriceOrder;
 
     private JButton addOrder;
@@ -82,13 +83,13 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private JScrollPane scrollProducts;
 
     private Authentication authentication;
-    
+
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
     private TemporaryOrderItemDAO temporaryOrderItemDAO;
     private ProductDAO productDAO;
     private OrderItemDAO orderItemDAO;
-    
+
     private double totalPriceOrder = 0.0;
 
     public OrderAddFrame(Authentication auth) {
@@ -108,7 +109,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 clearTemporaryDatabase();
                 we.getWindow().dispose();
             }
-            
+
         });
         addWindowFocusListener(this);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -136,10 +137,10 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
         jlDeliveryDate = new JLabel("Date livraison :");
         jlDeliveryDate.setBounds(10, 130, 150, 25);
-        
+
         jlPriceOrder = new JLabel("Prix de la commande - Total TTC : ");
         jlPriceOrder.setBounds(400, 210, 250, 25);
-        
+
         jtPriceOrder = new JTextField();
         jtPriceOrder.setBounds(600, 210, 100, 25);
         jtPriceOrder.setEditable(false);
@@ -209,7 +210,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         panel.add(jlDeliveryDeadline);
         panel.add(jlOrderDate);
         panel.add(jlPriceOrder);
-        
+
         panel.add(jtPriceOrder);
 
         panel.add(jcbCompagny);
@@ -242,41 +243,46 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 if (model.isEmpty()) {
                     System.out.println("La liste est vide. Veuillez ajouter au moins un produit pour passer commande.");
                 } else {
-                    System.out.println("ok");
-                    String compagny = String.valueOf(jcbCompagny.getSelectedItem().toString());
-                    int id = customerDAO.getReferenceCompanyByName(compagny);
-                    String orderDate = orderDatePicker.getJFormattedTextField().getText();
-                    String DeliveryDeadline = deliveryDeadlinePicker.getJFormattedTextField().getText();
-                    String DeliveryDate = deliveryDatePicker.getJFormattedTextField().getText();
-                    String pattern = "yyyy-MM-dd";
-                    SimpleDateFormat format = new SimpleDateFormat(pattern);
-                    java.sql.Date sqlOrderDate = null, sqlDeliveryDeadline = null, sqlDeliveryDate = null;
+                    if (!orderDatePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDeadlinePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDatePicker.getJFormattedTextField().getText().isEmpty()) {
 
-                    try {
-                        java.util.Date order = format.parse(orderDate);
-                        sqlOrderDate = new java.sql.Date(order.getTime());
-                        java.util.Date deadline = format.parse(DeliveryDeadline);
-                        sqlDeliveryDeadline = new java.sql.Date(deadline.getTime());
-                        java.util.Date date = format.parse(DeliveryDate);
-                        sqlDeliveryDate = new java.sql.Date(date.getTime());
-                    } catch (ParseException ex) {
-                        System.out.println(ex);
+                        System.out.println("ok");
+                        String compagny = String.valueOf(jcbCompagny.getSelectedItem().toString());
+                        int id = customerDAO.getReferenceCompanyByName(compagny);
+                        String orderDate = orderDatePicker.getJFormattedTextField().getText();
+                        String DeliveryDeadline = deliveryDeadlinePicker.getJFormattedTextField().getText();
+                        String DeliveryDate = deliveryDatePicker.getJFormattedTextField().getText();
+                        String pattern = "yyyy-MM-dd";
+                        SimpleDateFormat format = new SimpleDateFormat(pattern);
+                        java.sql.Date sqlOrderDate = null, sqlDeliveryDeadline = null, sqlDeliveryDate = null;
+
+                        try {
+                            java.util.Date order = format.parse(orderDate);
+                            sqlOrderDate = new java.sql.Date(order.getTime());
+                            java.util.Date deadline = format.parse(DeliveryDeadline);
+                            sqlDeliveryDeadline = new java.sql.Date(deadline.getTime());
+                            java.util.Date date = format.parse(DeliveryDate);
+                            sqlDeliveryDate = new java.sql.Date(date.getTime());
+                        } catch (ParseException ex) {
+                            System.out.println(ex);
+                        }
+
+                        Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate, totalPriceOrder);
+                        last_insert_id = orderDAO.addOrder(order);
+                        System.out.println("Key : " + last_insert_id);
+
+                        /* Add order items */
+                        List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
+                        for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
+                            productId = productDAO.getProductIdByCompanyAndProductNames(toi.getCompany_name(), toi.getProduct_name());
+                            quantity = toi.getQuantity();
+                            returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
+                        }
+                        returnCode = productDAO.decreaseProductQuantity(last_insert_id);
+                        clearTemporaryDatabase();
+                        this.dispose();
+                    }else{
+                        ErrorEmptyFrame eef = new ErrorEmptyFrame();
                     }
-
-                    Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate, totalPriceOrder);
-                    last_insert_id = orderDAO.addOrder(order);
-                    System.out.println("Key : " + last_insert_id);
-
-                    /* Add order items */
-                    List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
-                    for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
-                        productId = productDAO.getProductIdByCompanyAndProductNames(toi.getCompany_name(), toi.getProduct_name());
-                        quantity = toi.getQuantity();
-                        returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
-                    }
-                    returnCode = productDAO.decreaseProductQuantity(last_insert_id);
-                    clearTemporaryDatabase();
-                    this.dispose();
                 }
             } else if (ae.getSource() == addProduct) {
                 OrderItemAddFrame oiaf = new OrderItemAddFrame(authentication);
@@ -317,8 +323,8 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     @Override
     public void windowLostFocus(WindowEvent we) {
     }
-    
-    private void clearTemporaryDatabase(){
+
+    private void clearTemporaryDatabase() {
         temporaryOrderItemDAO.clearTemporaryDatabase();
     }
 

@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import util.ErrorEmptyFrame;
 
 /**
  *
@@ -32,7 +33,7 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
     private JButton cancel;
 
     private JPanel panel;
-    
+
     private Authentication authentication;
     private Customer customer;
     private CustomerDAO customerDAO;
@@ -58,7 +59,7 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
     }
 
     private void initialize() {
-        
+
         this.customerDAO = new CustomerDAO();
 
         jlSociety = new JLabel("Nom Société : ");
@@ -130,10 +131,14 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
         int returnCode = 0;
         try {
             if (ae.getSource() == modify) {
-                Customer customer = new Customer(this.customer.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
-                returnCode = customerDAO.modifyCustomer(customer);
-                System.out.println("code de retour modifier: " + returnCode);
-                this.dispose();
+                if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
+                    Customer customer = new Customer(this.customer.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
+                    returnCode = customerDAO.modifyCustomer(customer);
+                    System.out.println("code de retour modifier: " + returnCode);
+                    this.dispose();
+                }else{
+                    ErrorEmptyFrame eef = new ErrorEmptyFrame();
+                }
             } else if (ae.getSource() == cancel) {
                 this.dispose();
             }

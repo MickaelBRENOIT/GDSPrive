@@ -25,6 +25,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import supplier.SupplierDAO;
 import util.DateFormat;
+import util.ErrorEmptyFrame;
 
 /**
  *
@@ -180,6 +181,8 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
         int returnCode = 0;
 
         if (ae.getSource() == add) {
+            
+            if (!this.nomProduit.getText().isEmpty() && !this.prixUnitaire.getText().isEmpty() && !this.quantite.getText().isEmpty() && !dateExpirationPicker.getJFormattedTextField().getText().isEmpty() && !jFournisseur.getSelectedItem().toString().isEmpty() && !this.stockMin.getText().isEmpty()) {
 
             String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
             String pattern = "yyyy-MM-dd";
@@ -203,6 +206,9 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
             returnCode = productDAO.modifyProduct(products);
             System.out.println("code de retour : " + returnCode);
             this.dispose();
+            }else{
+                ErrorEmptyFrame eff = new ErrorEmptyFrame();
+            }
         } else if (ae.getSource() == cancel) {
             this.dispose();
         }

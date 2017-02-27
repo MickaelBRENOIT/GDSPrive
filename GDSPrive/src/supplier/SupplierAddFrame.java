@@ -13,6 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import util.ErrorEmptyFrame;
 
 /**
  *
@@ -36,7 +37,7 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
     private JButton cancel;
 
     private JPanel panel;
-    
+
     private Authentication authentication;
     private SupplierDAO supplierDAO;
 
@@ -60,7 +61,7 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
     }
 
     private void initialize() {
-        
+
         this.supplierDAO = new SupplierDAO();
 
         jlSociety = new JLabel("Nom Société : ");
@@ -127,10 +128,14 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
         int returnCode = 0;
         try {
             if (ae.getSource() == add) {
-                Supplier supplier = new Supplier(this.jtSociety.getText(), this.jtAddress.getText(), this.jtField.getText(), this.jtPhone.getText(), this.jtMail.getText());
-                returnCode = supplierDAO.addSupplier(supplier);
-                System.out.println("code de retour : " + returnCode);
-                this.dispose();
+                if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
+                    Supplier supplier = new Supplier(this.jtSociety.getText(), this.jtAddress.getText(), this.jtField.getText(), this.jtPhone.getText(), this.jtMail.getText());
+                    returnCode = supplierDAO.addSupplier(supplier);
+                    System.out.println("code de retour : " + returnCode);
+                    this.dispose();
+                } else {
+                    ErrorEmptyFrame eff = new ErrorEmptyFrame();
+                }
             } else if (ae.getSource() == cancel) {
                 this.dispose();
             }

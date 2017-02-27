@@ -24,6 +24,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import supplier.SupplierDAO;
 import util.DateFormat;
+import util.ErrorEmptyFrame;
 
 /**
  *
@@ -96,7 +97,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
         jlnomFournisseur = new JLabel("Nom Fournisseur :");
         jlnomFournisseur.setBounds(10, 170, 150, 25);
-        
+
         jstockMin = new JLabel("Stock minimal :");
         jstockMin.setBounds(10, 210, 150, 25);
 
@@ -129,10 +130,10 @@ public class ProductAddFrame extends JDialog implements ActionListener {
             jFournisseur.addItem(p.getNomFournisseur());
 
         }
-        
-        stockMin=new JTextField();
-        stockMin.setBounds(140,210,200,25);
-                
+
+        stockMin = new JTextField();
+        stockMin.setBounds(140, 210, 200, 25);
+
         add = new JButton("Ajouter");
         add.setBounds(40, 240, 100, 25);
         add.addActionListener(this);
@@ -171,26 +172,30 @@ public class ProductAddFrame extends JDialog implements ActionListener {
         try {
             if (ae.getSource() == add) {
 
-                String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
-                String pattern = "yyyy-MM-dd";
-                SimpleDateFormat format = new SimpleDateFormat(pattern);
-                java.sql.Date sqlExpiration = null;
+                if (!this.nomProduit.getText().isEmpty() && !this.prixUnitaire.getText().isEmpty() && !this.quantite.getText().isEmpty() && !dateExpirationPicker.getJFormattedTextField().getText().isEmpty() && !jFournisseur.getSelectedItem().toString().isEmpty() && !this.stockMin.getText().isEmpty()) {
 
-                try {
-                    Date Expiration = format.parse(dateExpiration);
-                    sqlExpiration = new java.sql.Date(Expiration.getTime());
+                    String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
+                    String pattern = "yyyy-MM-dd";
+                    SimpleDateFormat format = new SimpleDateFormat(pattern);
+                    java.sql.Date sqlExpiration = null;
 
-                } catch (ParseException ex) {
-                    Logger.getLogger(ProductAddFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    try {
+                        Date Expiration = format.parse(dateExpiration);
+                        sqlExpiration = new java.sql.Date(Expiration.getTime());
+
+                    } catch (ParseException ex) {
+                    }
+
+                    String nom = (String) jFournisseur.getSelectedItem();
+                    int ceFournisseur = supplierDAO.idSupplier(nom);
+
+                    Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, this.stockMin.getText());
+                    returnCode = productDAO.addProduct(product);
+                    System.out.println("code de retour : " + returnCode);
+                    this.dispose();
+                } else {
+                   ErrorEmptyFrame eff = new ErrorEmptyFrame();
                 }
-
-                String nom = (String) jFournisseur.getSelectedItem();
-                int ceFournisseur = supplierDAO.idSupplier(nom);
-
-                Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, this.stockMin.getText());
-                returnCode = productDAO.addProduct(product);
-                System.out.println("code de retour : " + returnCode);
-                this.dispose();
             } else if (ae.getSource() == cancel) {
                 this.dispose();
             }

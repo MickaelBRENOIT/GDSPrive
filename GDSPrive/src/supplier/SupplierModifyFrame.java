@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import util.ErrorEmptyFrame;
 
 /**
  *
@@ -37,7 +38,7 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
     private JButton cancel;
 
     private JPanel panel;
-    
+
     private Authentication authentication;
     private Supplier supplier;
     private SupplierDAO supplierDAO;
@@ -63,7 +64,7 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
     }
 
     private void initialize() {
-        
+
         this.supplierDAO = new SupplierDAO();
 
         jlSociety = new JLabel("Nom Société : ");
@@ -135,10 +136,14 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
         int returnCode = 0;
         try {
             if (ae.getSource() == modify) {
-                Supplier supplier = new Supplier(this.supplier.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
-                returnCode = supplierDAO.modifySupplier(supplier);
-                System.out.println("code de retour modifier: " + returnCode);
-                this.dispose();
+                if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
+                    Supplier supplier = new Supplier(this.supplier.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
+                    returnCode = supplierDAO.modifySupplier(supplier);
+                    System.out.println("code de retour modifier: " + returnCode);
+                    this.dispose();
+                } else {
+                    ErrorEmptyFrame eff = new ErrorEmptyFrame();
+                }
             } else if (ae.getSource() == cancel) {
                 this.dispose();
             }
