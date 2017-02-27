@@ -189,7 +189,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
                     String nom = (String) jFournisseur.getSelectedItem();
                     int ceFournisseur = supplierDAO.idSupplier(nom);
 
-                    Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, this.stockMin.getText());
+                    Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
                     returnCode = productDAO.addProduct(product);
                     System.out.println("code de retour : " + returnCode);
                     this.dispose();

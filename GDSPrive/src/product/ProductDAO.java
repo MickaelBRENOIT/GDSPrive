@@ -37,7 +37,7 @@ public class ProductDAO {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-              products.add(new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getString("stock_minimal")));
+              products.add(new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getInt("stock_minimal")));
             }
 
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class ProductDAO {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-               products.add( new Product(rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getString("stock_minimal")));
+               products.add( new Product(rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getInt("stock_minimal")));
             }
 
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class ProductDAO {
             statement.setDate(4, (Date) product.getDateExpiration());
             statement.setString(5, product.getNomFournisseur());
             statement.setInt(6, product.getCeFournisseur());
-            statement.setString(7,product.getStockMin());
+            statement.setInt(7,product.getStockMin());
             
 
             //Ex�cution de la requ�te
@@ -197,7 +197,7 @@ public class ProductDAO {
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                product = new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getString("stock_minimal"));
+                product = new Product(rs.getInt("id_produit"),rs.getString("nom_produit"), rs.getDouble("prix_unitaire"),  rs.getString("quantite"),rs.getDate("date_expiration"), rs.getString("societe_fournisseur"),rs.getInt("ce_fournisseur"),rs.getInt("stock_minimal"));
             }
 
         } catch (Exception e) {
@@ -242,7 +242,7 @@ public class ProductDAO {
             statement.setDate(4,product.getDateExpiration());
             statement.setString(5, product.getNomFournisseur());
             statement.setInt(6, product.getCeFournisseur());
-            statement.setString(7, product.getStockMin());
+            statement.setInt(7, product.getStockMin());
             statement.setInt(8, product.getReference());
             
             //Ex�cution de la requ�te
@@ -551,6 +551,90 @@ public class ProductDAO {
 
             statement.setString(1, id);
 
+            //Ex�cution de la requ�te
+            returnCode = statement.executeUpdate();
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        
+        return returnCode;
+    }
+
+    public List<Product> getListOfAllProductsWhichHaveQuantityInferiorStock(int last_insert_id) {
+        List<Product> products = new ArrayList<Product>();
+        ResultSet rs = null;
+        
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT commande_article.ce_produit, produit.stock_minimal FROM commande_article " +
+                                                    "INNER JOIN produit ON commande_article.ce_produit = produit.id_produit " +
+                                                    "INNER JOIN commande ON commande_article.ce_commande = commande.id_commande " +
+                                                    "WHERE commande.id_commande = ? AND produit.quantite < produit.stock_minimal");
+            
+            statement.setInt(1, last_insert_id);
+            
+            rs = statement.executeQuery();
+
+        
+            while (rs.next()) {
+                products.add(new Product(rs.getInt("commande_article.ce_produit"), rs.getInt("produit.stock_minimal")));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return products;
+    }
+
+    public int increaseProductQuantityByReplenishment(int reference, int replenishment) {
+        int returnCode = 0;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("UPDATE produit SET quantite = quantite + ? WHERE id_produit = ?");
+
+            statement.setInt(1, replenishment);
+            statement.setInt(2, reference);
+            
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 

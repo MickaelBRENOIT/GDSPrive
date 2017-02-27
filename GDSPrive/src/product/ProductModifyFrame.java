@@ -146,7 +146,7 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
 
         stockMin = new JTextField();
         stockMin.setBounds(140, 210, 200, 25);
-        stockMin.setText(products.getStockMin());
+        stockMin.setText(String.valueOf(products.getStockMin()));
 
         add = new JButton("Ajouter");
         add.setBounds(40, 240, 100, 25);
@@ -202,7 +202,7 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
 
             String nomSociete = jFournisseur.getSelectedItem().toString();
             int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
-            Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, this.stockMin.getText());
+            Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
 
             System.out.println("code:" + this.products.getReference());
 

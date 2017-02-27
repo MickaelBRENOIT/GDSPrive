@@ -33,9 +33,12 @@ import order.orderItem.OrderItemModifyFrame;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import product.Product;
 import product.ProductDAO;
 import util.DateFormat;
 import util.ErrorEmptyFrame;
+import util.SupplierOrder;
+import util.SupplierOrderDAO;
 import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
 
@@ -89,6 +92,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
     private TemporaryOrderItemDAO temporaryOrderItemDAO;
     private ProductDAO productDAO;
     private OrderItemDAO orderItemDAO;
+    private SupplierOrderDAO supplierOrderDAO;
 
     private double totalPriceOrder = 0.0;
 
@@ -125,6 +129,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         this.temporaryOrderItemDAO = new TemporaryOrderItemDAO();
         this.productDAO = new ProductDAO();
         this.orderItemDAO = new OrderItemDAO();
+        this.supplierOrderDAO = new SupplierOrderDAO();
 
         jlCompagny = new JLabel("Société : ");
         jlCompagny.setBounds(10, 10, 150, 25);
@@ -245,7 +250,6 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 } else {
                     if (!orderDatePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDeadlinePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDatePicker.getJFormattedTextField().getText().isEmpty()) {
 
-                        System.out.println("ok");
                         String compagny = String.valueOf(jcbCompagny.getSelectedItem().toString());
                         int id = customerDAO.getReferenceCompanyByName(compagny);
                         String orderDate = orderDatePicker.getJFormattedTextField().getText();
@@ -278,6 +282,13 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                             returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
                         }
                         returnCode = productDAO.decreaseProductQuantity(last_insert_id);
+                        /* Check if quantity < stock */
+                        List<Product> listOfProductsWhichHaveQuantityInferiorStock = productDAO.getListOfAllProductsWhichHaveQuantityInferiorStock(last_insert_id);
+                        for(Product p : listOfProductsWhichHaveQuantityInferiorStock){
+                            System.out.println("REF : "+ p.getReference()+ " SM : " + p.getStockMin());
+                            returnCode = supplierOrderDAO.addSupplierOrder(new SupplierOrder(p.getReference(), p.getStockMin()));
+                            returnCode = productDAO.increaseProductQuantityByReplenishment(p.getReference(), p.getStockMin() * 10);
+                        }
                         clearTemporaryDatabase();
                         this.dispose();
                     }else{

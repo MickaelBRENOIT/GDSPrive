@@ -17,9 +17,9 @@ public class Product {
     private int ceFournisseur;
     private String nomFournisseur;
     private int referenceProduit;
-    private String stockMin;
+    private int stockMin;
 
-    public Product(int reference, String nomProduit, double prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur,String stockMin) {
+    public Product(int reference, String nomProduit, double prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur, int stockMin) {
         this.reference = reference;
         this.nomProduit = nomProduit;
         this.prixUnitaire = prixUnitaire;
@@ -31,7 +31,7 @@ public class Product {
         
     }
 
-    public Product(String nomProduit, double prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur,String stockMin) {
+    public Product(String nomProduit, double prixUnitaire, String quantite, Date dateExpiration, String nomFournisseur, int ceFournisseur, int stockMin) {
         this.nomProduit = nomProduit;
         this.prixUnitaire = prixUnitaire;
         this.quantite = quantite;
@@ -39,6 +39,11 @@ public class Product {
         this.nomFournisseur = nomFournisseur;
         this.ceFournisseur = ceFournisseur;
         this.stockMin=stockMin;
+    }
+    
+    public Product(int reference, int stockMin){
+        this.reference = reference;
+        this.stockMin = stockMin;
     }
 
     public Product(String nomFournisseur) {
@@ -107,11 +112,11 @@ public class Product {
         return referenceProduit;
     }
 
-    public String getStockMin() {
+    public int getStockMin() {
         return stockMin;
     }
 
-    public void setStockMin(String stockMin) {
+    public void setStockMin(int stockMin) {
         this.stockMin = stockMin;
     }
 

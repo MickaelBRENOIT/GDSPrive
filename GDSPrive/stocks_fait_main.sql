@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS commande_fournisseur;
 DROP TABLE IF EXISTS commande_temporaire;
 DROP TABLE IF EXISTS commande_article;
 DROP TABLE IF EXISTS commande;
@@ -76,9 +77,9 @@ CREATE TABLE produit (
 ) ENGINE=InnoDB;
 
 INSERT INTO `produit` (`id_produit`, `nom_produit`, `prix_unitaire`, `quantite`, `date_expiration`, `societe_fournisseur`, `ce_fournisseur`, `stock_minimal`) VALUES
-(13, 'orange', '1.20', 15, '2017-02-02', 'Eureka', 3, 6),
-(15, 'er422', '1.20', 5, '2017-02-01', 'Carrefour', 1, 2),
-(16, 'robot', '52.00', 20, '2017-02-01', 'Eureka', 3, 6);
+(13, 'orange', '1.20', 25, '2017-02-02', 'Eureka', 3, 10),
+(15, 'er422', '1.20', 15, '2017-02-01', 'Carrefour', 1, 5),
+(16, 'robot', '52.00', 20, '2017-02-01', 'Eureka', 3, 10);
 
 CREATE TABLE commande (
     id_commande INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -109,9 +110,9 @@ CREATE TABLE commande_temporaire (
 ) ENGINE=InnoDB;
 
 CREATE TABLE commande_fournisseur (
-    id_commandeF INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    ce_produit INT(11) UNSIGNED NOT NULL,
-    date_commande date NOT NULL,
+  id_commande_fournisseur INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  ce_produit INT(11) UNSIGNED NOT NULL,
+  date_commande date NOT NULL,
 	quantite INT(11) UNSIGNED NOT NULL,
-    FOREIGN KEY (ce_produit) REFERENCES produit(id_produit)
+  FOREIGN KEY (ce_produit) REFERENCES produit(id_produit)
 ) ENGINE=InnoDB;
