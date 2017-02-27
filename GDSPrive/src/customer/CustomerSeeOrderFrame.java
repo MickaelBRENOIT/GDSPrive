@@ -30,7 +30,7 @@ import order.OrderDAO;
  *
  * @author sandra
  */
-public class CustomerSeeOrderFrame  extends JFrame implements ActionListener,WindowFocusListener {
+public class CustomerSeeOrderFrame  extends JDialog implements ActionListener,WindowFocusListener {
     private Authentication authentication;
     private JPanel panel;
     private JPanel panelList;
@@ -63,10 +63,12 @@ public class CustomerSeeOrderFrame  extends JFrame implements ActionListener,Win
         disposition();
 
         addWindowFocusListener(this);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(true);
         setLocationRelativeTo(null);
-        setVisible(true);
+        setVisible(true); 
+        setModal(true);
+        
 
     }
      
@@ -172,7 +174,7 @@ public class CustomerSeeOrderFrame  extends JFrame implements ActionListener,Win
            
             } else if (ae.getSource() == retour) {
                 this.dispose();
-                CustomerAdminFrame am = new  CustomerAdminFrame(authentication);
+                
             } 
         
         }catch (Exception e) {

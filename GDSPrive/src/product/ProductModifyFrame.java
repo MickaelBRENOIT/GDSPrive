@@ -69,7 +69,7 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
     public ProductModifyFrame(Authentication auth, Product prod) {
         authentication = auth;
         products = prod;
-        this.setTitle("Créer des produits | " + auth.getLogin());
+        this.setTitle("Modifier des produits | " + auth.getLogin());
         this.setSize(400, 300);
 
         panel = new JPanel();
