@@ -16,3 +16,6 @@ Last insert id - http://stackoverflow.com/questions/5513180/java-preparedstateme
 Faire le solde client
 Faire en sorte d'avoir le fournisseur le moins cher pour un produit donné.
 Voir image pour les spécificités de la commande
+Créer une classe qui étend JFormattedTextfield pour créer des champs qui ne contient que des numéros. 2 liens :
+	- https://gist.github.com/gysel/4074617
+	- https://www.youtube.com/watch?v=bxWo4ANveio
