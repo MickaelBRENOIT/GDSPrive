@@ -5,6 +5,8 @@ import authentication.Authentication;
 import customer.CustomerDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,7 +22,7 @@ import menu.AdminMenu;
  *
  * @author e1501601
  */
-public class ProductAdminFrame extends JFrame implements ActionListener {
+public class ProductAdminFrame extends JFrame implements ActionListener,WindowFocusListener {
 
     private JButton create;
     private JButton list;
@@ -54,6 +56,7 @@ public class ProductAdminFrame extends JFrame implements ActionListener {
         initialize();
         disposition();
 
+        addWindowFocusListener(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(true);
         setLocationRelativeTo(null);
@@ -149,13 +152,19 @@ public class ProductAdminFrame extends JFrame implements ActionListener {
                     System.out.println("PAS DE NOM POSSIBLE");
                 }
             } else if (ae.getSource() == modify) {
+                
+                
                 DefaultListModel<String> model = (DefaultListModel<String>) ProductList.getModel();
+                 if (!model.isEmpty()) {
                 String[] splitString = ProductList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
                 System.out.println("Split : " + id);
                 Product productToModify = null;
                 productToModify = products.getAProduct(id);
-                ProductModifyFrame s = new ProductModifyFrame(authentication, productToModify);
+                ProductModifyFrame s = new ProductModifyFrame(authentication, productToModify);}
+                 else{
+                   System.out.println("choisir l'élement à modifier");  
+                 }
             } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) ProductList.getModel();
                 String[] splitString = ProductList.getSelectedValue().toString().split(" ");
@@ -174,6 +183,19 @@ public class ProductAdminFrame extends JFrame implements ActionListener {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    
+     public void windowGainedFocus(WindowEvent we) {
+         List<Product> listOfProducts = products.getListOfAllProducts();
+                listModel.removeAllElements();
+                for (Product p : listOfProducts) {
+                    listModel.addElement(p.toString());
+                }
+     }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) {
+        
     }
 
 }
