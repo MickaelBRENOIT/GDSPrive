@@ -102,10 +102,6 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
         searchField = new JComboBox();
         searchField.setBounds(275, 50, 500, 30);
-        List<String> listOfOrders = order.getListOfAllCompanies();
-        for (String s : listOfOrders) {
-            searchField.addItem(s);
-        }
 
         panelList = new JPanel();
         listModel = new DefaultListModel<>();
@@ -189,6 +185,11 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
     @Override
     public void windowGainedFocus(WindowEvent we) {
+        List<String> listOfOrdersInSearchField = order.getListOfAllCompanies();
+        for (String s : listOfOrdersInSearchField) {
+            searchField.addItem(s);
+        }
+        
         List<Order> listOfOrders = order.getListOfAllOrders();
         listModel.removeAllElements();
         for (Order o : listOfOrders) {
