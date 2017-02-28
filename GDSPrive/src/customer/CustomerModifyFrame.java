@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import util.ErrorEmptyFrame;
+import util.JNumberTextField;
 
 /**
  *
@@ -18,7 +19,7 @@ import util.ErrorEmptyFrame;
 public class CustomerModifyFrame extends JDialog implements ActionListener {
 
     private JTextField jtSociety;
-    private JTextField jtPhone;
+    private JNumberTextField jtPhone;
     private JTextField jtMail;
     private JTextField jtAddress;
     private JTextField jtField;
@@ -89,12 +90,12 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
         jtField.setBounds(140, 90, 200, 25);
         jtField.setText(customer.getField());
 
-        jtPhone = new JTextField(20);
-        jtPhone.setBounds(140, 130, 200, 25);
+        jtPhone = new JNumberTextField();
+        jtPhone.setBounds(140, 170, 200, 25);
         jtPhone.setText(customer.getPhoneNumber());
 
         jtMail = new JTextField(20);
-        jtMail.setBounds(140, 170, 200, 25);
+        jtMail.setBounds(140, 130, 200, 25);
         jtMail.setText(customer.getMail());
 
         modify = new JButton("Modifier");

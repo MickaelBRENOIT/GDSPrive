@@ -26,6 +26,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import util.JNumberTextField;
 
 /**
  *
@@ -48,7 +49,7 @@ public class UserModifyFrame extends JDialog implements ActionListener {
     private JTextField jtAddress;
     private JTextField jtPassword;
     private JTextField jtMail;
-    private JTextField jtPhone;
+    private JNumberTextField jtPhone;
 
     private UtilDateModel birthModel;
     private JDatePanelImpl birthPanel;
@@ -141,7 +142,7 @@ public class UserModifyFrame extends JDialog implements ActionListener {
         jtMail.setBounds(140, 170, 200, 25);
         jtMail.setText(user.getMail());
 
-        jtPhone = new JTextField();
+        jtPhone = new JNumberTextField();
         jtPhone.setBounds(140, 210, 200, 25);
         jtPhone.setText(user.getNumber());
 

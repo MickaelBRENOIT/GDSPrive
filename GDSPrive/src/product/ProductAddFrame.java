@@ -25,6 +25,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import supplier.SupplierDAO;
 import util.DateFormat;
 import util.ErrorEmptyFrame;
+import util.JNumberTextField;
 
 /**
  *
@@ -34,8 +35,8 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
     private JTextField nomProduit;
     private JTextField prixUnitaire;
-    private JTextField quantite;
-    private JTextField stockMin;
+    private JNumberTextField quantite;
+    private JNumberTextField stockMin;
 
     private JLabel jlnomProduit;
     private JLabel jlPrixUnitaire;
@@ -107,7 +108,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
         prixUnitaire = new JTextField(20);
         prixUnitaire.setBounds(140, 50, 200, 25);
 
-        quantite = new JTextField(20);
+        quantite = new JNumberTextField();
         quantite.setBounds(140, 90, 200, 25);
 
         properties = new Properties();
@@ -131,7 +132,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
         }
 
-        stockMin = new JTextField();
+        stockMin = new JNumberTextField();
         stockMin.setBounds(140, 210, 200, 25);
 
         add = new JButton("Ajouter");
