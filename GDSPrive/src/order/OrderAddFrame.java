@@ -36,7 +36,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import product.Product;
 import product.ProductDAO;
 import util.DateFormat;
-import util.ErrorEmptyFrame;
+import util.ErrorFrame;
 import util.SupplierOrder;
 import util.SupplierOrderDAO;
 import util.TemporaryOrderItem;
@@ -292,7 +292,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                         clearTemporaryDatabase();
                         this.dispose();
                     }else{
-                        ErrorEmptyFrame eef = new ErrorEmptyFrame();
+                        ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
                     }
                 }
             } else if (ae.getSource() == addProduct) {

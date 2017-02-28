@@ -24,7 +24,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import supplier.SupplierDAO;
 import util.DateFormat;
-import util.ErrorEmptyFrame;
+import util.ErrorFrame;
 import util.JNumberTextField;
 
 /**
@@ -195,7 +195,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
                     System.out.println("code de retour : " + returnCode);
                     this.dispose();
                 } else {
-                   ErrorEmptyFrame eff = new ErrorEmptyFrame();
+                   ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
             } else if (ae.getSource() == cancel) {
                 this.dispose();

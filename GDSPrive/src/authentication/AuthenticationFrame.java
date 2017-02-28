@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import menu.AdminMenu;
 import menu.UserMenu;
+import util.ErrorFrame;
 
 // http://www.edu4java.com/en/swing/swing4.html
 public class AuthenticationFrame extends JFrame implements ActionListener {
@@ -97,7 +98,7 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
                     }
                 } else {
                     //System.out.println("Mauvais mot de passe ou login");
-                    AuthenticationIncorrectDialog ii = new AuthenticationIncorrectDialog();
+                    ErrorFrame eff = new ErrorFrame("Le login ou le mot de passe est incorrect");
                 }
             }
         } catch (Exception e) {

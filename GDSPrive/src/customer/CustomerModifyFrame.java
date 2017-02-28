@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import util.ErrorEmptyFrame;
+import util.ErrorFrame;
 import util.JNumberTextField;
 
 /**
@@ -138,7 +138,7 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
                     System.out.println("code de retour modifier: " + returnCode);
                     this.dispose();
                 }else{
-                    ErrorEmptyFrame eef = new ErrorEmptyFrame();
+                    ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
             } else if (ae.getSource() == cancel) {
                 this.dispose();

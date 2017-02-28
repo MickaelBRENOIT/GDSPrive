@@ -21,7 +21,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import product.ProductDAO;
-import util.ErrorEmptyFrame;
+import util.ErrorFrame;
 import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
 
@@ -161,7 +161,7 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
                 returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(toi);
                 this.dispose();
             }else{
-                ErrorEmptyFrame eef = new ErrorEmptyFrame();
+                ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
             }
             
         } else if (ae.getSource() == jcbProduct) {

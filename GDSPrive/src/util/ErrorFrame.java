@@ -1,18 +1,14 @@
 package util;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,17 +18,19 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  *
  * @author e1500727
  */
-public class ErrorEmptyFrame extends JDialog implements ActionListener {
+public class ErrorFrame extends JDialog {
 
     private JPanel main;
-    private JButton buttonOk;
     private JLabel text;
+    private String txtError;
     private ImageIcon warningImg;
     private JLabel warningLabel;
 
-    public ErrorEmptyFrame() {
-        this.setTitle("Champ(s) vide(s)");
-        this.setSize(300, 75);
+    public ErrorFrame(String txtError) {
+        
+        this.txtError = txtError;
+        this.setTitle("Une erreur a été provoquée");
+        this.setSize(500, 100);
 
         main = new JPanel();
         this.add(main);
@@ -50,22 +48,15 @@ public class ErrorEmptyFrame extends JDialog implements ActionListener {
     }
 
     private void initialize() {
-        text = new JLabel("Un ou plusieurs champs sont vides");
-
-        buttonOk = new JButton("Ok");
-        buttonOk.addActionListener(this);
+        text = new JLabel(txtError, JLabel.CENTER);
+        warningImg = new ImageIcon("images/warning.png");
+        warningLabel = new JLabel(warningImg);
     }
-
+ 
     private void disposition() {
+        main.setLayout(new BorderLayout());
         main.add(text, BorderLayout.CENTER);
-        main.add(buttonOk, BorderLayout.SOUTH);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonOk) {
-            this.dispose();
-        }
+        main.add(warningLabel, BorderLayout.SOUTH);
     }
 
     private void playSound() {
