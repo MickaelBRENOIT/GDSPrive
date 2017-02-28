@@ -246,7 +246,7 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
             } else if (ae.getSource() == addOrder) {
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
                 if (model.isEmpty()) {
-                    System.out.println("La liste est vide. Veuillez ajouter au moins un produit pour passer commande.");
+                    ErrorFrame ef = new ErrorFrame("La liste est vide. Veuillez ajouter au moins un produit pour passer commande.");
                 } else {
                     if (!orderDatePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDeadlinePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDatePicker.getJFormattedTextField().getText().isEmpty()) {
 
