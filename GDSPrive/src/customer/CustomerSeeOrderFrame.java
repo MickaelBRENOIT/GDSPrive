@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package customer;
 
 import authentication.Authentication;
@@ -33,10 +28,6 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import util.DateFormat;
 
-/**
- *
- * @author sandra
- */
 public class CustomerSeeOrderFrame extends JDialog implements ActionListener, WindowFocusListener {
 
     private Authentication authentication;
@@ -59,6 +50,11 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
     private DefaultListModel<String> listModel;
     private JScrollPane scrollOrders;
 
+    /**
+     * Permet d'afficher la fenêtre qui visionne toutes les commandes clients.
+     *
+     * @param auth - informations de l'administrateur connecté
+     */
     public CustomerSeeOrderFrame(Authentication auth) {
 
         authentication = auth;
@@ -140,6 +136,16 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
 
     }
 
+    /**
+     * Si on appuie sur le bouton "modifier", cela permet de modifier la
+     * commande sélctionnée dans la liste. Si on appuie sur le bouton
+     * "enregistrer", cela permet d'enregistrer les modifications. Si on appuie
+     * sur le bouton "retour", cela permet de retourner sur la fenêtre de
+     * gestion des clients.
+     *
+     * @param ae - évènements déclenchés lorsqu'on appuie sur un des boutons de
+     * la fenêtre
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -149,13 +155,10 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
                 if (!model.isEmpty()) {
                     String[] splitString = OrdersList.getSelectedValue().toString().split(" ");
                     String id = splitString[0];
-                    System.out.println("Split : " + id);
 
                     jtnom.setText(orderDAO.getAOrder(id).toString());
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     dateModel.setValue(formatter.parse(orderDAO.getAOrderDate(id).toString()));
-                    System.out.println(orderDAO.getAOrder(id).toString());
-                    System.out.println(orderDAO.getAOrderDate(id).toString());
 
                 }
 
@@ -183,11 +186,15 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
             }
 
         } catch (Exception e) {
-            System.out.println(e);
         }
 
     }
 
+    /**
+     * Permet de mettre à jour la liste de commandes.
+     *
+     * @param we - évènement appelé lorsque cette fenêtre passe en premier plan
+     */
     public void windowGainedFocus(WindowEvent we) {
         List<Order> listOfOrders = orderDAO.getListOfAllOrders();
         System.out.println(listOfOrders);
@@ -198,6 +205,10 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
         }
     }
 
+    /**
+     *
+     * @param e
+     */
     public void windowLostFocus(WindowEvent e) {
 
     }

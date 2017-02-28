@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package customer;
 
 import java.sql.Connection;
@@ -11,77 +6,119 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Mikael
- */
 public class CustomerDAO {
+
     private Connection connection;
     private PreparedStatement statement;
 
+    /**
+     * Initialise la connection et la requête préparée à null
+     */
     public CustomerDAO() {
         connection = null;
         statement = null;
     }
-    
-    public List<Customer> getListOfAllCustomers(){
+
+    /**
+     *
+     * @return - retourne la liste de tous les clients
+     */
+    public List<Customer> getListOfAllCustomers() {
         List<Customer> customers = new ArrayList<Customer>();
         ResultSet rs = null;
-        
-        try{
+
+        try {
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("SELECT * FROM client");
             rs = statement.executeQuery();
-                        
-            while(rs.next()){
+
+            while (rs.next()) {
                 customers.add(new Customer(rs.getInt("id_client"), rs.getString("societe_client"), rs.getString("adresse_client"), rs.getString("domaine_client"), rs.getString("numero_client"), rs.getString("email_client")));
             }
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             System.out.println(e);
-        }finally{
-            try {if (rs != null)rs.close();} catch (Exception t) {}
-            try {if (statement != null)statement.close();} catch (Exception t) {}
-            try {if (connection != null)connection.close();} catch (Exception t) {}
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
         }
-        
+
         return customers;
-        
+
     }
-    
-    public List<Customer> getListCustomersByADomain(String domain){
+
+    /**
+     *
+     * @param domain - le domaine de fonction
+     * @return - retourne la liste des clients qui appartient à un certain
+     * domaine de fonction
+     */
+    public List<Customer> getListCustomersByADomain(String domain) {
         List<Customer> customers = new ArrayList<Customer>();
         ResultSet rs = null;
-        
-        try{
+
+        try {
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("SELECT * FROM client WHERE domaine_client = ?");
             statement.setString(1, domain);
             rs = statement.executeQuery();
-                        
-            while(rs.next()){
+
+            while (rs.next()) {
                 customers.add(new Customer(rs.getInt("id_client"), rs.getString("societe_client"), rs.getString("adresse_client"), rs.getString("domaine_client"), rs.getString("numero_client"), rs.getString("email_client")));
             }
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             System.out.println(e);
-        }finally{
-            try {if (rs != null)rs.close();} catch (Exception t) {}
-            try {if (statement != null)statement.close();} catch (Exception t) {}
-            try {if (connection != null)connection.close();} catch (Exception t) {}
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
         }
-        
+
         return customers;
     }
-    
+
+    /**
+     *
+     * @param customer - le client à ajouter
+     * @return - retourne le nombre d'ajout de client
+     */
     public int addCustomer(Customer customer) {
         int returnCode = 0;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
-            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
-            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
             statement = connection.prepareStatement("INSERT INTO client (societe_client,adresse_client,domaine_client,numero_client,email_client) VALUES ( ?, ?, ?, ?,?)");
 
             statement.setString(1, customer.getCompany());
@@ -90,13 +127,11 @@ public class CustomerDAO {
             statement.setString(4, customer.getPhoneNumber());
             statement.setString(5, customer.getMail());
 
-            //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
@@ -110,29 +145,29 @@ public class CustomerDAO {
             } catch (Exception t) {
             }
         }
-        
+
         return returnCode;
     }
-    
-    public int deleteCustomer(String reference){
+
+    /**
+     *
+     * @param reference - l'identifiant unique du client (son code)
+     * @return - retourne le nombre de suppression de client
+     */
+    public int deleteCustomer(String reference) {
         int returnCode = 0;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
-            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
-            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
             statement = connection.prepareStatement("DELETE FROM client WHERE id_client = ? ");
 
             statement.setString(1, reference);
 
-            //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
@@ -148,7 +183,13 @@ public class CustomerDAO {
         }
         return returnCode;
     }
-    
+
+    /**
+     *
+     * @param reference - l'identifiant d'un client
+     * @return - retourne le client qui correspond à la référence passée en
+     * paramètre
+     */
     public Customer getACustomer(String reference) {
         Customer customer = null;
         ResultSet rs = null;
@@ -188,15 +229,17 @@ public class CustomerDAO {
 
         return customer;
     }
-    
+
+    /**
+     *
+     * @param customer - modifie le client passé en paramètre
+     * @return - retourne le nombre de modifications de client
+     */
     public int modifyCustomer(Customer customer) {
         int returnCode = 0;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
-            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
-            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
             statement = connection.prepareStatement("UPDATE client SET societe_client = ?, adresse_client = ?, domaine_client = ?, numero_client = ?, email_client = ? WHERE id_client = ?");
 
             statement.setString(1, customer.getCompany());
@@ -206,13 +249,11 @@ public class CustomerDAO {
             statement.setString(5, customer.getMail());
             statement.setInt(6, customer.getReference());
 
-            //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
@@ -226,10 +267,15 @@ public class CustomerDAO {
             } catch (Exception t) {
             }
         }
-        
+
         return returnCode;
     }
 
+    /**
+     *
+     * @return - retourne la liste de toutes les sociétés client de
+     * l'application
+     */
     public List<String> getListOfAllCompanies() {
         List<String> companies = new ArrayList<String>();
         ResultSet rs = null;
@@ -268,30 +314,33 @@ public class CustomerDAO {
 
         return companies;
     }
-    
+
+    /**
+     *
+     * @param compagny - la société d'un client
+     * @return - retourne l'identifiant du client qui appartient à la société
+     * passée en paramètre
+     */
     public int getReferenceCompanyByName(String compagny) {
         int id = 0;
         ResultSet rs = null;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("SELECT id_client FROM client "
-                                                    + "WHERE societe_client = ?");
+                    + "WHERE societe_client = ?");
 
             statement.setString(1, compagny);
 
-            //Ex�cution de la requ�te
             rs = statement.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 id = rs.getInt("id_client");
             }
 
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
@@ -306,8 +355,7 @@ public class CustomerDAO {
             }
         }
         return id;
-        
+
     }
-    
-    
+
 }

@@ -16,14 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import menu.AdminMenu;
-import order.Order;
 import order.OrderDAO;
 import util.ErrorFrame;
 
-/**
- *
- * @author e1501601
- */
 public class CustomerAdminFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
@@ -50,6 +45,11 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
     private JList<String> customersList;
     private DefaultListModel<String> listModel;
 
+    /**
+     *
+     * @param auth - affiche la fenêtre de gestion des clients du côté
+     * administrateur avec ses informations
+     */
     public CustomerAdminFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des clients | " + auth.getLogin());
@@ -93,13 +93,11 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
         list = new JButton("lister");
         list.setBounds(850, 100, 200, 30);
         list.addActionListener(this);
-        
+
         listOrder = new JButton("Afficher les commandes");
         listOrder.setBounds(850, 150, 200, 30);
         listOrder.addActionListener(this);
 
-        
-        
         returnToPreviousFrame = new JButton("Retour");
         returnToPreviousFrame.setBounds(850, 200, 200, 30);
         returnToPreviousFrame.addActionListener(this);
@@ -137,6 +135,20 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
         main.add(listOrder);
     }
 
+    /**
+     * Si on appuie sur le bouton "create", nous lançons la fenêtre qui permet
+     * d'ajouter un client. Si on appuie sur le bouton "listOrder", nous lançons
+     * la fenêtre qui permet de voir les commandes passées par les clients. Si
+     * on appuie sur le bouton "modify", nous lançons la fenêtre qui permet de
+     * modifier un client. Si on appuie sur le bouton "search", nous listons les
+     * clients présents dans notre application. Si on appuie sur le bouton
+     * "delete", nous supprimons un client. Si on appuie sur le bouton
+     * "returnToPreviousFrame", nous retournons sur le menu de l'administrateur.
+     * Si on appuie sur le bouton "quit", nous quittons l'application.
+     *
+     * @param ae - évènements déclenchés lorsqu'on appuie sur un des boutons qui
+     * composent la fenêtre
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -150,12 +162,11 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
                     listModel.addElement(s.toString());
                 }
 
-            }
-            else if (ae.getSource() == listOrder) {
-            
-                  CustomerSeeOrderFrame saf = new CustomerSeeOrderFrame(authentication);
-                
-                 }else if (ae.getSource() == search) {
+            } else if (ae.getSource() == listOrder) {
+
+                CustomerSeeOrderFrame saf = new CustomerSeeOrderFrame(authentication);
+
+            } else if (ae.getSource() == search) {
 
                 String domain = searchField.getText().toString();
                 List<Customer> listOfCustomers = customer.getListCustomersByADomain(domain);
@@ -178,8 +189,6 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
                 DefaultListModel<String> model = (DefaultListModel<String>) customersList.getModel();
                 String[] splitString = customersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
-                System.out.println("Split : " + id);
-                // TODO - Delete in the database
                 returnCode = customer.deleteCustomer(id);
                 model.remove(customersList.getSelectedIndex());
             } else if (ae.getSource() == returnToPreviousFrame) {
@@ -194,6 +203,12 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
         }
     }
 
+    /**
+     * Permet de mettre à jour la liste de client à la suite d'un ajout ou d'une
+     * modification du client.
+     *
+     * @param we - méthode appelée quand cette fenêtre revient en premier plan
+     */
     @Override
     public void windowGainedFocus(WindowEvent we) {
         List<Customer> listOfCustomers = customer.getListOfAllCustomers();
@@ -203,6 +218,10 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
         }
     }
 
+    /**
+     *
+     * @param we
+     */
     @Override
     public void windowLostFocus(WindowEvent we) {
     }

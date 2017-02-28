@@ -12,10 +12,6 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-/**
- *
- * @author e1501601
- */
 public class CustomerModifyFrame extends JDialog implements ActionListener {
 
     private JTextField jtSociety;
@@ -39,6 +35,13 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
     private Customer customer;
     private CustomerDAO customerDAO;
 
+    /**
+     * Permet d'afficher la fenêtre de modification d'un client avec ses
+     * informations chargées
+     *
+     * @param auth - informations de l'administrateur connecté
+     * @param cust - le client à modifier
+     */
     public CustomerModifyFrame(Authentication auth, Customer cust) {
         customer = cust;
         authentication = auth;
@@ -127,6 +130,12 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "modify", cela modifie le client. Si on appuie
+     * sur le bouton "cancel", cela annule la modification.
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -135,9 +144,8 @@ public class CustomerModifyFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Customer customer = new Customer(this.customer.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
                     returnCode = customerDAO.modifyCustomer(customer);
-                    System.out.println("code de retour modifier: " + returnCode);
                     this.dispose();
-                }else{
+                } else {
                     ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
             } else if (ae.getSource() == cancel) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package customer;
 
 import authentication.Authentication;
@@ -18,15 +13,10 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import menu.UserMenu;
 import util.ErrorFrame;
 
-/**
- *
- * @author Mikael
- */
 public class CustomerUserFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton list;
@@ -46,6 +36,12 @@ public class CustomerUserFrame extends JFrame implements ActionListener, WindowF
     private JList<String> customersList;
     private DefaultListModel<String> listModel;
 
+    /**
+     * Permet d'afficher la fenêtre de gestion de client avec permissions
+     * restreintes pour un utilisateur.
+     *
+     * @param auth - informations de l'utilisateur connecté
+     */
     public CustomerUserFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des clients | " + auth.getLogin());
@@ -109,6 +105,15 @@ public class CustomerUserFrame extends JFrame implements ActionListener, WindowF
         main.add(scrollCustomers);
     }
 
+    /**
+     * Si on appuie sur le bouton "searchButton", on recherche un client selon
+     * son domaine d'activité. Si on appuie sur le bouton "list", on liste les
+     * clients Si on appuie sur le bouton "returnToPreviousFrame", on retourne
+     * sur la fenêtre menu utilisateur Si on appuie sur le bouton "exit", on
+     * quitte l'application
+     *
+     * @param ae - évènements déclenchés lorsqu'un des boutons est appuyé
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == searchButton) {
@@ -136,6 +141,11 @@ public class CustomerUserFrame extends JFrame implements ActionListener, WindowF
         }
     }
 
+    /**
+     * Permet de lister tous les clients
+     *
+     * @param we - évènement déclenché lordque l'application est en premier plan
+     */
     @Override
     public void windowGainedFocus(WindowEvent we) {
         List<Customer> listOfCustomers = customer.getListOfAllCustomers();
@@ -145,6 +155,10 @@ public class CustomerUserFrame extends JFrame implements ActionListener, WindowF
         }
     }
 
+    /**
+     *
+     * @param we
+     */
     @Override
     public void windowLostFocus(WindowEvent we) {
     }

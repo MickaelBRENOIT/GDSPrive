@@ -12,10 +12,6 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-/**
- *
- * @author e1501601
- */
 public class CustomerAddFrame extends JDialog implements ActionListener {
 
     private JTextField jtSociety;
@@ -38,6 +34,11 @@ public class CustomerAddFrame extends JDialog implements ActionListener {
     private Authentication authentication;
     private CustomerDAO customerDAO;
 
+    /**
+     *
+     * @param auth - affiche la fenêtre d'ajout d'un client avec l'indication de
+     * l'utilisateur connecté
+     */
     public CustomerAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Créer des clients | " + auth.getLogin());
@@ -120,6 +121,13 @@ public class CustomerAddFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "add", on ajoute alors un client Si on appuie
+     * sur le bouton "cancel", on annule l'ajout d'un client
+     *
+     * @param ae - évènements déclenchés lorsqu'on appuie sur les boutons qui
+     * composent la fenêtre
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -128,9 +136,8 @@ public class CustomerAddFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Customer customer = new Customer(this.jtSociety.getText(), this.jtAddress.getText(), this.jtField.getText(), this.jtPhone.getText(), this.jtMail.getText());
                     returnCode = customerDAO.addCustomer(customer);
-                    System.out.println("code de retour : " + returnCode);
                     this.dispose();
-                }else{
+                } else {
                     ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
             } else if (ae.getSource() == cancel) {
