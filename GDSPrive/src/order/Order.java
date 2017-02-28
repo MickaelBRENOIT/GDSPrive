@@ -17,7 +17,6 @@ public class Order {
     private String customer_name;
     private Date order_date;
     private Date delivery_deadline;
-    private String date_modify;
     private Date delivery_date;
     private double totalPriceOrder;
     
@@ -38,16 +37,11 @@ public class Order {
         this.delivery_date = delivery_date;
         this.totalPriceOrder = totalPriceOrder;
     }
+    
      public Order(int reference, String customer_name, Date delivery_date) {
         this.reference = reference;
         this.customer_name = customer_name;
-        this.delivery_date = delivery_date;
-        
-    }
-
-
-    public Order() {
-       
+        this.delivery_date = delivery_date; 
     }
 
     Order(int reference,String customer_name) {
@@ -55,39 +49,14 @@ public class Order {
        this.reference=reference;
     }
 
-    public Order(int reference) {
-        this.reference = reference;
-    }
-
-
-    Order(Date order_date) {
-       this.order_date=order_date;
-    }
-
     public Order(int reference, Date delivery_date) {
         this.reference = reference;
         this.delivery_date = delivery_date;
-    }
-    
-
-    public Order(int reference, String customer_name, String date_modify) {
-        this.reference = reference;
-        this.customer_name = customer_name;
-        this.date_modify = date_modify;
-    }
-
-    public String getDate_modify() {
-        return date_modify;
-    }
-
-    public void setDate_modify(String date_modify) {
-        this.date_modify = date_modify;
     }
 
     public int getReference() {
         return reference;
     }
-     
 
     public void setReference(int reference) {
         this.reference = reference;
