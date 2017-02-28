@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import menu.AdminMenu;
+import util.ErrorFrame;
 
 /**
  *
@@ -172,7 +173,7 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
                         listModel.addElement(s.toString());
                     }
                 } else {
-                    System.out.println("PAS DE DOMAINE POSSIBLE");
+                    ErrorFrame ef = new ErrorFrame("Le domaine que vous avez recherché n'existe pas.");
                 }
             } else if (ae.getSource() == modify) {
                 //TODO - Database 1 : search id and send to DAO in order to return the supplier

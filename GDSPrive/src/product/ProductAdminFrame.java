@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import menu.AdminMenu;
+import util.ErrorFrame;
 
 /**
  *
@@ -149,7 +150,7 @@ public class ProductAdminFrame extends JFrame implements ActionListener,WindowFo
                         listModel.addElement(p.toString());
                     }
                 } else {
-                    System.out.println("PAS DE NOM POSSIBLE");
+                    ErrorFrame ef = new ErrorFrame("Le nom que vous avez recherché n'existe pas.");
                 }
             } else if (ae.getSource() == modify) {
                 

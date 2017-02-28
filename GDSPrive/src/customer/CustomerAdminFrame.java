@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import menu.AdminMenu;
 import order.Order;
 import order.OrderDAO;
+import util.ErrorFrame;
 
 /**
  *
@@ -164,7 +165,7 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
                         listModel.addElement(s.toString());
                     }
                 } else {
-                    System.out.println("PAS DE DOMAINE POSSIBLE");
+                    ErrorFrame ef = new ErrorFrame("Le domaine que vous avez recherché n'existe pas.");
                 }
             } else if (ae.getSource() == modify) {
                 DefaultListModel<String> model = (DefaultListModel<String>) customersList.getModel();

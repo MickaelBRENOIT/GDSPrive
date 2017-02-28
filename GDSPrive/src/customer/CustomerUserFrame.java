@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import menu.UserMenu;
+import util.ErrorFrame;
 
 /**
  *
@@ -119,7 +120,7 @@ public class CustomerUserFrame extends JFrame implements ActionListener, WindowF
                     listModel.addElement(s.toString());
                 }
             } else {
-                System.out.println("PAS DE DOMAINE POSSIBLE");
+                ErrorFrame ef = new ErrorFrame("Le domaine que vous avez recherché n'existe pas.");
             }
         } else if (ae.getSource() == list) {
             List<Customer> listOfCustomers = customer.getListOfAllCustomers();

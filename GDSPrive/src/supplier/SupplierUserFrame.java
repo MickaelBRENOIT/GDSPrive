@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import menu.UserMenu;
+import util.ErrorFrame;
 
 /**
  *
@@ -117,7 +118,7 @@ public class SupplierUserFrame extends JFrame implements ActionListener, WindowF
                     listModel.addElement(s.toString());
                 }
             } else {
-                System.out.println("PAS DE DOMAINE POSSIBLE");
+                ErrorFrame ef = new ErrorFrame("Le domaine que vous avez recherché n'existe pas.");
             }
 
         } else if (ae.getSource() == list) {
