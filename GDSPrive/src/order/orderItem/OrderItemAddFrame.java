@@ -101,11 +101,15 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
         for (String s : listOfSuppliersAndProducts) {
             jcbProduct.addItem(s);
         }
+
         jcbProduct.addActionListener(this);
 
         jtPrice = new JTextField();
         jtPrice.setBounds(150, 50, 200, 25);
         jtPrice.setEnabled(false);
+        retrieveCompanyAndProduct();
+        double unitPrice = productDAO.getUnitPriceByCompanyAndProduct(company, product);
+        jtPrice.setText(String.valueOf(unitPrice));
 
         quantityModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
         quantityJspinner = new JSpinner(quantityModel);
@@ -150,9 +154,9 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
 
         if (ae.getSource() == cancel) {
             this.dispose();
-            
+
         } else if (ae.getSource() == add) {
-            if(!jtTotal.getText().isEmpty() && !jtPrice.getText().isEmpty()){
+            if (!jtTotal.getText().isEmpty() && !jtPrice.getText().isEmpty()) {
                 retrieveCompanyAndProduct();
                 Double unitPrice = Double.parseDouble(jtPrice.getText());
                 int quantityItem = (Integer) quantityJspinner.getValue();
@@ -160,21 +164,21 @@ public class OrderItemAddFrame extends JDialog implements ActionListener {
                 TemporaryOrderItem toi = new TemporaryOrderItem(0, company, product, unitPrice, quantityItem, totalPrice);
                 returnCode = temporaryOrderItemDAO.addTemporaryOrderItem(toi);
                 this.dispose();
-            }else{
+            } else {
                 ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
             }
-            
+
         } else if (ae.getSource() == jcbProduct) {
             retrieveCompanyAndProduct();
             double unitPrice = productDAO.getUnitPriceByCompanyAndProduct(company, product);
             jtPrice.setText(String.valueOf(unitPrice));
-            
+
         } else if (ae.getSource() == total) {
             retrieveCompanyAndProduct();
             int quantity = productDAO.getQuantityOfAProduct(company, product);
-            if((Integer) quantityJspinner.getValue() > quantity){
+            if ((Integer) quantityJspinner.getValue() > quantity) {
                 ErrorFrame ef = new ErrorFrame("La quantité indiquée dépasse le stock restant du produit.");
-            }else{
+            } else {
                 if (jtPrice.getText() != "") {
                     Double res = Double.parseDouble(jtPrice.getText()) * (Integer) quantityJspinner.getValue();
                     DecimalFormat df = new DecimalFormat("0.00");
