@@ -1,6 +1,5 @@
 package authentication;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -14,7 +13,6 @@ import menu.AdminMenu;
 import menu.UserMenu;
 import util.ErrorFrame;
 
-// http://www.edu4java.com/en/swing/swing4.html
 public class AuthenticationFrame extends JFrame implements ActionListener {
 
     private JTextField jtLogin;
@@ -29,6 +27,9 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
 
     private AuthenticationDAO authDAO;
 
+    /**
+     * Fait apparaître la fenêtre de connexion
+     */
     public AuthenticationFrame() {
         this.authDAO = new AuthenticationDAO();
 
@@ -40,7 +41,7 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
 
         initialize();
         disposition();
-        
+
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -75,6 +76,13 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
         panelmain.add(jbSignin);
     }
 
+    /**
+     * Si le bouton "jbSignIn" est pressé, on vérifie que la personne qui essaye
+     * de se connecter est bien un administrateur ou un utilisateur
+     *
+     * @param ae - prend en paramètre les actions à effectuer lors de la
+     * pression d'un bouton
+     */
     public void actionPerformed(ActionEvent ae) {
 
         Authentication authentication = null;
@@ -86,18 +94,14 @@ public class AuthenticationFrame extends JFrame implements ActionListener {
                 authentication = authDAO.signIn(a);
 
                 if (authentication != null) {
-                    System.out.println("L'utilisateur est connecté");
                     if (authentication.getRole() == 1) {
-                        //System.out.println("\tJe suis un administrateur !");
                         this.dispose();
                         AdminMenu am = new AdminMenu(a);
                     } else {
-                        //System.out.println("\tJe suis un utilisateur lambda !");
                         this.dispose();
                         UserMenu um = new UserMenu(a);
                     }
                 } else {
-                    //System.out.println("Mauvais mot de passe ou login");
                     ErrorFrame eff = new ErrorFrame("Le login ou le mot de passe est incorrect");
                 }
             }
