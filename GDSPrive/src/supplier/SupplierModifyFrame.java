@@ -141,7 +141,11 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Supplier supplier = new Supplier(this.supplier.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
                     returnCode = supplierDAO.modifySupplier(supplier);
-                    this.dispose();
+                    if (returnCode != 0) {
+                        this.dispose();
+                    } else {
+                        ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. La modification n'a pas été effectuée.");
+                    }
                 } else {
                     ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }

@@ -134,7 +134,11 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Supplier supplier = new Supplier(this.jtSociety.getText(), this.jtAddress.getText(), this.jtField.getText(), this.jtPhone.getText(), this.jtMail.getText());
                     returnCode = supplierDAO.addSupplier(supplier);
-                    this.dispose();
+                    if (returnCode != 0) {
+                        this.dispose();
+                    } else {
+                        ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. L'ajout n'a pas été effectué.");
+                    }
                 } else {
                     ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
