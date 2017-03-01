@@ -27,7 +27,7 @@ CREATE TABLE utilisateur (
     date_embauche date NOT NULL,
     adresse_utilisateur varchar(100) NOT NULL,
     ce_role INT(11) UNSIGNED NOT NULL,
-    numero_utilisateur varchar(10) NOT NULL,
+    numero_utilisateur varchar(50) NOT NULL,
     FOREIGN KEY (ce_role) REFERENCES role(id_role)
 ) ENGINE=InnoDB;
 
@@ -40,7 +40,7 @@ CREATE TABLE fournisseur (
     societe_fournisseur varchar(50) NOT NULL,
     adresse_fournisseur varchar(50) NOT NULL,
     domaine_fournisseur varchar(50) NOT NULL,
-    numero_fournisseur varchar(10) NOT NULL,
+    numero_fournisseur varchar(50) NOT NULL,
     email_fournisseur varchar(50) NOT NULL
 ) ENGINE=InnoDB;
 
@@ -54,7 +54,7 @@ CREATE TABLE client (
     societe_client varchar(50) NOT NULL,
     adresse_client varchar(50) NOT NULL,
     domaine_client varchar(50) NOT NULL,
-    numero_client varchar(10) NOT NULL,
+    numero_client varchar(50) NOT NULL,
     email_client varchar(50) NOT NULL
 ) ENGINE=InnoDB;
 
