@@ -136,7 +136,11 @@ public class CustomerAddFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Customer customer = new Customer(this.jtSociety.getText(), this.jtAddress.getText(), this.jtField.getText(), this.jtPhone.getText(), this.jtMail.getText());
                     returnCode = customerDAO.addCustomer(customer);
-                    this.dispose();
+                    if (returnCode != 0) {
+                        this.dispose();
+                    } else {
+                        ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. L'ajout n'a pas été effectué.");
+                    }
                 } else {
                     ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }

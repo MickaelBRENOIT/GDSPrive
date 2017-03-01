@@ -32,8 +32,6 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
 
     private Authentication authentication;
     private CustomerDAO customer;
-    private OrderDAO orderDAO;
-    private CustomerSeeOrderFrame Seeorder;
 
     private JTextField searchField;
 
@@ -72,7 +70,6 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
     private void initialize() {
 
         this.customer = new CustomerDAO();
-        this.orderDAO = new OrderDAO();
 
         create = new JButton("Créer");
         create.setBounds(10, 50, 200, 30);
@@ -164,7 +161,7 @@ public class CustomerAdminFrame extends JFrame implements ActionListener, Window
 
             } else if (ae.getSource() == listOrder) {
 
-                CustomerSeeOrderFrame saf = new CustomerSeeOrderFrame(authentication);
+                CustomerSeeOrderFrame csof = new CustomerSeeOrderFrame(authentication);
 
             } else if (ae.getSource() == search) {
 

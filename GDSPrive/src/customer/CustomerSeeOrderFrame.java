@@ -27,6 +27,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import util.DateFormat;
+import util.ErrorFrame;
 
 public class CustomerSeeOrderFrame extends JDialog implements ActionListener, WindowFocusListener {
 
@@ -69,10 +70,10 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
 
         addWindowFocusListener(this);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setResizable(true);
+        setResizable(false);
         setLocationRelativeTo(null);
-        setVisible(true);
         setModal(true);
+        setVisible(true);
 
     }
 
@@ -179,13 +180,23 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
 
                 Order orders = new Order(Integer.parseInt(id), this.jtnom.getText(), sqlDate);
                 returnCode = orderDAO.modifyOrder(orders);
+                if (returnCode != 0) {
+                    List<Order> listOfOrders = orderDAO.getListOfAllOrders();
+                    listModel.removeAllElements();
+                    for (Order o : listOfOrders) {
+                        listModel.addElement(o.toString());
+
+                    }
+                } else {
+                    ErrorFrame ef = new ErrorFrame("Un des champs est mal renseigné. La modification n'a pas été effectuée.");   
+                }
 
             } else if (ae.getSource() == retour) {
                 this.dispose();
-
             }
 
         } catch (Exception e) {
+            System.out.println(e);
         }
 
     }
@@ -197,7 +208,6 @@ public class CustomerSeeOrderFrame extends JDialog implements ActionListener, Wi
      */
     public void windowGainedFocus(WindowEvent we) {
         List<Order> listOfOrders = orderDAO.getListOfAllOrders();
-        System.out.println(listOfOrders);
         listModel.removeAllElements();
         for (Order o : listOfOrders) {
             listModel.addElement(o.toString());
