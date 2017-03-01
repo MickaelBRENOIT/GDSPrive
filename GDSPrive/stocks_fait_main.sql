@@ -32,8 +32,8 @@ CREATE TABLE utilisateur (
 ) ENGINE=InnoDB;
 
 INSERT INTO `utilisateur` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `email_utilisateur`, `password_utilisateur`, `date_naissance`, `date_embauche`, `adresse_utilisateur`, `ce_role`, `numero_utilisateur`) VALUES
-(1, 'BRENOIT', 'Mickael', 'mickael.brenoit@uha.fr', '0000', '1994-05-30', '2016-10-10', '6 rue de Sochaux, 68200 Mulhouse', 1, '0389010203'),
-(2, 'DUPONT', 'Pierre', 'pierre.dupont@uha.fr', '1234', '1988-02-10', '2016-04-19', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
+(1, 'DUPONT', 'Jean', 'admin@uha.fr', 'admin', '1994-05-30', '2016-10-10', '6 rue des champs, 68200 Mulhouse', 1, '0389010203'),
+(2, 'MARTIN', 'Arnaud', 'utilisateur@uha.fr', 'utilisateur', '1988-02-10', '2016-04-19', '17 rue du Soleil, 67000 Strasbourg', 2, '0389070809');
 
 CREATE TABLE fournisseur (
     id_fournisseur INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -45,9 +45,11 @@ CREATE TABLE fournisseur (
 ) ENGINE=InnoDB;
 
 INSERT INTO `fournisseur` (`id_fournisseur`, `societe_fournisseur`, `adresse_fournisseur`, `domaine_fournisseur`, `numero_fournisseur`, `email_fournisseur`) VALUES
-(1, 'Carrefour', '12 rue des champs', 'supermarché', '0102030405', 'carrefour@gmail.com'),
-(2, 'Cora', '62 rue des portes', 'hypermarché', '0605020301', 'cora@gmail.com'),
-(3, 'Eureka', '42 rue des programmeurs', 'Informatique', '0389010203', 'eureka@gmail.com');
+(1, 'Cora', '258 rue de Belfort, 68067', 'Supermarché', '0389323838', 'cora@uha.fr'),
+(2, 'Leclerc', '7 rue Gay Lussac, 68200', 'Supermarché', '0389354900', 'leclerc@uha.fr'),
+(3, 'Eureka', '52 rue de Dornach, 68120', 'Informatique', '0389512020', 'eureka@uha.fr'),
+(4, 'Ikea', 'ZAC Parc des collines, 68790 Morschwiller-le-Bas', 'Mobilier', '0969362006', 'ikea@uha.fr'),
+(5, 'Atlantis', '43 rue Buffon, 68200 Mulhouse', 'Informatique', '0389334334', 'atlantis@uha.fr');
 
 CREATE TABLE client (
     id_client INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -59,10 +61,9 @@ CREATE TABLE client (
 ) ENGINE=InnoDB;
 
 INSERT INTO `client` (`id_client`, `societe_client`, `adresse_client`, `domaine_client`, `numero_client`, `email_client`) VALUES
-(1, 'Chaiseland', '12 rue des glands, 68200 Mulhouse', 'Ebenisterie', '0308090603', 'exemple01@gmail.com'),
-(2, 'Clemessy Motors', '53 boulevards des peupliers', 'Production', '0389365421', 'exemple02@yahoo.fr'),
-(3, 'Eureka', '47 rue du tournessol, 68100 Mulhouse', 'Informatique', '0389654712', 'exemple03@uha.fr'),
-(4, 'IBM', '36 rue des flaques, 67000 Strasbourg', 'Informatique', '0387523641', 'exemple04@laposte.net');
+(1, 'UHA', '2 rue des Frères Lumières, 68100 Mulhouse', 'Université', '0389336000', 'uha@uha.fr'),
+(2, 'Chaiseland', '129 rue de Belfort, 68100 Mulhouse', 'Ebénisterie', '0389604637', 'chaiseland@uha.fr'),
+(3, 'FNAC', '54 rue du Sauvage, 68100 Mulhouse', 'Magasin', '0825020020', 'fnac@uha.fr');
 
 CREATE TABLE produit (
   id_produit int(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -77,9 +78,12 @@ CREATE TABLE produit (
 ) ENGINE=InnoDB;
 
 INSERT INTO `produit` (`id_produit`, `nom_produit`, `prix_unitaire`, `quantite`, `date_expiration`, `societe_fournisseur`, `ce_fournisseur`, `stock_minimal`) VALUES
-(13, 'orange', '1.20', 25, '2017-02-02', 'Eureka', 3, 10),
-(15, 'er422', '1.20', 15, '2017-02-01', 'Carrefour', 1, 5),
-(16, 'robot', '52.00', 20, '2017-02-01', 'Eureka', 3, 10);
+(1, 'Aspirateur', '61.30', 50, '2017-03-31', 'Cora', 1, 10),
+(2, 'ERP', '1000000.00', 10, '2017-03-28', 'Eureka', 3, 3),
+(3, 'Aspirateur', '59.50', 90, '2017-03-16', 'Leclerc', 2, 15),
+(4, 'Ordinateur', '1550.00', 30, '2017-03-22', 'Atlantis', 5, 5),
+(5, 'Ecran', '225.00', 300, '2017-03-08', 'Atlantis', 5, 20),
+(6, 'Lit', '450.25', 500, '2017-03-16', 'Ikea', 4, 80);
 
 CREATE TABLE commande (
     id_commande INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
