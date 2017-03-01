@@ -11,6 +11,7 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
 import order.OrderFrame;
 import product.ProductAdminFrame;
+import resupply.ResupplyAdminFrame;
 import supplier.SupplierAdminFrame;
 import user.UserFrame;
 
@@ -23,6 +24,7 @@ public class AdminMenu extends JFrame implements ActionListener {
     private JButton users;
     private JButton signOut;
     private JButton exit;
+    private JButton resupply;
 
     private Authentication authentication;
 
@@ -70,6 +72,10 @@ public class AdminMenu extends JFrame implements ActionListener {
         users.setBounds(90, 130, 220, 25);
         users.addActionListener(this);
 
+        resupply = new JButton("Se reapprovisionner");
+        resupply.setBounds(90, 160, 220, 25);
+        resupply.addActionListener(this);
+
         signOut = new JButton("Se déconnecter");
         signOut.setBounds(90, 160, 220, 25);
         signOut.addActionListener(this);
@@ -87,6 +93,7 @@ public class AdminMenu extends JFrame implements ActionListener {
         main.add(products);
         main.add(orders);
         main.add(users);
+        main.add(resupply);
         main.add(signOut);
         main.add(exit);
     }
@@ -97,6 +104,7 @@ public class AdminMenu extends JFrame implements ActionListener {
      * apparaît. Si on appuie sur le bouton "products", la fenêtre des produits
      * apparaît. Si on appuie sur le bouton "orders", la fenêtre des commandes
      * apparaît. Si on appuie sur le bouton "users", la fenêtre des utilisateurs
+     * apparait.Si on appuie sur le bouton "resupply"la fenêtre de reaprovisionnement
      * apparaît. Si on appuie sur le bouton "signOut", nous sommes déconnectés
      * et renvoyé vers la fenêtre de connexion. Si on appyue sur le bouton
      * "exit", nous quittons l'application.
@@ -122,6 +130,10 @@ public class AdminMenu extends JFrame implements ActionListener {
             } else if (ae.getSource() == users) {
                 this.dispose();
                 UserFrame uf = new UserFrame(authentication);
+            } else if (ae.getSource() == resupply) {
+                this.dispose();
+                ResupplyAdminFrame rf = new ResupplyAdminFrame(authentication);
+
             } else if (ae.getSource() == signOut) {
                 this.dispose();
                 AuthenticationFrame af = new AuthenticationFrame();

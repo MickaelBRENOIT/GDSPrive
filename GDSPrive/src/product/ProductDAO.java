@@ -658,5 +658,136 @@ public class ProductDAO {
         
         return returnCode;
     }
+    
+    
+     public int idProduct(String nomProduit) {
+        int id = 0;
+        ResultSet rs = null;
+        try {
+
+            //tentative de connexion
+            connection = singleton.Singleton.getConnection();
+            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
+            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
+            statement = connection.prepareStatement("SELECT id_produit FROM produit WHERE nom_produit = ? ");
+
+            statement.setString(1, nomProduit);
+
+            //Ex�cution de la requ�te
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id_produit");
+            }
+
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        } finally {
+            //fermeture du preparedStatement et de la connexion
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+        return id;
+    }
+     
+     
+      public List<String> getListOfFournisseursByProducts() {
+        List<String> products = new ArrayList<String>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT DISTINCT fournisseur.societe_fournisseur FROM produit "
+                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur ");
+          
+            
+            rs = statement.executeQuery();
+
+        
+            while (rs.next()) {
+                products.add(rs.getString("societe_fournisseur"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+           
+        }
+
+        return products;
+
+    }
+    
+    
+     public List<String> getListOfAllProductsDistinct() {
+        List<String> products = new ArrayList<String>();
+        ResultSet rs = null;
+
+        try {
+            connection = singleton.Singleton.getConnection();
+            statement = connection.prepareStatement("SELECT DISTINCT nom_produit FROM produit");
+             
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+              products.add(rs.getString("nom_produit"));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception t) {
+            }
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception t) {
+            }
+        }
+
+        return products;
+
+    }
+    
+
    
 }
