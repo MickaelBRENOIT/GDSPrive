@@ -164,11 +164,19 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
                 }
 
             } else if (ae.getSource() == fournisseurLess) {
-                String nomProduit = searchName.getText().toString();
-                List<String> listOfSuppliers = supplier.getListSuppliersOrderByPrice(nomProduit);
-                listModel.removeAllElements();
-                for (String s : listOfSuppliers) {
-                    listModel.addElement(s);
+                if (!searchName.getText().isEmpty()) {
+                    String nomProduit = searchName.getText().toString();
+                    List<String> listOfSuppliers = supplier.getListSuppliersOrderByPrice(nomProduit);
+                    if (!listOfSuppliers.isEmpty()) {
+                        listModel.removeAllElements();
+                        for (String s : listOfSuppliers) {
+                            listModel.addElement(s);
+                        }
+                    } else {
+                        ErrorFrame ef = new ErrorFrame("Le produit que vous avez entré n'existe pas.");
+                    }
+                } else {
+                    ErrorFrame ef = new ErrorFrame("Le champ est vide.");
                 }
             } else if (ae.getSource() == search) {
 
