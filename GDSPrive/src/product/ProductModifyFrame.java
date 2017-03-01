@@ -48,7 +48,7 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
 
     private JComboBox jFournisseur;
 
-    private JButton add;
+    private JButton modify;
     private JButton cancel;
 
     private JPanel panel;
@@ -149,9 +149,9 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
         stockMin.setBounds(140, 210, 200, 25);
         stockMin.setText(String.valueOf(products.getStockMin()));
 
-        add = new JButton("Ajouter");
-        add.setBounds(40, 240, 100, 25);
-        add.addActionListener(this);
+        modify = new JButton("Modifier");
+        modify.setBounds(40, 240, 100, 25);
+        modify.addActionListener(this);
 
         cancel = new JButton("Annuler");
         cancel.setBounds(240, 240, 100, 25);
@@ -175,7 +175,7 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
         panel.add(dateExpirationPicker);
         panel.add(stockMin);
         panel.add(jFournisseur);
-        panel.add(add);
+        panel.add(modify);
         panel.add(cancel);
 
     }
@@ -190,7 +190,7 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
 
-        if (ae.getSource() == add) {
+        if (ae.getSource() == modify) {
 
             if (!this.nomProduit.getText().isEmpty() && !this.prixUnitaire.getText().isEmpty() && !this.quantite.getText().isEmpty() && !dateExpirationPicker.getJFormattedTextField().getText().isEmpty() && !jFournisseur.getSelectedItem().toString().isEmpty() && !this.stockMin.getText().isEmpty()) {
 
@@ -211,11 +211,12 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
                 int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
                 Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
 
-                System.out.println("code:" + this.products.getReference());
-
                 returnCode = productDAO.modifyProduct(products);
-                System.out.println("code de retour : " + returnCode);
-                this.dispose();
+                if (returnCode != 0) {
+                        this.dispose();
+                    } else {
+                        ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. La modification n'a pas été effectuée.");
+                    }
             } else {
                 ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
             }

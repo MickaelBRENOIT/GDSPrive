@@ -194,7 +194,11 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
                     Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
                     returnCode = productDAO.addProduct(product);
-                    this.dispose();
+                    if (returnCode != 0) {
+                        this.dispose();
+                    } else {
+                        ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. L'ajout n'a pas été effectué.");
+                    }
                 } else {
                     ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
