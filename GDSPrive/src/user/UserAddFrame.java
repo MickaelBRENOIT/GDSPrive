@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import util.ErrorFrame;
 import util.JNumberTextField;
 
 public class UserAddFrame extends JDialog implements ActionListener {
@@ -200,29 +201,38 @@ public class UserAddFrame extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
         if (ae.getSource() == add) {
-            String dateBirth = birthPicker.getJFormattedTextField().getText();
-            String dateHiring = hiringPicker.getJFormattedTextField().getText();
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat format = new SimpleDateFormat(pattern);
-            java.sql.Date sqlBirth = null, sqlHiring = null;
+            if (!birthPicker.getJFormattedTextField().getText().isEmpty() && !hiringPicker.getJFormattedTextField().getText().isEmpty() && !jtName.getText().isEmpty() && !jtSurname.getText().isEmpty() && !jtPassword.getText().isEmpty() && !jtMail.getText().isEmpty() && !jtAddress.getText().isEmpty() && !jtPhone.getText().isEmpty()) {
 
-            try {
-                Date birth = format.parse(dateBirth);
-                sqlBirth = new java.sql.Date(birth.getTime());
-                Date hiring = format.parse(dateHiring);
-                sqlHiring = new java.sql.Date(hiring.getTime());
-            } catch (ParseException ex) {
-                Logger.getLogger(UserAddFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            int role;
-            if (String.valueOf(jcbRole.getSelectedItem().toString()).equals("administrateur")) {
-                role = 1;
+                String dateBirth = birthPicker.getJFormattedTextField().getText();
+                String dateHiring = hiringPicker.getJFormattedTextField().getText();
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat format = new SimpleDateFormat(pattern);
+                java.sql.Date sqlBirth = null, sqlHiring = null;
+
+                try {
+                    Date birth = format.parse(dateBirth);
+                    sqlBirth = new java.sql.Date(birth.getTime());
+                    Date hiring = format.parse(dateHiring);
+                    sqlHiring = new java.sql.Date(hiring.getTime());
+                } catch (ParseException ex) {
+                    Logger.getLogger(UserAddFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                int role;
+                if (String.valueOf(jcbRole.getSelectedItem().toString()).equals("administrateur")) {
+                    role = 1;
+                } else {
+                    role = 2;
+                }
+                User user = new User(jtName.getText(), jtSurname.getText(), jtPassword.getText(), jtMail.getText(), sqlBirth, sqlHiring, jtAddress.getText(), role, jtPhone.getText());
+                returnCode = userDAO.addUser(user);
+                if (returnCode != 0) {
+                    this.dispose();
+                } else {
+                    ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. L'ajout n'a pas été effectué.");
+                }
             } else {
-                role = 2;
+                ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
             }
-            User user = new User(jtName.getText(), jtSurname.getText(), jtPassword.getText(), jtMail.getText(), sqlBirth, sqlHiring, jtAddress.getText(), role, jtPhone.getText());
-            returnCode = userDAO.addUser(user);
-            this.dispose();
         } else if (ae.getSource() == cancel) {
             this.dispose();
         }
