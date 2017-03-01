@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package user;
 
 import util.DateFormat;
@@ -27,10 +22,6 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import util.JNumberTextField;
 
-/**
- *
- * @author Mikael
- */
 public class UserAddFrame extends JDialog implements ActionListener {
 
     private JLabel jlName;
@@ -70,6 +61,11 @@ public class UserAddFrame extends JDialog implements ActionListener {
     private Authentication authentication;
     private UserDAO userDAO;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de creation des utilisateurs en fonction de
+     * l'utilisateur connecté
+     */
     public UserAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Créer des utilisateurs | " + auth.getLogin());
@@ -195,6 +191,11 @@ public class UserAddFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "add", cela ajoute l'utilisateur.
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -204,7 +205,7 @@ public class UserAddFrame extends JDialog implements ActionListener {
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat format = new SimpleDateFormat(pattern);
             java.sql.Date sqlBirth = null, sqlHiring = null;
-            
+
             try {
                 Date birth = format.parse(dateBirth);
                 sqlBirth = new java.sql.Date(birth.getTime());
@@ -214,14 +215,13 @@ public class UserAddFrame extends JDialog implements ActionListener {
                 Logger.getLogger(UserAddFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
             int role;
-            if(String.valueOf(jcbRole.getSelectedItem().toString()).equals("administrateur")){
+            if (String.valueOf(jcbRole.getSelectedItem().toString()).equals("administrateur")) {
                 role = 1;
-            }else{
+            } else {
                 role = 2;
             }
             User user = new User(jtName.getText(), jtSurname.getText(), jtPassword.getText(), jtMail.getText(), sqlBirth, sqlHiring, jtAddress.getText(), role, jtPhone.getText());
             returnCode = userDAO.addUser(user);
-            System.out.println("code de retour : " + returnCode);
             this.dispose();
         } else if (ae.getSource() == cancel) {
             this.dispose();

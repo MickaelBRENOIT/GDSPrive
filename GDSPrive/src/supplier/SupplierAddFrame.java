@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package supplier;
 
 import authentication.Authentication;
@@ -16,10 +11,6 @@ import javax.swing.JTextField;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-/**
- *
- * @author e1501601
- */
 public class SupplierAddFrame extends JDialog implements ActionListener {
 
     private JTextField jtSociety;
@@ -42,6 +33,11 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
     private Authentication authentication;
     private SupplierDAO supplierDAO;
 
+    /**
+     *
+     * @param auth ouvre la creation de creation de fournisseur en fonction de
+     * l'utilisateur connecté
+     */
     public SupplierAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Créer des fournisseurs | " + auth.getLogin());
@@ -124,6 +120,12 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "add", cela ajoute le client. Si on appuie sur
+     * le bouton "cancel", cela annule la modification.
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -132,7 +134,6 @@ public class SupplierAddFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Supplier supplier = new Supplier(this.jtSociety.getText(), this.jtAddress.getText(), this.jtField.getText(), this.jtPhone.getText(), this.jtMail.getText());
                     returnCode = supplierDAO.addSupplier(supplier);
-                    System.out.println("code de retour : " + returnCode);
                     this.dispose();
                 } else {
                     ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");

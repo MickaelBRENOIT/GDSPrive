@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.orderItem;
 
 import authentication.Authentication;
@@ -25,10 +20,6 @@ import util.ErrorFrame;
 import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
 
-/**
- *
- * @author Mikael
- */
 public class OrderItemModifyFrame extends JDialog implements ActionListener {
 
     private JLabel jlProduct;
@@ -61,6 +52,12 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
     private String product;
     private String result;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de modification de la commande en fonction
+     * de l'utilisateur connecté
+     * @param toi parametre de la commande temporaire
+     */
     public OrderItemModifyFrame(Authentication auth, TemporaryOrderItem toi) {
         authentication = auth;
         temporaryOrderItem = toi;
@@ -103,9 +100,8 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
         for (String s : listOfSuppliersAndProducts) {
             jcbProduct.addItem(s);
         }
-        jcbProduct.setSelectedItem(temporaryOrderItem.getCompany_name()+" - "+temporaryOrderItem.getProduct_name());
+        jcbProduct.setSelectedItem(temporaryOrderItem.getCompany_name() + " - " + temporaryOrderItem.getProduct_name());
         jcbProduct.addActionListener(this);
-        
 
         jtPrice = new JTextField();
         jtPrice.setBounds(150, 50, 200, 25);
@@ -151,15 +147,23 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "add", cela ajoute la commande. Si on appuie
+     * sur le bouton "cancel", cela annule la modification. si on appuie sur le
+     * bouton "total",cela donne le total Si on appuie sur "JcbProduct",cela
+     * selectionne dans la combobox
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
 
         if (ae.getSource() == cancel) {
             this.dispose();
-            
+
         } else if (ae.getSource() == modify) {
-            if(!jtTotal.getText().isEmpty() && !jtPrice.getText().isEmpty()){
+            if (!jtTotal.getText().isEmpty() && !jtPrice.getText().isEmpty()) {
                 retrieveCompanyAndProduct();
                 Double unitPrice = Double.parseDouble(jtPrice.getText());
                 int quantityItem = (Integer) quantityJspinner.getValue();
@@ -167,27 +171,25 @@ public class OrderItemModifyFrame extends JDialog implements ActionListener {
                 TemporaryOrderItem toi = new TemporaryOrderItem(temporaryOrderItem.getReference(), company, product, unitPrice, quantityItem, totalPrice);
                 returnCode = temporaryOrderItemDAO.modifyTemporaryOrderItem(toi);
                 this.dispose();
-            }else{
+            } else {
                 ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
             }
-            
+
         } else if (ae.getSource() == jcbProduct) {
             retrieveCompanyAndProduct();
             double unitPrice = productDAO.getUnitPriceByCompanyAndProduct(company, product);
             jtPrice.setText(String.valueOf(unitPrice));
-            
+
         } else if (ae.getSource() == total) {
             retrieveCompanyAndProduct();
             int quantity = productDAO.getQuantityOfAProduct(company, product);
-            if((Integer) quantityJspinner.getValue() > quantity){
+            if ((Integer) quantityJspinner.getValue() > quantity) {
                 System.out.println("Pas assez de stock");
-            }else{
-                if (jtPrice.getText() != "") {
-                    Double res = Double.parseDouble(jtPrice.getText()) * (Integer) quantityJspinner.getValue();
-                    DecimalFormat df = new DecimalFormat("0.00");
-                    result = df.format(res).replace(',', '.');
-                    jtTotal.setText(result);
-                }
+            } else if (jtPrice.getText() != "") {
+                Double res = Double.parseDouble(jtPrice.getText()) * (Integer) quantityJspinner.getValue();
+                DecimalFormat df = new DecimalFormat("0.00");
+                result = df.format(res).replace(',', '.');
+                jtTotal.setText(result);
             }
         }
     }

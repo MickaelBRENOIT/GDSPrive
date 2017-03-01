@@ -1,9 +1,8 @@
 package resupply;
 
 import product.*;
-import customer.*;
+
 import authentication.Authentication;
-import customer.CustomerDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -16,13 +15,8 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import menu.AdminMenu;
 
-/**
- *
- * @author e1501601
- */
 public class ResupplyAdminFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
@@ -35,14 +29,17 @@ public class ResupplyAdminFrame extends JFrame implements ActionListener, Window
     private ProductDAO products;
     private ResupplyDAO resupplyDAO;
 
-   
-
     private JScrollPane scrollProducts;
     private JPanel main;
     private JPanel panelList;
     private JList<String> ResupplyList;
     private DefaultListModel<String> listModel;
 
+    /**
+     *
+     * @param auth qui ouvre la fenetre de gestion de rapprovisionnement en
+     * fonction de l'utilisateur connecté
+     */
     public ResupplyAdminFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Se reapprovisionner | " + auth.getLogin());
@@ -104,43 +101,22 @@ public class ResupplyAdminFrame extends JFrame implements ActionListener, Window
         main.add(scrollProducts);
     }
 
+    /**
+     * Si on appuie sur le bouton "create", cela ouvre la fenetre de creation du
+     * reaprovisionnement. Si on appuie sur le bouton "cancel", cela annule
+     * l'action. Si on appuie sur le bouton "delete" cela supprime le champ
+     * selectionné Si on appuie sur e bouton "quit" on quitte Si on appuie sur
+     * le bouton "return" sera ramène sur la fenetre precedendte
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
         try {
             if (ae.getSource() == create) {
-             
                 ResupplyAddFrame saf = new ResupplyAddFrame(authentication);
-
-            }
-
-            /*if (ae.getSource() == search) {
-
-                String nom = searchField.getText().toString();
-                List<Product> listOfProducts = products.getListProductsByNom(nom);
-                if (!listOfProducts.isEmpty()) {
-                    listModel.removeAllElements();
-                    for (Product p : listOfProducts) {
-                        listModel.addElement(p.toString());
-                    }
-                } else {
-                    System.out.println("PAS DE NOM POSSIBLE");
-                }
-            } else if (ae.getSource() == modify) {
-                
-                
-                DefaultListModel<String> model = (DefaultListModel<String>) ProductList.getModel();
-                 if (!model.isEmpty()) {
-                String[] splitString = ProductList.getSelectedValue().toString().split(" ");
-                String id = splitString[0];
-                System.out.println("Split : " + id);
-                Product productToModify = null;
-                productToModify = products.getAProduct(id);
-                ProductModifyFrame s = new ProductModifyFrame(authentication, productToModify);}
-                 else{
-                   System.out.println("choisir l'élement à modifier");  
-                 }
-            }*/ else if (ae.getSource() == delete) {
+            } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) ResupplyList.getModel();
                 String[] splitString = ResupplyList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];

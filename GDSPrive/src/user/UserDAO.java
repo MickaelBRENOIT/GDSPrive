@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package user;
 
 import java.sql.Connection;
@@ -11,19 +6,23 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Mikael
- */
 public class UserDAO {
+
     private Connection connection;
     private PreparedStatement statement;
 
+    /**
+     * initialise la connexion et la requete préparé à null
+     */
     public UserDAO() {
         connection = null;
         statement = null;
     }
-    
+
+    /**
+     *
+     * @return la liste de tous les roles
+     */
     public List<User> getListOfAllRoles() {
         List<User> users = new ArrayList<User>();
         ResultSet rs = null;
@@ -64,6 +63,11 @@ public class UserDAO {
 
     }
 
+    /**
+     *
+     * @param user l'utilisateur
+     * @return le nombre d'utilisateur ajouté
+     */
     public int addUser(User user) {
         int returnCode = 0;
         try {
@@ -104,10 +108,15 @@ public class UserDAO {
             } catch (Exception t) {
             }
         }
-        
+
         return returnCode;
     }
 
+    /**
+     *
+     *
+     * @return la liste de tous les utilisateurs
+     */
     List<User> getListOfAllUsers() {
         List<User> users = new ArrayList<User>();
         ResultSet rs = null;
@@ -148,6 +157,11 @@ public class UserDAO {
 
     }
 
+    /**
+     *
+     *
+     * @return la liste des utilisateurs par role
+     */
     List<User> getListUsersByARole(int role) {
         List<User> users = new ArrayList<User>();
         ResultSet rs = null;
@@ -188,6 +202,11 @@ public class UserDAO {
         return users;
     }
 
+    /**
+     *
+     *
+     * @return le nombre de suppression
+     */
     int deleteUser(String id) {
         int returnCode = 0;
         try {
@@ -221,6 +240,11 @@ public class UserDAO {
         return returnCode;
     }
 
+    /**
+     *
+     *
+     * @return l'utilisateur
+     */
     User getAUser(String id) {
         User user = null;
         ResultSet rs = null;
@@ -261,6 +285,11 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     *
+     *
+     * @return le nombre de modification
+     */
     int modifyUser(User user) {
         int returnCode = 0;
         try {
@@ -302,8 +331,8 @@ public class UserDAO {
             } catch (Exception t) {
             }
         }
-        
+
         return returnCode;
     }
-    
+
 }

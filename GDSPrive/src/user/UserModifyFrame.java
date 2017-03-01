@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package user;
 
 import util.DateFormat;
@@ -12,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,10 +22,6 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import util.JNumberTextField;
 
-/**
- *
- * @author Mikael
- */
 public class UserModifyFrame extends JDialog implements ActionListener {
 
     private JLabel jlName;
@@ -72,6 +62,12 @@ public class UserModifyFrame extends JDialog implements ActionListener {
     private UserDAO userDAO;
     private User user;
 
+    /**
+     *
+     * @param auth ouverture de la fenetre de modification des utilisateurs en
+     * fonction de l'utilisateur connecté
+     *
+     */
     public UserModifyFrame(Authentication auth, User us) {
         authentication = auth;
         user = us;
@@ -165,9 +161,9 @@ public class UserModifyFrame extends JDialog implements ActionListener {
 
         jcbRole = new JComboBox();
         jcbRole.setBounds(140, 330, 200, 25);
-        if(user.getRole() == 1){
+        if (user.getRole() == 1) {
             jcbRole.addItem("administrateur");
-        }else{
+        } else {
             jcbRole.addItem("utilisateur");
         }
 
@@ -207,6 +203,13 @@ public class UserModifyFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     *
+     * appuie sur le bouton "cancel", cela annule la modification Si on appuie
+     * sur "modify" cela permet de modifier.
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -216,7 +219,7 @@ public class UserModifyFrame extends JDialog implements ActionListener {
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat format = new SimpleDateFormat(pattern);
             java.sql.Date sqlBirth = null, sqlHiring = null;
-            
+
             try {
                 Date birth = format.parse(dateBirth);
                 sqlBirth = new java.sql.Date(birth.getTime());
@@ -226,14 +229,13 @@ public class UserModifyFrame extends JDialog implements ActionListener {
                 Logger.getLogger(UserModifyFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
             int role;
-            if(String.valueOf(jcbRole.getSelectedItem().toString()).equals("administrateur")){
+            if (String.valueOf(jcbRole.getSelectedItem().toString()).equals("administrateur")) {
                 role = 1;
-            }else{
+            } else {
                 role = 2;
             }
             User user = new User(this.user.getReference_user(), jtName.getText(), jtSurname.getText(), jtPassword.getText(), jtMail.getText(), sqlBirth, sqlHiring, jtAddress.getText(), role, jtPhone.getText());
             returnCode = userDAO.modifyUser(user);
-            System.out.println("code de retour : " + returnCode);
             this.dispose();
         } else if (ae.getSource() == cancel) {
             this.dispose();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package supplier;
 
 import authentication.Authentication;
@@ -17,10 +12,6 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-/**
- *
- * @author e1501601
- */
 public class SupplierModifyFrame extends JDialog implements ActionListener {
 
     private JTextField jtSociety;
@@ -44,6 +35,10 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
     private Supplier supplier;
     private SupplierDAO supplierDAO;
 
+    /**
+     *
+     * @param auth ouvre une fenetre pour la modification du fournisseur
+     */
     public SupplierModifyFrame(Authentication auth, Supplier supp) {
         authentication = auth;
         supplier = supp;
@@ -132,6 +127,12 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "cancel", cela annule la modification Si on
+     * appuie sur "modify" ce la permet de modifier
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -140,7 +141,6 @@ public class SupplierModifyFrame extends JDialog implements ActionListener {
                 if (!this.jtSociety.getText().isEmpty() && !this.jtAddress.getText().isEmpty() && !this.jtField.getText().isEmpty() && !this.jtPhone.getText().isEmpty() && !this.jtMail.getText().isEmpty()) {
                     Supplier supplier = new Supplier(this.supplier.getReference(), this.jtSociety.getText().toString(), this.jtAddress.getText().toString(), this.jtField.getText().toString(), this.jtPhone.getText().toString(), this.jtMail.getText().toString());
                     returnCode = supplierDAO.modifySupplier(supplier);
-                    System.out.println("code de retour modifier: " + returnCode);
                     this.dispose();
                 } else {
                     ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");

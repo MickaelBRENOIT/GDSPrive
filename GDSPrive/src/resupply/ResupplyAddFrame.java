@@ -1,19 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package resupply;
 
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,16 +18,10 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import product.Product;
 import product.ProductDAO;
-import supplier.SupplierDAO;
 import util.DateFormat;
 import util.ErrorFrame;
 
-/**
- *
- * @author sandra
- */
 public class ResupplyAddFrame extends JDialog implements ActionListener {
 
     private Authentication authentication;
@@ -60,6 +47,11 @@ public class ResupplyAddFrame extends JDialog implements ActionListener {
     private JButton cancel;
     private String valueComboBox;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de reapprovisionnement en fonction de
+     * l'utilisateur connecté
+     */
     public ResupplyAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Se reapprovisionner | " + auth.getLogin());
@@ -161,10 +153,12 @@ public class ResupplyAddFrame extends JDialog implements ActionListener {
 
     }
 
-    public void selection() {
-
-    }
-
+    /**
+     * Si on appuie sur le bouton "commande", cela ajoute la commande. Si on
+     * appuie sur le bouton "cancel", cela annule la modification.
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -203,9 +197,8 @@ public class ResupplyAddFrame extends JDialog implements ActionListener {
                 String nom = (String) nomProduit.getSelectedItem();
                 int ceProduit = productDAO.idProduct(nom);
                 Resupply resupply = new Resupply(ceProduit, this.quantite.getText(), sqlCommande);
-
                 returnCode = resupplyDAO.addProduct(resupply);
-                System.out.println("code de retour : " + returnCode);
+
                 this.dispose();
 
             } else {

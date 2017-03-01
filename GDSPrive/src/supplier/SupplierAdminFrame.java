@@ -18,10 +18,6 @@ import javax.swing.JTextField;
 import menu.AdminMenu;
 import util.ErrorFrame;
 
-/**
- *
- * @author e1501601
- */
 public class SupplierAdminFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
@@ -48,6 +44,11 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
     private JList<String> suppliersList;
     private DefaultListModel<String> listModel;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de gestion des fournisseurs en fonction de
+     * l'utilisateur connecté
+     */
     public SupplierAdminFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des fournisseurs | " + auth.getLogin());
@@ -98,17 +99,17 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
         quit = new JButton("Quitter");
         quit.setBounds(850, 200, 200, 30);
         quit.addActionListener(this);
-        
-        fournisseurLess=new JButton("Fournisseur Moins Cher");
+
+        fournisseurLess = new JButton("Fournisseur Moins Cher");
         fournisseurLess.setBounds(600, 300, 180, 30);
         fournisseurLess.addActionListener(this);
-        
-        searchName=new JTextField();
+
+        searchName = new JTextField();
         searchName.setBounds(275, 300, 200, 30);
-        
-        nomProduit=new JLabel("tapez le nom du produit :");
-        nomProduit.setBounds(120,300,200,25);
-        
+
+        nomProduit = new JLabel("tapez le nom du produit :");
+        nomProduit.setBounds(120, 300, 200, 25);
+
         searchField = new JTextField("Champ de recherche");
         searchField.setBounds(275, 50, 500, 30);
 
@@ -140,6 +141,15 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
         main.add(nomProduit);
     }
 
+    /**
+     * Si on appuie sur le bouton "create", cela ajoute fournisseur. Si on
+     * appuie sur le bouton "cancel", cela annule la modification. Si on appuie
+     * sur le bouton "liste" affiche la liste des fournisseurs Si on appuie sur
+     * "search" cela permet de faire la recherche Si on appuie sur "modify" ce
+     * la permet de mofier
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -153,17 +163,14 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
                     listModel.addElement(s.toString());
                 }
 
-            }
-            else if (ae.getSource() == fournisseurLess) {
-                 String nomProduit = searchName.getText().toString();
-                 System.out.println(nomProduit);
+            } else if (ae.getSource() == fournisseurLess) {
+                String nomProduit = searchName.getText().toString();
                 List<String> listOfSuppliers = supplier.getListSuppliersOrderByPrice(nomProduit);
                 listModel.removeAllElements();
                 for (String s : listOfSuppliers) {
                     listModel.addElement(s);
                 }
-            }
-            else if (ae.getSource() == search) {
+            } else if (ae.getSource() == search) {
 
                 String domain = searchField.getText().toString();
                 List<Supplier> listOfSuppliers = supplier.getListSuppliersByADomain(domain);
@@ -190,7 +197,6 @@ public class SupplierAdminFrame extends JFrame implements ActionListener, Window
                 DefaultListModel<String> model = (DefaultListModel<String>) suppliersList.getModel();
                 String[] splitString = suppliersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
-                System.out.println("Split : " + id);
                 // TODO - Delete in the database
                 returnCode = supplier.deleteSupplier(id);
                 model.remove(suppliersList.getSelectedIndex());

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package supplier;
 
 import authentication.Authentication;
@@ -21,10 +16,6 @@ import javax.swing.JTextField;
 import menu.UserMenu;
 import util.ErrorFrame;
 
-/**
- *
- * @author Mikael
- */
 public class SupplierUserFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton list;
@@ -44,6 +35,11 @@ public class SupplierUserFrame extends JFrame implements ActionListener, WindowF
     private JList<String> suppliersList;
     private DefaultListModel<String> listModel;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de gestion des fournisseurs en fonction de
+     * l'utilisateur connecté
+     */
     public SupplierUserFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des fournisseurs | " + auth.getLogin());
@@ -107,6 +103,15 @@ public class SupplierUserFrame extends JFrame implements ActionListener, WindowF
         main.add(scrollSuppliers);
     }
 
+    /**
+     * Si on appuie sur le bouton "returnToPrevious", cela ramène sur la fenetre
+     * precedente. Si on appuie sur le bouton "cancel", cela annule la
+     * modification. Si on appuie sur le bouton "liste" affiche la liste des
+     * fournisseurs Si on appuie sur "searchButton" cela permet de faire la
+     * recherche Si on appuie sur "modify" ce la permet de mofier
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == searchButton) {
@@ -122,7 +127,6 @@ public class SupplierUserFrame extends JFrame implements ActionListener, WindowF
             }
 
         } else if (ae.getSource() == list) {
-            // http://www.codejava.net/java-se/swing/jlist-basic-tutorial-and-examples
             List<Supplier> listOfSuppliers = supplier.getListOfAllSuppliers();
             listModel.removeAllElements();
             for (Supplier s : listOfSuppliers) {

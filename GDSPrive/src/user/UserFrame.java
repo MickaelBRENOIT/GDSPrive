@@ -11,18 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import menu.AdminMenu;
 
-/**
- *
- * @author e1501601
- */
 public class UserFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
@@ -46,6 +39,11 @@ public class UserFrame extends JFrame implements ActionListener, WindowFocusList
     private JList<String> UsersList;
     private DefaultListModel<String> listModel;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de gestions des utilisateurs en fonction de
+     * l'utilisateur connecté
+     */
     public UserFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des utilisateurs | " + auth.getLogin());
@@ -129,6 +127,17 @@ public class UserFrame extends JFrame implements ActionListener, WindowFocusList
         main.add(scrollUsers);
     }
 
+    /**
+     * Si on appuie sur le bouton "create", cela ouvre la fenetre de creation de
+     * l'utilisateur. Si on appuie sur le bouton "liste", cela permet de lister.
+     * Si on appuie sur le bouton "modify" cela modifie. Si on appuie sur
+     * "delete" cela permet de supprimer si on appuie sur "quit" cela permet de
+     * quitter si on appuie sur "search" cela permet la recherche si on appui
+     * sur le boutton "returnTo PreviousFrame" cela permet de retourner sur la
+     * page precedente
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -171,7 +180,6 @@ public class UserFrame extends JFrame implements ActionListener, WindowFocusList
                 DefaultListModel<String> model = (DefaultListModel<String>) UsersList.getModel();
                 String[] splitString = UsersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
-                System.out.println("Split : " + id);
                 // TODO - Delete in the database
                 returnCode = user.deleteUser(id);
                 model.remove(UsersList.getSelectedIndex());

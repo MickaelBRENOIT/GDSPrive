@@ -1,8 +1,6 @@
 package product;
 
-import customer.*;
 import authentication.Authentication;
-import customer.CustomerDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -19,11 +17,7 @@ import javax.swing.JTextField;
 import menu.AdminMenu;
 import util.ErrorFrame;
 
-/**
- *
- * @author e1501601
- */
-public class ProductAdminFrame extends JFrame implements ActionListener,WindowFocusListener {
+public class ProductAdminFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
     private JButton list;
@@ -46,6 +40,11 @@ public class ProductAdminFrame extends JFrame implements ActionListener,WindowFo
     private JList<String> ProductList;
     private DefaultListModel<String> listModel;
 
+    /**
+     *
+     * @param auth ouvre une fenetre de gestion de produits en fonction de
+     * l'utilisateur commandé
+     */
     public ProductAdminFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des produits | " + auth.getLogin());
@@ -125,6 +124,14 @@ public class ProductAdminFrame extends JFrame implements ActionListener,WindowFo
         main.add(scrollProducts);
     }
 
+    /**
+     * Si on appuie sur le bouton "create", cela cree le produit. Si on appuie
+     * sur le bouton "list", cela donne la liste des produits. si on appuie sur
+     * "search" cela permet la recherche si on appuie sur "delete" cela supprime
+     * le champ selectionné si on appui sur "quit" cela permet de quitter
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -153,19 +160,18 @@ public class ProductAdminFrame extends JFrame implements ActionListener,WindowFo
                     ErrorFrame ef = new ErrorFrame("Le nom que vous avez recherché n'existe pas.");
                 }
             } else if (ae.getSource() == modify) {
-                
-                
+
                 DefaultListModel<String> model = (DefaultListModel<String>) ProductList.getModel();
-                 if (!model.isEmpty()) {
-                String[] splitString = ProductList.getSelectedValue().toString().split(" ");
-                String id = splitString[0];
-                System.out.println("Split : " + id);
-                Product productToModify = null;
-                productToModify = products.getAProduct(id);
-                ProductModifyFrame s = new ProductModifyFrame(authentication, productToModify);}
-                 else{
-                   System.out.println("choisir l'élement à modifier");  
-                 }
+                if (!model.isEmpty()) {
+                    String[] splitString = ProductList.getSelectedValue().toString().split(" ");
+                    String id = splitString[0];
+                    System.out.println("Split : " + id);
+                    Product productToModify = null;
+                    productToModify = products.getAProduct(id);
+                    ProductModifyFrame s = new ProductModifyFrame(authentication, productToModify);
+                } else {
+                    System.out.println("choisir l'élement à modifier");
+                }
             } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) ProductList.getModel();
                 String[] splitString = ProductList.getSelectedValue().toString().split(" ");
@@ -185,18 +191,18 @@ public class ProductAdminFrame extends JFrame implements ActionListener,WindowFo
             System.out.println(e);
         }
     }
-    
-     public void windowGainedFocus(WindowEvent we) {
-         List<Product> listOfProducts = products.getListOfAllProducts();
-                listModel.removeAllElements();
-                for (Product p : listOfProducts) {
-                    listModel.addElement(p.toString());
-                }
-     }
+
+    public void windowGainedFocus(WindowEvent we) {
+        List<Product> listOfProducts = products.getListOfAllProducts();
+        listModel.removeAllElements();
+        for (Product p : listOfProducts) {
+            listModel.addElement(p.toString());
+        }
+    }
 
     @Override
     public void windowLostFocus(WindowEvent e) {
-        
+
     }
 
 }

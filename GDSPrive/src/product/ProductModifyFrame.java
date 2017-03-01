@@ -3,11 +3,8 @@ package product;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -28,10 +25,7 @@ import util.DateFormat;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-/**
- *
- * @author e1501601
- */
+
 public class ProductModifyFrame extends JDialog implements ActionListener {
 
     private JTextField nomProduit;
@@ -66,6 +60,13 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
     private ProductDAO productDAO;
     private Product products;
 
+    /**
+     *
+     * @param auth ouvre la fenetre de modification du produit en fonction de
+     * l'utilisateur connecté
+     * @param prod le produit à modifier
+     *
+     */
     public ProductModifyFrame(Authentication auth, Product prod) {
         authentication = auth;
         products = prod;
@@ -179,37 +180,43 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
 
     }
 
+    /**
+     * Si on appuie sur le bouton "add", cela ajoute le produit. Si on appuie sur
+     * le bouton "cancel", cela annule la modification. 
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
 
         if (ae.getSource() == add) {
-            
+
             if (!this.nomProduit.getText().isEmpty() && !this.prixUnitaire.getText().isEmpty() && !this.quantite.getText().isEmpty() && !dateExpirationPicker.getJFormattedTextField().getText().isEmpty() && !jFournisseur.getSelectedItem().toString().isEmpty() && !this.stockMin.getText().isEmpty()) {
 
-            String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat format = new SimpleDateFormat(pattern);
-            java.sql.Date sqlExpiration = null;
+                String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat format = new SimpleDateFormat(pattern);
+                java.sql.Date sqlExpiration = null;
 
-            try {
-                Date Expiration = format.parse(dateExpiration);
-                sqlExpiration = new java.sql.Date(Expiration.getTime());
+                try {
+                    Date Expiration = format.parse(dateExpiration);
+                    sqlExpiration = new java.sql.Date(Expiration.getTime());
 
-            } catch (ParseException ex) {
-                Logger.getLogger(ProductModifyFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                } catch (ParseException ex) {
+                    Logger.getLogger(ProductModifyFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-            String nomSociete = jFournisseur.getSelectedItem().toString();
-            int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
-            Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
+                String nomSociete = jFournisseur.getSelectedItem().toString();
+                int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
+                Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
 
-            System.out.println("code:" + this.products.getReference());
+                System.out.println("code:" + this.products.getReference());
 
-            returnCode = productDAO.modifyProduct(products);
-            System.out.println("code de retour : " + returnCode);
-            this.dispose();
-            }else{
+                returnCode = productDAO.modifyProduct(products);
+                System.out.println("code de retour : " + returnCode);
+                this.dispose();
+            } else {
                 ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
             }
         } else if (ae.getSource() == cancel) {

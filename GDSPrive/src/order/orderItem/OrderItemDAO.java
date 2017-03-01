@@ -1,26 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.orderItem;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-/**
- *
- * @author Mikael
- */
 public class OrderItemDAO {
+
     private Connection connection;
     private PreparedStatement statement;
 
+    /**
+     * initialise la connection et la requete préparée à null
+     */
     public OrderItemDAO() {
         connection = null;
         statement = null;
     }
 
+    /**
+     *
+     * @param orderItem la commande article à ajouter
+     * @return le nombre de commande ajouté
+     */
     public int addOrderItems(OrderItem orderItem) {
         int returnCode = 0;
         try {
@@ -34,7 +34,6 @@ public class OrderItemDAO {
             statement.setInt(1, orderItem.getFk_order());
             statement.setInt(2, orderItem.getFk_product());
             statement.setInt(3, orderItem.getQuantity());
-            
 
             //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
@@ -56,10 +55,15 @@ public class OrderItemDAO {
             } catch (Exception t) {
             }
         }
-        
+
         return returnCode;
     }
 
+    /**
+     *
+     * @param id identifiant de la commande selectionné
+     * @return le nombre de commande supprimé
+     */
     public int deleteOrderItem(String id) {
         int returnCode = 0;
         try {
@@ -92,6 +96,5 @@ public class OrderItemDAO {
         }
         return returnCode;
     }
-    
-    
+
 }

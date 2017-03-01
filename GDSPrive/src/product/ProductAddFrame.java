@@ -3,16 +3,11 @@ package product;
 import authentication.Authentication;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -27,10 +22,6 @@ import util.DateFormat;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-/**
- *
- * @author e1501601
- */
 public class ProductAddFrame extends JDialog implements ActionListener {
 
     private JTextField nomProduit;
@@ -60,6 +51,11 @@ public class ProductAddFrame extends JDialog implements ActionListener {
     private ProductDAO productDAO;
     private SupplierDAO supplierDAO;
 
+    /**
+     *
+     * @param auth qui ouvre une fenetre de creation de produit en fonction de
+     * l'utilisateur connecté
+     */
     public ProductAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Créer des produits | " + auth.getLogin());
@@ -167,6 +163,12 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
     }
 
+    /**
+     * Si on appuie sur le bouton "add", cela ajoute le produit. Si on appuie
+     * sur le bouton "cancel", cela annule la modification.
+     *
+     * @param ae - évènements déclenchés lors de la pression d'un des boutons
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -192,10 +194,9 @@ public class ProductAddFrame extends JDialog implements ActionListener {
 
                     Product product = new Product(this.nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), this.quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
                     returnCode = productDAO.addProduct(product);
-                    System.out.println("code de retour : " + returnCode);
                     this.dispose();
                 } else {
-                   ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
+                    ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
             } else if (ae.getSource() == cancel) {
                 this.dispose();

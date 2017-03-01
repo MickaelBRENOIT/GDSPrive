@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package supplier;
 
 import java.sql.Connection;
@@ -11,20 +6,23 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Mikael
- */
 public class SupplierDAO {
 
     private Connection connection;
     private PreparedStatement statement;
 
+    /**
+     * initialise la connexion et les requets preparées à null
+     */
     public SupplierDAO() {
         connection = null;
         statement = null;
     }
 
+    /**
+     *
+     * @return la liste des fournisseurs
+     */
     public List<Supplier> getListOfAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<Supplier>();
         ResultSet rs = null;
@@ -65,6 +63,11 @@ public class SupplierDAO {
 
     }
 
+    /**
+     *
+     * @param domain le domaine du fournisseur
+     * @return la liste des fournisseurs par domaine
+     */
     public List<Supplier> getListSuppliersByADomain(String domain) {
         List<Supplier> suppliers = new ArrayList<Supplier>();
         ResultSet rs = null;
@@ -105,6 +108,11 @@ public class SupplierDAO {
         return suppliers;
     }
 
+    /**
+     *
+     * @param supplier le fournisseur
+     * @return le nombre de fournisseur ajouté
+     */
     public int addSupplier(Supplier supplier) {
         int returnCode = 0;
         try {
@@ -145,6 +153,11 @@ public class SupplierDAO {
         return returnCode;
     }
 
+    /**
+     *
+     * @param reference la reference du fournisseur
+     * @return le nombre de suppression de fournisseur
+     */
     public int deleteSupplier(String reference) {
         int returnCode = 0;
         try {
@@ -180,6 +193,11 @@ public class SupplierDAO {
         return returnCode;
     }
 
+    /**
+     *
+     * @param reference la reference du fournisseur
+     * @return le fournisseur
+     */
     public Supplier getASupplier(String reference) {
         Supplier supplier = null;
         ResultSet rs = null;
@@ -220,6 +238,11 @@ public class SupplierDAO {
         return supplier;
     }
 
+    /**
+     *
+     * @param supplier le fournissuer
+     * @return le nombre de modification effectué sur le fournisseur
+     */
     public int modifySupplier(Supplier supplier) {
         int returnCode = 0;
         try {
@@ -261,6 +284,11 @@ public class SupplierDAO {
         return returnCode;
     }
 
+    /**
+     *
+     * @param nomSociete le nom de la societe
+     * @return le nombre d'identifiant
+     */
     public int idSupplier(String nomSociete) {
         int id = 0;
         ResultSet rs = null;
@@ -300,26 +328,30 @@ public class SupplierDAO {
         }
         return id;
     }
-     public List<String> getListSuppliersOrderByPrice(String nomProduit) {
+
+    /**
+     *
+     * @param nomProduit le nom du produit
+     * @return la liste des produits par prix
+     */
+    public List<String> getListSuppliersOrderByPrice(String nomProduit) {
         List<String> suppliersOrderPrice = new ArrayList<String>();
         ResultSet rs = null;
-        
+
         try {
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("SELECT fournisseur.societe_fournisseur,nom_produit,prix_unitaire FROM produit "
-                                                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur"
-                                                    + " WHERE nom_produit=? "
-                                                    + " ORDER BY prix_unitaire ASC"
-                                                    
-                                                );
-              statement.setString(1, nomProduit);
-            
+                    + "INNER JOIN fournisseur ON produit.ce_fournisseur = fournisseur.id_fournisseur"
+                    + " WHERE nom_produit=? "
+                    + " ORDER BY prix_unitaire ASC"
+            );
+            statement.setString(1, nomProduit);
+
             rs = statement.executeQuery();
 
-        
             while (rs.next()) {
-                suppliersOrderPrice.add("Fournisseur: "+rs.getString("societe_fournisseur")+" Produit : "+rs.getString("nom_produit")+" Prix: "+rs.getDouble("prix_unitaire"));
-              
+                suppliersOrderPrice.add("Fournisseur: " + rs.getString("societe_fournisseur") + " Produit : " + rs.getString("nom_produit") + " Prix: " + rs.getDouble("prix_unitaire"));
+
             }
 
         } catch (Exception e) {
@@ -343,9 +375,9 @@ public class SupplierDAO {
                 }
             } catch (Exception t) {
             }
-           
+
         }
 
         return suppliersOrderPrice;
-    }   
+    }
 }
