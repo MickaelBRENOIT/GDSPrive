@@ -21,6 +21,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import product.ProductDAO;
 import util.DateFormat;
 import util.ErrorFrame;
+import util.JNumberTextField;
 
 public class ResupplyAddFrame extends JDialog implements ActionListener {
 
@@ -30,7 +31,7 @@ public class ResupplyAddFrame extends JDialog implements ActionListener {
 
     private JPanel panel;
     private JComboBox nomProduit;
-    private JTextField quantite;
+    private JNumberTextField quantite;
     private JComboBox jFournisseur;
 
     private JLabel jlnomProduit;
@@ -98,7 +99,7 @@ public class ResupplyAddFrame extends JDialog implements ActionListener {
 
         }
 
-        quantite = new JTextField(20);
+        quantite = new JNumberTextField();
         quantite.setBounds(140, 50, 200, 25);
 
         properties = new Properties();
