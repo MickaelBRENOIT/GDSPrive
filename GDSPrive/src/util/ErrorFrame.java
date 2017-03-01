@@ -14,10 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
-/**
- *
- * @author e1500727
- */
 public class ErrorFrame extends JDialog {
 
     private JPanel main;
@@ -26,8 +22,13 @@ public class ErrorFrame extends JDialog {
     private ImageIcon warningImg;
     private JLabel warningLabel;
 
+    /**
+     * Permet de créer une fenêtre avec un texte d'erreur personnalisé.
+     *
+     * @param txtError - le texte d'erreur à afficher
+     */
     public ErrorFrame(String txtError) {
-        
+
         this.txtError = txtError;
         this.setTitle("Une erreur a été provoquée");
         this.setSize(500, 100);
@@ -52,7 +53,7 @@ public class ErrorFrame extends JDialog {
         warningImg = new ImageIcon("images/warning.png");
         warningLabel = new JLabel(warningImg);
     }
- 
+
     private void disposition() {
         main.setLayout(new BorderLayout());
         main.add(text, BorderLayout.CENTER);
@@ -61,13 +62,10 @@ public class ErrorFrame extends JDialog {
 
     private void playSound() {
         try {
-            // Open an audio input stream.
             String songName = "error.wav";
-            String pathToWav = System.getProperty("user.dir") +"\\sounds\\"+ songName;
+            String pathToWav = System.getProperty("user.dir") + "\\sounds\\" + songName;
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(pathToWav).getAbsoluteFile());
-            // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
-            // Open audio clip and load samples from the audio input stream.
             clip.open(audioIn);
             clip.start();
         } catch (UnsupportedAudioFileException e) {
