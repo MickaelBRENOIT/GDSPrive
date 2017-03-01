@@ -18,10 +18,6 @@ import menu.AdminMenu;
 import order.orderItem.OrderItemDAO;
 import product.ProductDAO;
 
-/**
- *
- * @author e1501601
- */
 public class OrderFrame extends JFrame implements ActionListener, WindowFocusListener {
 
     private JButton create;
@@ -47,6 +43,11 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
     private JList<String> OrdersList;
     private DefaultListModel<String> listModel;
 
+    /**
+     * Permet d'afficher la fenêtre qui gère les commandes
+     *
+     * @param auth - Informations sur l'administrateur connecté
+     */
     public OrderFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Gestion des commandes | " + auth.getLogin());
@@ -78,6 +79,7 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
 
         modify = new JButton("Modifier");
         modify.setBounds(10, 100, 200, 30);
+        modify.setEnabled(false);
         modify.addActionListener(this);
 
         delete = new JButton("Supprimer");
@@ -128,6 +130,18 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
         main.add(scrollOrders);
     }
 
+    /**
+     * Si on appuie sur le bouton "create", cela affiche la fenêtre pour créer
+     * une commande. Si on appuie sur le bouton "list", cela liste les commandes
+     * passées. Si on appuie sur le bouton "search", cela cherche les commandes
+     * passées par la société sélectionnée. Si on appuie sur le bouton "delete",
+     * cela supprime la commande choisie dans la liste. Si on appuie sur le
+     * bouton "returnToPreviousFrame", cela permet de revenir sur le menu
+     * administrateur. Si on appuie sur le bouton "quit", cela permet de quitter
+     * l'aaplication.
+     *
+     * @param ae - évènements déclenchés lorsqu'on appuie sur un bouton
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -150,23 +164,10 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
                     listModel.addElement(o.toString());
                 }
 
-            } /*else if (ae.getSource() == modify) {
-                //TODO - Database 1 : search id and send to DAO in order to return the supplier
+            } else if (ae.getSource() == delete) {
                 DefaultListModel<String> model = (DefaultListModel<String>) OrdersList.getModel();
                 String[] splitString = OrdersList.getSelectedValue().toString().split(" ");
                 String id = splitString[0];
-                User userToModify = null;
-                userToModify = order.getAUser(id);
-                //TODO - Display the SupplierModifyFrame.java
-                UserModifyFrame umf = new UserModifyFrame(authentication, userToModify);
-                //TODO - Database 2 : Modify the supplier by passing him in the parameter of the constructor.
-
-            } */ else if (ae.getSource() == delete) {
-                DefaultListModel<String> model = (DefaultListModel<String>) OrdersList.getModel();
-                String[] splitString = OrdersList.getSelectedValue().toString().split(" ");
-                String id = splitString[0];
-                System.out.println("Split : " + id);
-                // TODO - Delete in the database
                 returnCode = productDAO.increaseProductQuantity(id);
                 returnCode = orderItemDAO.deleteOrderItem(id);
                 returnCode = order.deleteOrder(id);
@@ -179,17 +180,22 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
             }
 
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
+    /**
+     * Permet de mettre à jour la liste des commandes ainsi que la liste
+     * déroulante avec les noms des sociétés
+     *
+     * @param we - Méthode appelée lorsque cette fenêtre est en premier plan
+     */
     @Override
     public void windowGainedFocus(WindowEvent we) {
         List<String> listOfOrdersInSearchField = order.getListOfAllCompanies();
         for (String s : listOfOrdersInSearchField) {
             searchField.addItem(s);
         }
-        
+
         List<Order> listOfOrders = order.getListOfAllOrders();
         listModel.removeAllElements();
         for (Order o : listOfOrders) {
@@ -197,6 +203,10 @@ public class OrderFrame extends JFrame implements ActionListener, WindowFocusLis
         }
     }
 
+    /**
+     *
+     * @param we
+     */
     @Override
     public void windowLostFocus(WindowEvent we) {
     }

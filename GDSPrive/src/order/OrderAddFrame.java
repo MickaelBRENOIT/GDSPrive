@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order;
 
 import authentication.Authentication;
@@ -42,10 +37,6 @@ import util.SupplierOrderDAO;
 import util.TemporaryOrderItem;
 import util.TemporaryOrderItemDAO;
 
-/**
- *
- * @author Mikael
- */
 public class OrderAddFrame extends JDialog implements ActionListener, WindowFocusListener {
 
     private JLabel jlCompagny;
@@ -96,6 +87,11 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
 
     private double totalPriceOrder = 0.0;
 
+    /**
+     * Permet d'afficher la fenêtre qui ajoute gère l'ajout de commande
+     *
+     * @param auth - Informations de l'administrateur connecté
+     */
     public OrderAddFrame(Authentication auth) {
         authentication = auth;
         this.setTitle("Créer des commandes | " + auth.getLogin());
@@ -233,6 +229,17 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         panel.add(cancel);
     }
 
+    /**
+     * Si on appuie sur le bouton "cancel", nous annulons l'ajout d'une
+     * commande. Si on appuie sur le bouton "addOrder", nous ajoutons la
+     * commande. Si on appuie sur le bouton "addProduct", nous ajoutons un
+     * produit à la commande. Si on appuie sur le bouton "deleteProduct", nous
+     * supprimons un produit présent dans la liste de produits. Si on appuie sur
+     * le bouton "modifyProduct", nous modifions un produit présent dans la
+     * liste de produits.
+     *
+     * @param ae - évènements déclenchés lors d'un appui sur un bouton
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
@@ -247,53 +254,47 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
                 if (model.isEmpty()) {
                     ErrorFrame ef = new ErrorFrame("La liste est vide. Veuillez ajouter au moins un produit pour passer commande.");
-                } else {
-                    if (!orderDatePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDeadlinePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDatePicker.getJFormattedTextField().getText().isEmpty()) {
+                } else if (!orderDatePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDeadlinePicker.getJFormattedTextField().getText().isEmpty() && !deliveryDatePicker.getJFormattedTextField().getText().isEmpty()) {
 
-                        String compagny = String.valueOf(jcbCompagny.getSelectedItem().toString());
-                        int id = customerDAO.getReferenceCompanyByName(compagny);
-                        String orderDate = orderDatePicker.getJFormattedTextField().getText();
-                        String DeliveryDeadline = deliveryDeadlinePicker.getJFormattedTextField().getText();
-                        String DeliveryDate = deliveryDatePicker.getJFormattedTextField().getText();
-                        String pattern = "yyyy-MM-dd";
-                        SimpleDateFormat format = new SimpleDateFormat(pattern);
-                        java.sql.Date sqlOrderDate = null, sqlDeliveryDeadline = null, sqlDeliveryDate = null;
+                    String compagny = String.valueOf(jcbCompagny.getSelectedItem().toString());
+                    int id = customerDAO.getReferenceCompanyByName(compagny);
+                    String orderDate = orderDatePicker.getJFormattedTextField().getText();
+                    String DeliveryDeadline = deliveryDeadlinePicker.getJFormattedTextField().getText();
+                    String DeliveryDate = deliveryDatePicker.getJFormattedTextField().getText();
+                    String pattern = "yyyy-MM-dd";
+                    SimpleDateFormat format = new SimpleDateFormat(pattern);
+                    java.sql.Date sqlOrderDate = null, sqlDeliveryDeadline = null, sqlDeliveryDate = null;
 
-                        try {
-                            java.util.Date order = format.parse(orderDate);
-                            sqlOrderDate = new java.sql.Date(order.getTime());
-                            java.util.Date deadline = format.parse(DeliveryDeadline);
-                            sqlDeliveryDeadline = new java.sql.Date(deadline.getTime());
-                            java.util.Date date = format.parse(DeliveryDate);
-                            sqlDeliveryDate = new java.sql.Date(date.getTime());
-                        } catch (ParseException ex) {
-                            System.out.println(ex);
-                        }
-
-                        Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate, totalPriceOrder);
-                        last_insert_id = orderDAO.addOrder(order);
-                        System.out.println("Key : " + last_insert_id);
-
-                        /* Add order items */
-                        List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
-                        for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
-                            productId = productDAO.getProductIdByCompanyAndProductNames(toi.getCompany_name(), toi.getProduct_name());
-                            quantity = toi.getQuantity();
-                            returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
-                        }
-                        returnCode = productDAO.decreaseProductQuantity(last_insert_id);
-                        /* Check if quantity < stock */
-                        List<Product> listOfProductsWhichHaveQuantityInferiorStock = productDAO.getListOfAllProductsWhichHaveQuantityInferiorStock(last_insert_id);
-                        for(Product p : listOfProductsWhichHaveQuantityInferiorStock){
-                            System.out.println("REF : "+ p.getReference()+ " SM : " + p.getStockMin());
-                            returnCode = supplierOrderDAO.addSupplierOrder(new SupplierOrder(p.getReference(), p.getStockMin()));
-                            returnCode = productDAO.increaseProductQuantityByReplenishment(p.getReference(), p.getStockMin() * 10);
-                        }
-                        clearTemporaryDatabase();
-                        this.dispose();
-                    }else{
-                        ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
+                    try {
+                        java.util.Date order = format.parse(orderDate);
+                        sqlOrderDate = new java.sql.Date(order.getTime());
+                        java.util.Date deadline = format.parse(DeliveryDeadline);
+                        sqlDeliveryDeadline = new java.sql.Date(deadline.getTime());
+                        java.util.Date date = format.parse(DeliveryDate);
+                        sqlDeliveryDate = new java.sql.Date(date.getTime());
+                    } catch (ParseException ex) {
                     }
+
+                    Order order = new Order(id, sqlOrderDate, sqlDeliveryDeadline, sqlDeliveryDate, totalPriceOrder);
+                    last_insert_id = orderDAO.addOrder(order);
+
+                    List<TemporaryOrderItem> listOfTemporaryOrderItems = temporaryOrderItemDAO.getListOfAllTemporaryOrderItems();
+                    for (TemporaryOrderItem toi : listOfTemporaryOrderItems) {
+                        productId = productDAO.getProductIdByCompanyAndProductNames(toi.getCompany_name(), toi.getProduct_name());
+                        quantity = toi.getQuantity();
+                        returnCode = orderItemDAO.addOrderItems(new OrderItem(0, last_insert_id, productId, quantity));
+                    }
+                    returnCode = productDAO.decreaseProductQuantity(last_insert_id);
+
+                    List<Product> listOfProductsWhichHaveQuantityInferiorStock = productDAO.getListOfAllProductsWhichHaveQuantityInferiorStock(last_insert_id);
+                    for (Product p : listOfProductsWhichHaveQuantityInferiorStock) {
+                        returnCode = supplierOrderDAO.addSupplierOrder(new SupplierOrder(p.getReference(), p.getStockMin()));
+                        returnCode = productDAO.increaseProductQuantityByReplenishment(p.getReference(), p.getStockMin() * 10);
+                    }
+                    clearTemporaryDatabase();
+                    this.dispose();
+                } else {
+                    ErrorFrame eef = new ErrorFrame("Un ou plusieurs champs sont vides");
                 }
             } else if (ae.getSource() == addProduct) {
                 OrderItemAddFrame oiaf = new OrderItemAddFrame(authentication);
@@ -301,16 +302,12 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
                 String[] splitString = productsList.getSelectedValue().toString().split(" ");
                 String id = splitString[2];
-                System.out.println("Split : " + id);
-                // TODO - Delete in the database
                 returnCode = temporaryOrderItemDAO.deleteTemporaryOrderItem(id);
                 model.remove(productsList.getSelectedIndex());
             } else if (ae.getSource() == modifyProduct) {
                 DefaultListModel<String> model = (DefaultListModel<String>) productsList.getModel();
                 String[] splitString = productsList.getSelectedValue().toString().split(" ");
                 String id = splitString[2];
-                System.out.println("Split : " + id);
-                // TODO - Delete in the database
                 TemporaryOrderItem temporaryOrderItem = temporaryOrderItemDAO.selectTemporaryOrderItemById(id);
                 OrderItemModifyFrame oimf = new OrderItemModifyFrame(authentication, temporaryOrderItem);
             }
@@ -319,6 +316,13 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         }
     }
 
+    /**
+     * Permet de mettre à jour la liste des produits ainsi que le prix total de
+     * la commande.
+     *
+     * @param we - Méthode appelée lorsque cette fenêtre se trouve au premier
+     * plan
+     */
     @Override
     public void windowGainedFocus(WindowEvent we) {
         totalPriceOrder = 0.0;
@@ -331,6 +335,10 @@ public class OrderAddFrame extends JDialog implements ActionListener, WindowFocu
         jtPriceOrder.setText(String.valueOf(totalPriceOrder));
     }
 
+    /**
+     *
+     * @param we
+     */
     @Override
     public void windowLostFocus(WindowEvent we) {
     }

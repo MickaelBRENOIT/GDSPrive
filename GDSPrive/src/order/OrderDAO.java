@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order;
 
 import java.sql.Connection;
@@ -12,20 +7,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Mikael
- */
 public class OrderDAO {
 
     private Connection connection;
     private PreparedStatement statement;
 
+    /**
+     * Initialise la connexion et la requête préparée à null
+     */
     public OrderDAO() {
         connection = null;
         statement = null;
     }
 
+    /**
+     *
+     * @return - retourne la liste de toutes les commandes
+     */
     public List<Order> getListOfAllOrders() {
         List<Order> orders = new ArrayList<Order>();
         ResultSet rs = null;
@@ -67,6 +65,10 @@ public class OrderDAO {
 
     }
 
+    /**
+     *
+     * @return - retourne toutes les sociétés qui ont passées une commande.
+     */
     public List<String> getListOfAllCompanies() {
         List<String> companies = new ArrayList<String>();
         ResultSet rs = null;
@@ -108,6 +110,12 @@ public class OrderDAO {
 
     }
 
+    /**
+     *
+     * @param compagny - nom de la société
+     * @return - retourne la liste des commandes passées par une société en
+     * particulier.
+     */
     public List<Order> getListOrdersByACompagny(String compagny) {
         List<Order> orders = new ArrayList<Order>();
         ResultSet rs = null;
@@ -150,23 +158,25 @@ public class OrderDAO {
         return orders;
     }
 
-    int deleteOrder(String id) {
+    /**
+     *
+     * @param id - identifiant de la commande
+     * @return - retourne le nombre de suppressions de commande
+     */
+    public int deleteOrder(String id) {
         int returnCode = 0;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
             statement = connection.prepareStatement("DELETE FROM commande WHERE id_commande = ? ");
 
             statement.setString(1, id);
 
-            //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
@@ -183,15 +193,17 @@ public class OrderDAO {
         return returnCode;
     }
 
-    int addOrder(Order order) {
+    /**
+     *
+     * @param order - la commande à ajouter
+     * @return - retourne le nombre de commandes qui ont été ajoutées
+     */
+    public int addOrder(Order order) {
         int returnCode = 0;
         ResultSet rs = null;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
-            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
-            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
             statement = connection.prepareStatement("INSERT INTO commande (ce_client,date_commande,date_limite_livraison,date_livraison,prix_total) VALUES ( ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, order.getFk_customer());
@@ -200,7 +212,6 @@ public class OrderDAO {
             statement.setDate(4, order.getDelivery_date());
             statement.setDouble(5, order.getTotalPriceOrder());
 
-            //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
             rs = statement.getGeneratedKeys();
 
@@ -211,7 +222,6 @@ public class OrderDAO {
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
@@ -229,6 +239,11 @@ public class OrderDAO {
         return returnCode;
     }
 
+    /**
+     *
+     * @param id - identifiant de la commande
+     * @return - retourne l'id d'une commande avec sa date de livraison
+     */
     public Order getAOrderDate(String id) {
         Order order = null;
         ResultSet rs = null;
@@ -271,6 +286,12 @@ public class OrderDAO {
         return order;
     }
 
+    /**
+     *
+     * @param id - identifiant de la commande
+     * @return - retourne l'id d'une commande avec la société du client qui a
+     * passé la commande
+     */
     public Order getAOrder(String id) {
         Order order = null;
         ResultSet rs = null;
@@ -313,14 +334,16 @@ public class OrderDAO {
         return order;
     }
 
+    /**
+     *
+     * @param order - la commande à modifier
+     * @return - retourne le nombre de commandes modifiées
+     */
     public int modifyOrder(Order order) {
         int returnCode = 0;
         try {
 
-            //tentative de connexion
             connection = singleton.Singleton.getConnection();
-            //pr�paration de l'instruction SQL, chaque ? repr�sente une valeur � communiquer dans l'insertion
-            //les getters permettent de r�cup�rer les valeurs des attributs souhait�s de nouvArticle
             statement = connection.prepareStatement("UPDATE commande "
                     + "INNER JOIN client ON commande.ce_client = client.id_client "
                     + "SET societe_client=?,date_livraison=? WHERE id_commande=?");
@@ -328,15 +351,11 @@ public class OrderDAO {
             statement.setString(1, order.getCustomer_name());
             statement.setDate(2, order.getDelivery_date());
             statement.setInt(3, order.getReference());
-            // System.out.println("LA REFERENCE EST:"+order.getReference());
-
-            //Ex�cution de la requ�te
             returnCode = statement.executeUpdate();
 
         } catch (Exception ee) {
             ee.printStackTrace();
         } finally {
-            //fermeture du preparedStatement et de la connexion
             try {
                 if (statement != null) {
                     statement.close();
