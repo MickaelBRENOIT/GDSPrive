@@ -77,11 +77,11 @@ public class AdminMenu extends JFrame implements ActionListener {
         resupply.addActionListener(this);
 
         signOut = new JButton("Se déconnecter");
-        signOut.setBounds(90, 160, 220, 25);
+        signOut.setBounds(90, 190, 220, 25);
         signOut.addActionListener(this);
 
         exit = new JButton("Quitter");
-        exit.setBounds(90, 190, 220, 25);
+        exit.setBounds(90, 220, 220, 25);
         exit.addActionListener(this);
     }
 
