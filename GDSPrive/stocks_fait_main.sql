@@ -95,6 +95,9 @@ CREATE TABLE commande (
     FOREIGN KEY (ce_client) REFERENCES client(id_client)
 ) ENGINE=InnoDB;
 
+INSERT INTO `commande` (`id_commande`, `ce_client`, `date_commande`, `date_limite_livraison`, `date_livraison`, `prix_total`) VALUES
+(1, 1, '2017-02-02', '2017-03-05', '2017-03-01', '31000.00');
+
 CREATE TABLE commande_article (
   id_commande_article INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   ce_commande INT(11) UNSIGNED NOT NULL,
@@ -103,6 +106,9 @@ CREATE TABLE commande_article (
   FOREIGN KEY (ce_commande) REFERENCES commande(id_commande),
   FOREIGN KEY (ce_produit) REFERENCES produit(id_produit)
 ) ENGINE=InnoDB;
+
+INSERT INTO `commande_article` (`id_commande_article`, `ce_commande`, `ce_produit`, `quantite`) VALUES
+(1, 1, 4, 20);
 
 CREATE TABLE commande_temporaire (
   id_commande_temporaire INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT,

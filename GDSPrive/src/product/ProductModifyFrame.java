@@ -25,7 +25,6 @@ import util.DateFormat;
 import util.ErrorFrame;
 import util.JNumberTextField;
 
-
 public class ProductModifyFrame extends JDialog implements ActionListener {
 
     private JTextField nomProduit;
@@ -181,49 +180,52 @@ public class ProductModifyFrame extends JDialog implements ActionListener {
     }
 
     /**
-     * Si on appuie sur le bouton "add", cela ajoute le produit. Si on appuie sur
-     * le bouton "cancel", cela annule la modification. 
+     * Si on appuie sur le bouton "add", cela ajoute le produit. Si on appuie
+     * sur le bouton "cancel", cela annule la modification.
      *
      * @param ae - évènements déclenchés lors de la pression d'un des boutons
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
         int returnCode = 0;
+        try {
+            if (ae.getSource() == modify) {
 
-        if (ae.getSource() == modify) {
+                if (!this.nomProduit.getText().isEmpty() && !this.prixUnitaire.getText().isEmpty() && !this.quantite.getText().isEmpty() && !dateExpirationPicker.getJFormattedTextField().getText().isEmpty() && !jFournisseur.getSelectedItem().toString().isEmpty() && !this.stockMin.getText().isEmpty()) {
 
-            if (!this.nomProduit.getText().isEmpty() && !this.prixUnitaire.getText().isEmpty() && !this.quantite.getText().isEmpty() && !dateExpirationPicker.getJFormattedTextField().getText().isEmpty() && !jFournisseur.getSelectedItem().toString().isEmpty() && !this.stockMin.getText().isEmpty()) {
+                    String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
+                    String pattern = "yyyy-MM-dd";
+                    SimpleDateFormat format = new SimpleDateFormat(pattern);
+                    java.sql.Date sqlExpiration = null;
 
-                String dateExpiration = dateExpirationPicker.getJFormattedTextField().getText();
-                String pattern = "yyyy-MM-dd";
-                SimpleDateFormat format = new SimpleDateFormat(pattern);
-                java.sql.Date sqlExpiration = null;
+                    try {
+                        Date Expiration = format.parse(dateExpiration);
+                        sqlExpiration = new java.sql.Date(Expiration.getTime());
 
-                try {
-                    Date Expiration = format.parse(dateExpiration);
-                    sqlExpiration = new java.sql.Date(Expiration.getTime());
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProductModifyFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-                } catch (ParseException ex) {
-                    Logger.getLogger(ProductModifyFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    String nomSociete = jFournisseur.getSelectedItem().toString();
+                    int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
+                    Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
 
-                String nomSociete = jFournisseur.getSelectedItem().toString();
-                int ceFournisseur = suppliersDAO.idSupplier(nomSociete);
-                Product products = new Product(this.products.getReference(), nomProduit.getText(), Double.parseDouble(this.prixUnitaire.getText()), quantite.getText(), sqlExpiration, jFournisseur.getSelectedItem().toString(), ceFournisseur, Integer.parseInt(this.stockMin.getText()));
-
-                returnCode = productDAO.modifyProduct(products);
-                if (returnCode != 0) {
+                    returnCode = productDAO.modifyProduct(products);
+                    if (returnCode != 0) {
                         this.dispose();
                     } else {
                         ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. La modification n'a pas été effectuée.");
                     }
-            } else {
-                ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
+                } else {
+                    ErrorFrame eff = new ErrorFrame("Un ou plusieurs champs sont vides");
+                }
+            } else if (ae.getSource() == cancel) {
+                this.dispose();
             }
-        } else if (ae.getSource() == cancel) {
-            this.dispose();
+
+        } catch (Exception e) {
+            ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. L'ajout n'a pas été effectué.");
         }
 
     }
-
 }

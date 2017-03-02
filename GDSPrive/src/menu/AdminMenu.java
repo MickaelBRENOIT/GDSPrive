@@ -46,9 +46,9 @@ public class AdminMenu extends JFrame implements ActionListener {
         disposition();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     private void initialize() {
@@ -104,10 +104,10 @@ public class AdminMenu extends JFrame implements ActionListener {
      * apparaît. Si on appuie sur le bouton "products", la fenêtre des produits
      * apparaît. Si on appuie sur le bouton "orders", la fenêtre des commandes
      * apparaît. Si on appuie sur le bouton "users", la fenêtre des utilisateurs
-     * apparait.Si on appuie sur le bouton "resupply"la fenêtre de reaprovisionnement
-     * apparaît. Si on appuie sur le bouton "signOut", nous sommes déconnectés
-     * et renvoyé vers la fenêtre de connexion. Si on appyue sur le bouton
-     * "exit", nous quittons l'application.
+     * apparait.Si on appuie sur le bouton "resupply"la fenêtre de
+     * reaprovisionnement apparaît. Si on appuie sur le bouton "signOut", nous
+     * sommes déconnectés et renvoyé vers la fenêtre de connexion. Si on appyue
+     * sur le bouton "exit", nous quittons l'application.
      *
      * @param ae - évènements déclenchés lorsqu'un bouton est appuyé
      */

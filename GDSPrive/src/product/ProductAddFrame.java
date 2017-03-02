@@ -207,7 +207,7 @@ public class ProductAddFrame extends JDialog implements ActionListener {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
+            ErrorFrame eef = new ErrorFrame("Un des champs est mal renseigné. L'ajout n'a pas été effectué.");
         }
     }
 
